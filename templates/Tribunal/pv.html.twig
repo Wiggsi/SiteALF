@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PVs | {{ titre }}{% endblock %}
+{% block pageTitle %}Procès-Verbaux{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col">
+            <h3>{{ titre }} <span class="badge badge-primary">{{ pagination.total }}</span></h3>
+            <div class="btn-toolbar m-2">
+                <div class="row btn-group mr-2">
+                    <button type="button" class="btn btn-outline-info btn-lg" data-toggle="modal"
+                            data-target="#aideModal">
+                        <span class="oi oi-question-mark"></span></button>
+                </div>
+                <div class="input-group mt-2">
+                    <input id="inputSearchPVs" onkeyup="searchTAJ();" class="form-control" type="search" placeholder="Rechercher"
+                           aria-label="Search">
+                    <div class="input-group-append">
+                        <div class="input-group-text"><span class="oi oi-magnifying-glass"></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ include('PV/_affichage.html.twig', {'PVs': PVs}) }}
+
+    <div class="modal fade" id="aideModal" tabindex="-1" role="dialog" aria-labelledby="aideModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="aideModalLabel">Aide - PV</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>La section <b>PV</b> regroupe les procès-verbaux transférés par la gendarmerie.
+                        <br/>Un PV a :</p>
+                    <ul>
+                        <li>un numéro.</li>
+                        <li>un auteur et un OPJ référent.</li>
+                        <li>une date, qui est celle de sa dernière mise à jour.</li>
+                        <li>des liens avec des délinquants, entrés au TAJ.</li>
+                        <li>un niveau d'importance (de 1 à 5).</li>
+                        <li>un résumé, en quelques mots.</li>
+                        <li>un status, parmi :
+                            <ul>
+                                <li>Transféré (au tribunal)</li>
+                                <li>En cours de jugement</li>
+                                <li>Terminé</li>
+                            </ul>
+                        </li>
+                        <li>Seul un magistrat peut terminer un PV.</li>
+                        <li>Seuls l'auteur, l'OPJ référent ou un membre de la SR peut modifier/supprimer un PV.</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        function searchTAJ()
+        {
+            let input, filter, table, cards, author, header, resume, date, i;
+            input = document.getElementById("inputSearchPVs");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("rowPVs");
+            cards = table.getElementsByClassName("card");
+
+            for (i = 0; i < cards.length; i++)
+            {
+                author = cards[i].getElementsByClassName("card-title")[0];
+                date = cards[i].getElementsByClassName("card-subtitle")[0];
+                header = cards[i].getElementsByClassName("card-header")[0];
+                resume = cards[i].getElementsByClassName("card-text")[0];
+                if (author)
+                {
+                    if (author.innerHTML.toUpperCase().indexOf(filter) > -1 || header.innerHTML.toUpperCase().indexOf(filter) > -1 ||
+                        resume.innerHTML.toUpperCase().indexOf(filter) > -1 || date.innerHTML.toUpperCase().indexOf(filter) > -1)
+                    {
+                        cards[i].style.display = "";
+                    } else
+                    {
+                        cards[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+{% endblock %}

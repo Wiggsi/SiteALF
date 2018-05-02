@@ -1,0 +1,43 @@
+{{ form_start(form) }}
+<div class="row">
+    <div class="col-md-6 mx-auto">
+        {{ form_errors(form) }}
+        {{ form_row(form.criminels) }}
+        {#{{ form_row(form.infractions) }}#}
+        {#{{ form_label(form.infractions) }}#}
+        <legend class="col-form-label required">*Infractions
+            <a href="#" class="btn btn-sm btn-outline-secondary" data-list="#infraction-fields-list" id="ajoutInfraction"
+               onclick="ajoutInfraction();"><span class="oi oi-plus"></span></a></legend>
+        <ul id="infraction-fields-list" class="list-unstyled"
+            data-prototype="{{ form_widget(form.infractions.vars.prototype)|e }}"
+            data-widget-tags="{{ '<li></li>'|e }}">
+            {% for infractionField in form.infractions %}
+                <li>
+                    {{ form_errors(infractionField) }}
+                    {{ form_widget(infractionField) }}
+                </li>
+            {% endfor %}
+        </ul>
+        {{ form_row(form.PV) }}
+        {{ form_row(form.save) }}
+    </div>
+</div>
+{{ form_end(form) }}
+
+<script>
+    function ajoutInfraction() {
+        let btn = $('#ajoutInfraction'),
+            list = $(btn.attr('data-list')),
+            counter = list.data('widget-counter') | list.children().length;
+        if (!counter) {
+            counter = list.children().length;
+        }
+        let newWidget = list.attr('data-prototype');
+        newWidget = newWidget.replace(/__name__/g, counter);
+        counter++;
+        list.data(' widget-counter', counter);
+        let newElem = jQuery(list.attr('data-widget-tags')).html(newWidget);
+        newElem.appendTo(list);
+        $('#taj_infractions_' + (counter - 1)).focus();
+    }
+</script>

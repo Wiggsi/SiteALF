@@ -1,0 +1,173 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Carte{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col">
+            <h3>Carte</h3>
+            <p>Cette carte permettra une gestion plus simple des points d'intérêts (Lieux à surveiller, ...).</p>
+            <p class="text-muted">Les coordoonnées en bas à gauche sont celles d'Arma.</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8" id="colContent">
+            <div id="mapDiv"></div>
+        </div>
+        <div class="col-md-4">
+            <div class=" card">
+                <h5 class="card-header">Lieux <a href="{{ path('gd_carte_new') }}"
+                                                 class="btn btn-outline-primary btn-sm float-right"><span
+                                class="oi oi-plus"></span>
+                        Nouveau marqueur</a></h5>
+                <div class="card-body">
+                    <ul id="listLieux">
+                        {% for lieu in lieux %}
+                            <li data-x="{{ lieu.x }}" data-y="{{ lieu.y }}" data-unit="{{ lieu.unit }}" data-icon="{{ lieu.icon }}">
+                                <a href="{{ path('gd_carte_show', {'id': lieu.id}) }}">{{ lieu.name }} | {{ lieu.unit }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css"
+          integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
+          crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"
+            integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw=="
+            crossorigin=""></script>
+    <link rel="stylesheet" href="http://mrmufflon.github.io/Leaflet.Coordinates/dist/Leaflet.Coordinates-0.1.3.css">
+    <script src="http://mrmufflon.github.io/Leaflet.Coordinates/dist/Leaflet.Coordinates-0.1.3.min.js"></script>
+    <link rel="stylesheet" href="{{ asset('/css/leaflet-search.css') }}">
+    <script src="{{ asset('/js/leaflet-search.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('/css/Control.FullScreen.css') }}"/>
+    <script src="{{ asset('/js/Control.FullScreen.js') }}"></script>
+    <script>
+        function pad(str) {
+            str = str.toString();
+            return str.length < 3 ? pad("0" + str) : str;
+        }
+
+        function markersIcons() {
+            let icons = ['tribunal', 'hangar', 'radar', 'warning', 'point'],
+                markers = [], i;
+            for (i in icons) {
+                markers[icons[i]] = L.icon({
+                    iconUrl: 'http://sitealf.localhost/img/icons/' + icons[i] + '.png',
+                    iconSize: [30, 30],
+                });
+            }
+            markers['city'] = L.icon({
+                iconUrl: 'http://sitealf.localhost/img/icons/city.png',
+                iconSize: [10, 10],
+            });
+
+            return markers
+        }
+
+        $(document).ready(function () {
+            let bb = document.querySelector('#colContent').getBoundingClientRect();
+            let width = bb.right - bb.left;
+            $('#mapDiv').width(width * 0.95).height(screen.availHeight * 0.8);
+
+            let bounds = [[1, 1], [127, 127]]; //Bordures de la carte
+            let map = L.map('mapDiv', {
+                bounds: bounds,
+                maxBounds: bounds,
+                minZoom: 2.5,
+                maxZoom: 7,
+                crs: L.CRS.Simple,
+                zoomSnap: 0.5,
+                fullscreenControl: true,
+                fullscreenControlOptions: {
+                    position: 'topleft',
+                    forcePseudoFullscreen: true
+                }
+            }).setView([60, 85], 3); //Carte
+            let sat = L.tileLayer('http://192.168.0.19/siteALF/public_html/img/map/{z}/{x}/{y}.png',
+                {attribution: 'ALF - Belle-Île en Mer'}); //Data
+            sat.getTileUrl = function (coords) {
+                coords.y = -coords.y - 1;
+                return L.TileLayer.prototype.getTileUrl.bind(sat)(coords);
+            }; //Modification des coords
+            sat.addTo(map);
+
+            L.control.coordinates({
+                decimals: 2,
+                enableUserInput: false
+            }).addTo(map);//Coordonnées Carte
+            L.control.coordinates({
+                position: "bottomleft",
+                labelFormatterLat: function (lat) {
+                    return pad(Math.abs(143 + Math.trunc(lat * 16383 / 12800)));
+                },
+                labelFormatterLng: function (lng) {
+                    return pad(Math.abs(Math.trunc(lng * 16383 / 12800)));
+                },
+                enableUserInput: false
+            }).addTo(map);//Coordonnées ARMA
+
+            //Affichage des noms des villes/Routes
+            let capitals = L.layerGroup(),
+                cities = L.layerGroup(),
+                villages = L.layerGroup(),
+                lieuxUnit = L.layerGroup(),
+                lieuxGD = L.layerGroup(),
+                markers = markersIcons();
+            $.getJSON('{{ asset('/json/ALF_BelleIle.json') }}', function (data) {
+                $.each(data, function (key, val) {
+                    let lng = val['position'][0] * 128 / 16383,
+                        lat = val['position'][1] * 128 / 16383;
+                    if (val['type'] === "NameCityCapital")
+                        capitals.addLayer(L.marker([lat, lng], {opacity: 0.9, icon: markers['city'], title: val['name']}).bindTooltip
+                        (val['name']));
+                    else if (val['type'] === "NameCity")
+                        cities.addLayer(L.marker([lat, lng], {
+                            opacity: 0.6,
+                            icon: markers['city'],
+                            title: val['name']
+                        }).bindTooltip(val['name']));
+                    else if (val['type'] === "NameVillage")
+                        villages.addLayer(L.marker([lat, lng], {opacity: 0.4, icon: markers['city'], title: val['name']}).bindTooltip
+                        (val['name']));
+                });
+            });
+            let ul = document.getElementById("listLieux"),
+                li = ul.getElementsByTagName("li");
+            for (let i = 0; i < li.length; i++) {
+                let unit = li[i].getAttribute('data-unit'),
+                    name = li[i].innerHTML,
+                    x = li[i].getAttribute('data-x'),
+                    y = li[i].getAttribute('data-y'),
+                    icon = li[i].getAttribute('data-icon');
+                if (unit === "GD")
+                    lieuxGD.addLayer(L.marker([y, x], {opacity: 1, icon: markers[icon], title: name}).bindTooltip(name));
+                else
+                    lieuxUnit.addLayer(L.marker([y, x], {opacity: 1, icon: markers[icon], title: name}).bindTooltip(name));
+            }
+
+            let search = capitals.addLayer(villages).addLayer(cities).addLayer(lieuxUnit).addLayer(lieuxGD),
+                baseLayer = {"Belle-Île en Mer - ALF": sat},
+                overlayMaps = {
+                    "Villes principales": capitals,
+                    "Villes": cities,
+                    "Villages": villages,
+                    "GD": lieuxGD,
+                    "Unité": lieuxUnit
+                };
+            map.addControl(new L.Control.Search({
+                layer: search,
+                textErr: 'Localisation inconnue',
+                textCancel: 'Annuler',
+                textPlaceholder: 'Rechercher',
+                hideMarkerOnCollapse: true
+            }));
+            L.control.layers(baseLayer, overlayMaps).addTo(map);
+            map.removeLayer(villages).removeLayer(cities);
+        });
+    </script>
+{% endblock %}

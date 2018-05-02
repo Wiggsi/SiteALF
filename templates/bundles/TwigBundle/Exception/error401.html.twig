@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Erreur d'authentification
+{% endblock %}
+
+{% block body %}
+    <div class="row justify-content-center">
+        <div class="col-auto text-center">
+            <h2 class="text-danger m-5">Authentification insuffisante</h2>
+            <p class="text-info">{{ status_text|trans }}</p>
+            <div class="btn-group-vertical">
+                <a href="{{ path('security_login') }}" class="btn btn-outline-info btn-lg">
+                    <span class="oi oi-key"></span> Connection</a>
+                <button onclick="window.history.back();" class="btn btn-outline-primary btn-lg">
+                    <span class="oi oi-chevron-left"></span> Retour en arrière
+                </button>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

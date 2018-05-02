@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Appel {{ appelCOG }}{% endblock %}
+{% block pageTitle %}Centre d'Opérations de la Gendarmerie{% endblock %}
+
+{% block body %}
+    <div class='row'>
+        <div class="col-md-4">
+            <h3>Appel n°{{ appelCOG.id }}</h3>
+            <div class="btn-group m-2">
+                <a href="{{ path('gd_cog') }}" class="btn btn-outline-secondary">
+                    <span class="oi oi-list"></span> Retour au COG
+                </a>
+                <a href="{{ path('gd_cog_edit', {'id': appelCOG.id}) }}" class="btn btn-outline-info">
+                    <span class="oi oi-pencil"></span> Modifier
+                </a>
+            </div>
+            <table class="table">
+                <tbody>
+                <tr>
+                    <th>Date</th>
+                    <td>{{ appelCOG.createdDate|date('d/m/y H:m') }}</td>
+                </tr>
+                <tr>
+                    <th>Appelant</th>
+                    <td>{{ appelCOG.firstName }} {{ appelCOG.name|upper }}</td>
+                </tr>
+                <tr>
+                    <th>Téléphone</th>
+                    <td>{{ appelCOG.tel }}</td>
+                </tr>
+                <tr>
+                    <th>Gendarme</th>
+                    <td>{{ appelCOG.author }} | {{ appelCOG.author.unit }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-text text-justify">
+                        {{ appelCOG.content|raw }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

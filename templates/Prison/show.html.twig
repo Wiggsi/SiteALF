@@ -1,0 +1,123 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ prison }}{% endblock %}
+{% block pageTitle %}Incarcérations{% endblock %}
+
+{% block body %}
+    <h3>{{ prison }}
+        {% if prison.ended %}
+            <span class="badge badge-secondary">Terminé</span>
+        {% elseif prison.criminel.isEvade %}
+            <span class="badge badge-danger">Évadé</span>
+        {% elseif not prison.isValid %}
+            <span class="badge badge-warning">Contrôle non effectué</span>
+        {% elseif prison.endDate < date() %}
+            <span class="badge badge-warning">Dépassé</span>
+        {% endif %}
+    </h3>
+    <div class='row'>
+        <div class="col-md-6">
+            <div class="btn-group m-2">
+                {% if prison.isPrison and app.user.isGardien %}
+                    <a href="{{ path('prison_list') }}" class="btn btn-outline-secondary">
+                        <span class="oi oi-list"></span> Retour à la liste</a>
+                    <a href="{{ path('prison_edit', {'id': prison.id}) }}" class="btn btn-outline-info">
+                        <span class="oi oi-pencil"></span> Modifier</a>
+                    <a href="{{ path('prison_end', {'id': prison.id}) }}" class="btn btn-outline-warning"
+                       onclick="return confirm('Confirmer la fin de détention : ');">
+                        <span class="oi oi-bullhorn"></span> Fin</a>
+                    {% if not prison.criminel.isEvade %}
+                        <a href="{{ path('prison_evasion', {'id': prison.id}) }}" class="btn btn-outline-danger"
+                           onclick="return confirm('Confirmer l\'évasion : ');">
+                            <span class="oi oi-ban"></span> Évadé</a>
+                    {% endif %}
+                {% elseif prison.isGendarmerie and app.user.isGendarme %}
+                    <a href="{{ path('gd_taj') }}" class="btn btn-outline-secondary">
+                        <span class="oi oi-list"></span> Retour au TAJ</a>
+                    <a href="{{ path('prison_edit', {'id': prison.id}) }}" class="btn btn-outline-info">
+                        <span class="oi oi-pencil"></span> Modifier</a>
+                    {% if prison.type == "Évadé" and not prison.ended %}
+                        <a href="{{ path('prison_evasion_end', {'id': prison.id}) }}" class="btn btn-outline-success"
+                           onclick="return confirm('Confirmer la fin d\'évasion : ');">Fin d'évasion</a>
+                    {% elseif prison.type == "Bracelet électronique" %}
+                        <a href="{{ path('prison_pointage', {'id': prison.id}) }}" class="btn btn-outline-success"
+                           onclick="return confirm('Confirmer le pointage de l\'individu : ');">
+                            <span class="oi oi-check"></span> Pointage</a>
+                        {% if not prison.criminel.isEvade %}
+                            <a href="{{ path('prison_evasion', {'id': prison.id}) }}" class="btn btn-outline-danger"
+                               onclick="return confirm('Confirmer l\'évasion : ');">
+                                <span class="oi oi-ban"></span> Évadé</a>
+                        {% endif %}
+                    {% else %}
+                        <a href="{{ path('prison_end', {'id': prison.id}) }}" class="btn btn-outline-warning"
+                           onclick="return confirm('Confirmer la fin de détention : ');">
+                            <span class="oi oi-bullhorn"></span> Fin</a>
+                        {% if not prison.criminel.isEvade %}
+                            <a href="{{ path('prison_evasion', {'id': prison.id}) }}" class="btn btn-outline-danger"
+                               onclick="return confirm('Confirmer l\'évasion : ');">
+                                <span class="oi oi-ban"></span> Évadé</a>
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            </div>
+            <table class="table">
+                <tbody>
+                <tr>
+                    <th>Individu</th>
+                    {% if app.user.isGendarme or app.user.isMagistrat %}
+                        <td><a href="{{ path('gd_taj_show', {'id': prison.criminel.id}) }}">{{ prison.criminel }}</a></td>
+                    {% else %}
+                        <td>{{ prison.criminel }}</td>
+                    {% endif %}
+                </tr>
+                <tr>
+                    <th>Type</th>
+                    <td>{{ prison.type }}{% if prison.enAttente %} | En attente de jugement{% endif %}</td>
+                </tr>
+                <tr>
+                    <th>Début</th>
+                    <td>{{ prison.startDate|date('d/m/y H:i') }}</td>
+                </tr>
+                <tr>
+                    <th>Fin</th>
+                    <td>{{ prison.endDate|date('d/m/y H:i') }}</td>
+                </tr>
+                {% if prison.validation != "Jamais" %}
+                    <tr>
+                        <th>Contrôle</th>
+                        <td>{{ prison.validation }}
+                            <em> ({{ prison.validationDate|date('d/m/y H:i') }})</em>
+                        </td>
+                    </tr>
+                {% endif %}
+                {% if prison.PV is not null and (app.user.isGendarme or app.user.isMagistrat) %}
+                    <tr>
+                        <th>PV</th>
+                        <td><a href="{{ path('gd_pv_show', {'id': prison.PV.id}) }}">{{ prison.PV }}</a></td>
+                    </tr>
+                {% endif %}
+                <tr>
+                    <th>Auteur</th>
+                    {% if app.user.isGendarme %}
+                        <td><a href="{{ path('gd_personnel_show', {'id': prison.author.id}) }}">{{ prison.author }}
+                                | {{ prison.author.unit }}</a></td>
+                    {% else %}
+                        <td>{{ prison.author }}</td>
+                    {% endif %}
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        {% if prison.comment %}
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-text text-justify">
+                            {{ prison.comment|raw }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

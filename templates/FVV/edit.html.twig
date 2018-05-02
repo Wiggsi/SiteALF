@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FVV | {{ vehicule.plaque }} | Modification{% endblock %}
+{% block pageTitle %}Fichier des Véhicules Volés{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col">
+            <h3>Véhicule {{ vehicule.plaque }} - Modification</h3>
+            <div class="btn-group p-1">
+                <a href="{{ path('gd_fvv_show', {'id': vehicule.id}) }}" class="btn btn-outline-secondary">
+                    <span class="oi oi-chevron-left"></span> Retour au véhicule</a>
+                {{ include('FVV/_delete_form.html.twig') }}
+            </div>
+        </div>
+    </div>
+    {{ include('FVV/_form.html.twig') }}
+{% endblock %}
+
+{% block javascripts %}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.js"></script>
+    <script>
+        let bb = document.querySelector('#colContent').getBoundingClientRect();
+        width = bb.right - bb.left;
+        $(document).ready(function () {
+            $('#vehicule_comment').summernote({
+                height: screen.availHeight * 0.5,
+                width: width * 0.9
+            });
+        });
+    </script>
+{% endblock %}

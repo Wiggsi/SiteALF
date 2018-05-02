@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tribunal{% endblock %}
+{% block pageTitle %}Recrutement{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col">
+            <h3>Nouveaux magistrats</h3>
+            <div class="btn-group m-2">
+                <a href="{{ path('tribunal_personnel') }}" class="btn btn-outline-secondary btn-lg">
+                    <span class="oi oi-chevron-left"></span> Retour à l'effectif
+                </a>
+                <button type="button" class="btn btn-outline-info btn-lg" data-toggle="modal"
+                        data-target="#aideModal"><span class="oi oi-question-mark"></span></button>
+            </div>
+            <p>Le lien d'inscription est : <a href="{{ path('user_registration') }}" target="_blank">
+                    <b>{{ url('user_registration') }}</b></a>.</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table class="table table-bordered table-hover table-responsive-sm bg-white">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Date d'inscription</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Date de naissance</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>{{ user.createdDateTime|date('d/m/y H:i') }}</a></td>
+                        <td><a href="{{ path('tribunal_personnel_new_id', {'id': user.id }) }}"
+                               onclick="return confirm('Confirmer le recrutement : ');">
+                                {{ user.firstName }} {{ user.name|upper }}</a></td>
+                        <td>{{ user.birthdate|date('d/m/Y') }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3"><em>Pas de nouveau candidat.</em></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal fade" id="aideModal" tabindex="-1" role="dialog" aria-labelledby="aideModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="aideModalLabel">Aide - Ajout de gendarmes</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>La section <b>Recrutement</b> regroupe la liste des utilisateurs du site qui ne sont ni gendarme ni
+                        magistrat ni gardien.</p>
+                    <p>Le procureur peut alors ajouter un de ces utilisateurs comme gardien.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

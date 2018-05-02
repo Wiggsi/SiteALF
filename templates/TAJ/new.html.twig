@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau TAJ{% endblock %}
+{% block pageTitle %}Traitement d'antécédents judiciaires{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col">
+            <h3>Nouvelle entrée au TAJ
+                <a href="{{ path('gd_taj') }}" class="btn btn-outline-secondary btn-sm">
+                    <span class="oi oi-list"></span> Retour au TAJ</a>
+            </h3>
+        </div>
+    </div>
+    {{ include('TAJ/_form.html.twig') }}
+{% endblock %}
+
+{% block javascripts %}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css"
+          rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // $("#taj_infractions").select2({theme: "bootstrap"});
+            $("#taj_criminels").select2({theme: "bootstrap"});
+            $("#taj_PV").select2({placeholder: "", allowClear: true, theme: "bootstrap"});
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,44 @@
+security:
+    encoders:
+        App\Entity\User: bcrypt
+
+    role_hierarchy:
+            ROLE: [ROLE_USER, ROLE_VISITOR, ROLE_GENDARME, ROLE_TRIBUNAL, ROLE_PRISON]
+            ROLE_SUPER_ADMIN: [ROLE_USER]
+
+    providers:
+        database_users:
+            entity: { class: App\Entity\User, property: username }
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+             pattern: ^/
+             anonymous: true
+             form_login:
+                 check_path: security_login
+                 login_path: security_login
+                 csrf_token_generator: security.csrf.token_manager
+                 default_target_path: homepage
+             remember_me:
+                 secret:   '%kernel.secret%'
+                 lifetime: 604800 # 1 week in seconds
+                 path:     /
+
+             logout:
+                 path: security_logout
+                 target: homepage
+
+    access_control:
+        - { path: ^/Prison/Prisonniers, roles: [ROLE_GENDARME, ROLE_PRISON, ROLE_TRIBUNAL] }
+        - { path: ^/TAJ, roles: [ROLE_GENDARME, ROLE_TRIBUNAL] }
+        - { path: ^/Gendarmerie/PV, roles: [ROLE_GENDARME, ROLE_TRIBUNAL] }
+        - { path: ^/Gendarmerie, roles: ROLE_GENDARME }
+        - { path: ^/Tribunal/Personnel, roles: [ROLE_USER, IS_AUTHENTICATED_ANONYMOUSLY] }
+        - { path: ^/Tribunal, roles: ROLE_TRIBUNAL }
+        - { path: ^/Prison, roles: ROLE_PRISON }
+        - { path: ^/Profil, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/admin, roles: ROLE_SUPER_ADMIN }

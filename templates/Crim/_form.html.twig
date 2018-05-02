@@ -1,0 +1,19 @@
+{{ form_start(form) }}
+<div class="row">
+    <div class="col-md-6">
+        {{ form_errors(form) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.firstName) }}
+        {{ form_row(form.wanted) }}
+        {{ form_row(form.birthdate) }}
+        {{ form_row(form.tel) }}
+        {{ form_row(form.dangerous) }}
+        {{ form_row(form.ADNCode) }}
+        {{ form_row(form.photoCode) }}
+        {{ form_row(form.save) }}
+    </div>
+    <div class="col-md-6" id="colContent">
+        {{ form_row(form.commentaires) }}
+    </div>
+</div>
+{{ form_end(form) }}

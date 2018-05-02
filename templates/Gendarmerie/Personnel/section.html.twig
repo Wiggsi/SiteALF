@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block pageTitle %}Gendarmerie{% endblock %}
+{% block title %}{{ section }}{% endblock %}
+
+{% block body %}
+    <div class='row'>
+        <div class="col-md-5">
+            <div class="row">
+                <div class="col-md-9">
+                    <h3>{{ section.name }}</h3>
+                </div>
+                <div class="col-md-3">
+                    <img class="figure-img" alt="Logo d'unité" src="{{ asset(section.icon) }}" height="100">
+                </div>
+            </div>
+            <div class="btn-group m-2">
+                <a href="{{ path('gd_personnel') }}" class="btn btn-outline-secondary">
+                    <span class="oi oi-list"></span> Retour à la liste</a>
+            </div>
+            <table class="table">
+                <tbody>
+                <tr>
+                    <th>Gendarmes</th>
+                    <td>
+                        <ul class="list-unstyled">
+                            {% for gendarme in section.gendarmes %}
+                                <li><a href="{{ path('gd_personnel_show', {'id': gendarme.id}) }}">{{ gendarme }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        {% if section.comment %}
+            <div class="col-md-7">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Description</h5>
+                        <div class="card-text text-justify">
+                            {{ section.comment|raw }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

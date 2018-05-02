@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau post{% endblock %}
+{% block pageTitle %}Messages{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col">
+            <h3>Nouveau post
+                <a href="{{ path('gd_post') }}" class="btn btn-outline-secondary btn-sm">
+                    <span class="oi oi-list"></span> Retour à la liste</a></h3>
+        </div>
+    </div>
+    {{ include('Post/_form.html.twig') }}
+{% endblock %}
+
+{% block javascripts %}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.js"></script>
+    <script>
+        let bb = document.querySelector('#colContent').getBoundingClientRect();
+        width = bb.right - bb.left;
+        $(document).ready(function () {
+            $('#post_content').summernote({
+                height: screen.availHeight * 0.9,
+                width: width * 0.9
+            });
+        });
+    </script>
+{% endblock %}

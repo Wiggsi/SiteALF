@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}En attente de jugement{% endblock %}
+{% block pageTitle %}En attente de jugement{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col">
+            <h3>En attente de jugement</h3>
+            <p><em>Liste des individus en attente de jugement (en détention provisoire ou en liberté conditionelle).</em></p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table class="table table-bordered table-hover table-responsive-sm bg-white" id="tablePrison">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Dangerosité</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Durée</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for prison in prisons %}
+                    {% if prison.criminel.isEvade %}
+                        <tr class="table-danger">
+                    {% elseif prison.endDate < date() %}
+                        <tr class="table-warning">
+                    {% elseif prison.criminel.dangerous > 8 %}
+                        <tr class="table-info">
+                    {% else %}
+                        <tr>
+                    {% endif %}
+                    <td>{% if prison.PV %}
+                            <a href="{{ path('gd_pv_show', {'id': prison.PV.id}) }}">
+                                {{ prison.criminel.name|upper }} {{ prison.criminel.firstName }} (PV {{ prison.PV }})
+                            </a>
+                        {% else %}
+                            {{ prison.criminel.name|upper }} {{ prison.criminel.firstName }}
+                        {% endif %}
+                    </td>
+                    <td>{{ prison.criminel.dangerous }}</td>
+                    <td>{{ prison.type }}</td>
+                    <td>{{ prison.startDate|date('d/m/y') }} - {{ prison.endDate|date('d/m/y') }}
+                        (Depuis {{ prison.getDuree.d }} jours)
+                    </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3">Aucun individu en attente de jugement.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

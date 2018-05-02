@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Page inexistante
+{% endblock %}
+
+{% block body %}
+    <div class="row justify-content-center">
+        <div class="col-auto text-center">
+            <h2 class="text-danger m-5">† ... Cette page n'existe pas ... †</h2>
+            <div class="btn-group-vertical">
+                <a href="{{ path('homepage') }}" class="btn btn-outline-info btn-lg">
+                    <span class="oi oi-home"></span> Retour à l'accueil</a>
+                <button onclick="window.history.back();" class="btn btn-outline-primary btn-lg">
+                    <span class="oi oi-chevron-left"></span> Retour en arrière
+                </button>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

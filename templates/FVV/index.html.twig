@@ -1,0 +1,117 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FVV{% endblock %}
+{% block pageTitle %}Fichier des Véhicules Volés{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col">
+            <h3>Véhicules volés</h3>
+            <div class="btn-toolbar m-2">
+                <div class="btn-group btn-group-lg mr-2">
+                    <button type="button" class="btn btn-outline-info" data-toggle="modal"
+                            data-target="#aideModal">
+                        <span class="oi oi-question-mark"></span></button>
+                    <a href="{{ path('gd_fvv_new') }}" class="btn btn-outline-primary">
+                        <span class="oi oi-plus"></span> Nouveau véhicule volé</a>
+                </div>
+                <div class="input-group mt-2">
+                    <input id="inputSearchFVV" onkeyup="searchFVV();" class="form-control" type="search" placeholder="Rechercher">
+                    <div class="input-group-append">
+                        <div class="input-group-text"><span class="oi oi-magnifying-glass"></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <table class="table table-bordered table-hover table-responsive-sm bg-white" id="tableFVV">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Propriétaire</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Plaque</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for vehicule in vehicules %}
+                    <tr>
+                        <td>{{ vehicule.date|date('d/m/y H:i') }}</td>
+                        <td>{{ vehicule.propName|upper }} {{ vehicule.propFirstName }}</td>
+                        <td>{{ vehicule.type }}</td>
+                        <td><a href="{{ path('gd_fvv_show', {'id': vehicule.id}) }}">{{ vehicule.plaque }}</a></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4"><em>Aucune véhicule volé enregistré.</em></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="aideModal" tabindex="-1" role="dialog" aria-labelledby="aideModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="aideModalLabel">Aide - FVV</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>La section <b>FVV</b> regroupe les véhicules volés. Un véhicule a :</p>
+                    <ul>
+                        <li>un propriétaire.</li>
+                        <li>une date.</li>
+                        <li>un type (Ex: Renault R11).</li>
+                        <li>une plaque (Format: AB-123-CD).</li>
+                        <li>un commentaire.</li>
+                        <li>un gendarme ayant noté le véhicule.</li>
+                    </ul>
+                    <p>Tout gendarme peut ajouter/modifier/supprimer un véhicule volé.</p>
+                    <p>La recherche peut se faire sur la plaque, le type ou le propriétaire du véhicule.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function searchFVV()
+        {
+            let input, filter, table, tr, td1, td2, td3, i;
+            input = document.getElementById("inputSearchFVV");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("tableFVV");
+            tr = table.getElementsByTagName("tr");
+
+            for (i = 0; i < tr.length; i++)
+            {
+                td1 = tr[i].getElementsByTagName("td")[1];
+                td2 = tr[i].getElementsByTagName("td")[2];
+                td3 = tr[i].getElementsByTagName("td")[3];
+                if (td1)
+                {
+                    if (td1.innerHTML.toUpperCase().indexOf(filter) > -1
+                        || td2.innerHTML.toUpperCase().indexOf(filter) > -1
+                        || td3.innerHTML.toUpperCase().indexOf(filter) > -1)
+                    {
+                        tr[i].style.display = "";
+                    } else
+                    {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,17 @@
+{{ form_start(form) }}
+<div class="row">
+    <div class="col-md-6" id="colContentForm" data-x="{{ lieu.x }}" data-y="{{ lieu.y }}">
+        {{ form_errors(form) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.units) }}
+        {{ form_row(form.icon) }}
+        {{ form_row(form.x) }}
+        {{ form_row(form.y) }}
+        {{ form_row(form.content) }}
+        {{ form_row(form.save) }}
+    </div>
+    <div class="col-md-6" id="colContent">
+        <div id="mapDiv"></div>
+    </div>
+</div>
+{{ form_end(form) }}

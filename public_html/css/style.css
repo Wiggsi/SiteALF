@@ -1,0 +1,41 @@
+/* Mise en forme des liens qui sont dans un tableau (pas dropdown) ou une liste (pas menu) ou dans un paragraphe => presque tous */
+td:not(.dropdown-menu) > a:not(.btn):hover,
+li:not(.nav-item) > a:not(.page-link):hover,
+.card a:not(.btn):hover,
+p > a:not(.btn):hover {
+    text-decoration: underline;
+
+    font-weight: bold;
+    letter-spacing: -0.6px;
+}
+
+td:not(.dropdown-menu) > a:not(.btn),
+li:not(.nav-item) > a:not(.page-link),
+.card a:not(.btn),
+p > a:not(.btn) {
+    color: #363680;
+    text-decoration: none;
+}
+
+/* Mise en forme des liens qui mènent vers un site extérieur (sauf icone du menu) */
+:not(nav) > a[href^="http"]:after {
+    content: ' ↱'
+}
+
+/* Mise en forme des liens qui mênent vers une image */
+a[href$=".jpg"]:after,
+a[href$=".jpeg"]:after,
+a[href$=".png"]:after {
+    content: '⒤';
+}
+
+/* Elements non sélectionnables */
+header, footer, h1, h2, h3, h4, th, input, nav, .modal {
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    cursor: default;
+}

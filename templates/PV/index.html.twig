@@ -1,0 +1,115 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PVs | {{ titre }}{% endblock %}
+{% block pageTitle %}Procès-Verbaux{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col">
+            <h3>{{ titre }} <span class="badge badge-primary">{{ pagination.total }}</span></h3>
+            <div class="btn-toolbar m-2">
+                <div class="btn-group btn-group-lg mr-2">
+                    <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#aideModal">
+                        <span class="oi oi-question-mark"></span></button>
+                    <a href="{{ path('gd_pv_new') }}" class="btn btn-outline-primary">
+                        <span class="oi oi-document"></span> Nouveau PV</a>
+                </div>
+                <div class="input-group mt-2">
+                    <input id="inputSearchPVs" onkeyup="searchTAJ();" class="form-control" type="search" placeholder="Rechercher"
+                           aria-label="Search">
+                    <div class="input-group-append">
+                        <div class="input-group-text"><span class="oi oi-magnifying-glass"></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ include('PV/_affichage.html.twig', {'PVs': PVs, 'pagination': pagination}) }}
+
+    <div class="modal fade" id="aideModal" tabindex="-1" role="dialog" aria-labelledby="aideModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="aideModalLabel">Aide - PV</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>La section <b>PV</b> regroupe les procès-verbaux de la brigade dans différentes sections (En
+                        Cours, Terminés, ...).
+                        <br/>Un PV a :</p>
+                    <ul>
+                        <li>un numéro.</li>
+                        <li>un auteur et un OPJ référent.</li>
+                        <li>une date, qui est celle de sa dernière mise à jour.</li>
+                        <li>des liens avec des délinquants, entrés au TAJ.</li>
+                        <li>un niveau d'importance (de 1 à 5).</li>
+                        <li>un résumé, en quelques mots.</li>
+                        <li>un niveau de visibilité, parmi :
+                            <ul>
+                                <li>Tous</li>
+                                <li>Unité</li>
+                                <li>Perso</li>
+                            </ul>
+                        </li>
+                        <li>un status, parmi :
+                            <ul>
+                                <li>En cours</li>
+                                <li>À modifier</li>
+                                <li>Transféré (au tribunal) : les magistrats ont alors accès au PV.</li>
+                                <li>En cours de jugement (pas applicable par un gendarme)</li>
+                                <li>Terminé (applicable par un gendarme dans le cas ou le PV ne passe pas par le tribunal)</li>
+                                <li>Autre</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <p>Précisions :</p>
+                    <ul>
+                        <li>Un PV protégé peut être partagé par son lien : la protection n'est "que" visuelle.</li>
+                        <li>Seuls l'auteur, l'OPJ référent ou un membre de la SR peut modifier/supprimer un PV.</li>
+                        <li>Les magistrats ne voient uniquement les PVs transférés/en cours de jugement/terminés et ne peuvent rien
+                            modifier.
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        function searchTAJ()
+        {
+            let input, filter, table, cards, author, header, resume, date, i;
+            input = document.getElementById("inputSearchPVs");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("rowPVs");
+            cards = table.getElementsByClassName("card");
+
+            for (i = 0; i < cards.length; i++)
+            {
+                author = cards[i].getElementsByClassName("card-title")[0];
+                date = cards[i].getElementsByClassName("card-subtitle")[0];
+                header = cards[i].getElementsByClassName("card-header")[0];
+                resume = cards[i].getElementsByClassName("card-text")[0];
+                if (author)
+                {
+                    if (author.innerHTML.toUpperCase().indexOf(filter) > -1 || header.innerHTML.toUpperCase().indexOf(filter) > -1 ||
+                        resume.innerHTML.toUpperCase().indexOf(filter) > -1 || date.innerHTML.toUpperCase().indexOf(filter) > -1)
+                    {
+                        cards[i].style.display = "";
+                    } else
+                    {
+                        cards[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+{% endblock %}

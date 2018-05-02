@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Effectif{% endblock %}
+{% block pageTitle %}Administration Pénitentiaire{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="btn-group m-2">
+                <button type="button" class="btn btn-outline-info btn-lg" data-toggle="modal"
+                        data-target="#aideModal"><span class="oi oi-question-mark"></span></button>
+                {% if app.user.gardien.isOfficier %}
+                    <a href="{{ path('prison_personnel_new') }}" class="btn btn-outline-primary btn-lg">
+                        <span class="oi oi-person"></span> Recrutement
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Personnel</h3>
+            <table class="table table-bordered table-hover table-responsive-sm bg-white">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Grade</th>
+                    <th scope="col">Nom</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for gardien in gardiens %}
+                    {% if gardien.lastActivity < date('-15days') %}
+                        <tr class="table-warning">
+                    {% elseif gardien.blocked %}
+                        <tr class="table-danger">
+                    {% else %}
+                        <tr>
+                    {% endif %}
+                    <td>{{ gardien.gradeName }}</td>
+                    <td><a href="{{ path('prison_personnel_show', {'id': gardien.id}) }}">{{ gardien.name|upper }}
+                            {{ gardien.firstName }}
+                            {% set duree =  gardien.lastActivity.diff(date()) %}
+                            {% if duree.i < 2 and duree.h == 0  and duree.days == 0 %} ¤{% endif %}
+                        </a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <h3>Hiérarchie</h3>
+            <table class="table table-bordered table-hover table-responsive-sm bg-white">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Abbréviation</th>
+                    <th scope="col">Grade</th>
+                    <th scope="col">Officier</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for grade in grades %}
+                    <tr>
+                        <td>{{ grade.abrv }}</td>
+                        <td>{{ grade.name }}</td>
+                        <td>{% if grade.officier %}Oui{% else %}Non{% endif %}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal fade" id="aideModal" tabindex="-1" role="dialog" aria-labelledby="aideModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="aideModalLabel">Aide - Effectif</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>La section <b>Effectif</b> regroupe la liste des gardiens.</p>
+                    <ul>
+                        <li>Chaque officier peut promouvoir un gardien.</li>
+                        <li>Chaque officier peut bloquer un gardien de grade inférieur ou égal à lui.</li>
+                        <li>Un gardien connecté a ce symbole : ¤.</li>
+                        <li>Un gardien absent depuis plus de 15 jours est surligné en orange.</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

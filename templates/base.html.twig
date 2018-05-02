@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Arma 3 Life France - Site des services publics">
+    {#<meta name="mobile-wep-app-capable" content="yes">#}
+    <meta name="theme-color" content="#363680">
+    <title>{% block title %}Belle-Île en Mer - Services publics{% endblock %}</title>
+    <link rel="icon" sizes="192x192" href="{{ asset('favicon.png') }}">
+    <link rel="apple-touch-icon-precomposed" href="{{ asset('favicon.png') }}"/>
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+    <link href="{{ asset('css/open-iconic-bootstrap.min.css') }}" rel="stylesheet">
+
+    {#<link rel="stylesheet" href="{{ asset('local/css/bootstrap.min.css') }}"/>#}
+    {#<link rel="stylesheet" href="{{ asset('local/css/bootstrap-grid.min.css') }}"/>#}
+    {#<link rel="stylesheet" href="{{ asset('local/css/bootstrap-reboot.min.css') }}"/>#}
+    {% block stylesheets %}
+    {% endblock %}
+</head>
+
+<body style="background-color: rgb(244, 244, 244); margin-bottom: 1em;">
+{% if app.user %}
+    {{ include('Site/menu.html.twig') }}
+{% endif %}
+{% block container %}
+    <div class="container-fluid">
+        <header class="m-4">
+            <div class="col-md align-content-lg-center">
+                <div class="page-header">
+                    <h2 class="text-center"
+                        id="pageTitre">{% block pageTitle %}Belle-île en Mer - Services publics{% endblock %}</h2>
+                </div>
+                {% if app.user %}
+                    {% for type, messages in app.session.flashbag.all %}
+                        <div class="row justify-content-center">
+                            <div class="col-sm-auto">
+                                {% for message in messages %}
+                                    <div class="alert alert-{{ type }} .alert-dismissible text-center" role="alert">
+                                        {{ message|raw }}
+                                        <button class="close" type="button" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                    {#<div class="row">
+                        <div id="url" class="url"></div>
+                        <button onClick="window.history.back();"
+                                class="col-xs-offset-3 col-xs-6 col-sm-offset-1 col-sm-2 btn btn-default">
+                            <span class="glyphicon glyphicon-arrow-left"></span> {{ 'Return'|trans }}
+                        </button>
+                    </div>#}
+                {% endif %}
+            </div>
+        </header>
+
+        <section>
+            {% block body %}
+
+            {% endblock %}
+        </section>
+    </div>
+{% endblock %}
+
+{#<footer class="fixed-bottom">#}
+<footer>
+    <div class="container-fluid">
+        <p class="text-muted text-right"><em>Site créé pour un jeu de rôle :<br/>Toutes les informations sont fictives.</em></p>
+    </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+{#<script src="{{ asset('local/js/jquery-3.3.1.min.js') }}"></script>#}
+{#<script src="{{ asset('local/js/popper.min.js') }}"></script>#}
+{#<script src="{{ asset('local/js/bootstrap.min.js') }}"></script>#}
+{% block javascripts %}
+{% endblock %}
+{# TODO: JS pour mettre .active sur le li du menu correspondant à l'URL actuelle #}
+</body>
+</html>

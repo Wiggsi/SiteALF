@@ -1,0 +1,129 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau lieu{% endblock %}
+{% block pageTitle %}Carte{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col">
+            <h3>Nouveau lieu
+                <a href="{{ path('gd_carte') }}" class="btn btn-outline-secondary btn-sm">
+                    <span class="oi oi-chevron-left"></span> Retour à la carte</a>
+            </h3>
+        </div>
+    </div>
+    {{ include('Gendarmerie/Lieu/_form.html.twig') }}
+{% endblock %}
+
+{% block javascripts %}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css"
+          rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            let bb = document.querySelector('#colContentForm').getBoundingClientRect();
+            width = bb.right - bb.left;
+            $(document).ready(function () {
+                $('#lieu_content').summernote({
+                    height: screen.availHeight * 0.9,
+                    width: width * 0.95
+                });
+            });
+            $("#lieu_units").select2({theme: "bootstrap"});
+        });
+    </script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css"
+          integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
+          crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"
+            integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw=="
+            crossorigin=""></script>
+    <link rel="stylesheet" href="http://mrmufflon.github.io/Leaflet.Coordinates/dist/Leaflet.Coordinates-0.1.3.css">
+    <script src="http://mrmufflon.github.io/Leaflet.Coordinates/dist/Leaflet.Coordinates-0.1.3.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            let bb = document.querySelector('#colContent').getBoundingClientRect();
+            let width = bb.right - bb.left;
+            $('#mapDiv').width(width * 0.95).height(screen.availHeight * 0.8);
+
+            let iconCity = L.icon({
+                iconUrl: 'http://sitealf.localhost/img/icons/city.png',
+                iconSize: [10, 10],
+            });
+
+            let bounds = [[1, 1], [127, 127]]; //Bordures de la carte
+            let map = L.map('mapDiv', {
+                bounds: bounds,
+                maxBounds: bounds,
+                minZoom: 2.5,
+                maxZoom: 7,
+                crs: L.CRS.Simple,
+                zoomSnap: 0.5
+            }).setView([60, 85], 3); //Carte
+            let sat = L.tileLayer('http://192.168.0.19/siteALF/public_html/img/map/{z}/{x}/{y}.png', {attribution: 'ALF - Belle-Île en Mer'}); //Data
+            sat.getTileUrl = function (coords) {
+                coords.y = -coords.y - 1;
+                return L.TileLayer.prototype.getTileUrl.bind(sat)(coords);
+            }; //Modification des coords
+            sat.addTo(map);
+
+            L.control.coordinates({
+                decimals: 2,
+                enableUserInput: false
+            }).addTo(map);//Coordonnées Carte
+            let v = 16383 / 12800;
+            L.control.coordinates({
+                position: "bottomleft",
+                labelFormatterLat: function (lat) {
+                    return pad(Math.abs(143 + Math.trunc(v * lat)));
+                },
+                labelFormatterLng: function (lng) {
+                    return pad(Math.abs(Math.trunc(v * lng)));
+                },
+                enableUserInput: false
+            }).addTo(map);//Coordonnées ARMA
+
+            //Affichage des noms des villes/Routes
+            let capitals = L.layerGroup(),
+                cities = L.layerGroup(),
+                villages = L.layerGroup();
+            $.getJSON('{{ asset('/json/ALF_BelleIle.json') }}', function (data) {
+                $.each(data, function (key, val) {
+                    let lng = val['position'][0] * 128 / 16383,
+                        lat = val['position'][1] * 128 / 16383;
+                    if (val['type'] === "NameCityCapital")
+                        capitals.addLayer(L.marker([lat, lng], {opacity: 0.9, icon: iconCity}).bindTooltip(val['name']));
+                    else if (val['type'] === "NameCity")
+                        cities.addLayer(L.marker([lat, lng], {opacity: 0.6, icon: iconCity}).bindTooltip(val['name']));
+                    else if (val['type'] === "NameVillage")
+                        villages.addLayer(L.marker([lat, lng], {opacity: 0.4, icon: iconCity}).bindTooltip(val['name']));
+                });
+            });
+            capitals.addTo(map);
+            cities.addTo(map);
+
+            let baseLayer = {"Carte": sat};
+            let overlayMaps = {
+                "Villes principales": capitals,
+                "Villes": cities,
+                "Villages": villages
+            };
+            L.control.layers(baseLayer, overlayMaps).addTo(map);
+            let m = L.marker([0, 0]).bindTooltip('Position du lieu').addTo(map);
+            map.on('dblclick', function (e) {
+                m.setLatLng(e.latlng);
+                $("#lieu_x").val(e.latlng.lng.toFixed(2));
+                $("#lieu_y").val(e.latlng.lat.toFixed(2));
+            });
+        })
+        ;
+
+        function pad(str) {
+            str = str.toString();
+            return str.length < 3 ? pad("0" + str, 3) : str;
+        }
+    </script>
+{% endblock %}

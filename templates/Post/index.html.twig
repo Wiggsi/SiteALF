@@ -1,0 +1,141 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Messages{% endblock %}
+{% block pageTitle %}Messages{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col">
+            <h3>{{ titre }}</h3>
+            <div class="btn-toolbar m-2">
+                <div class="btn-group btn-group-lg mr-2">
+                    <button type="button" class="btn btn-outline-info" data-toggle="modal"
+                            data-target="#aideModal">
+                        <span class="oi oi-question-mark"></span></button>
+                    <a href="{{ path('gd_post_new') }}" class="btn btn-outline-primary">
+                        <span class="oi oi-envelope-closed"></span> Nouveau post</a>
+                </div>
+                <div class="input-group mt-2">
+                    <input id="inputSearchPosts" onkeyup="searchPosts();" class="form-control" type="search"
+                           placeholder="Rechercher" aria-label="Search">
+                    <div class="input-group-append">
+                        <div class="input-group-text" id="btnGroupAddon2"><span class="oi oi-magnifying-glass"></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            {{ include('Site/pagination.html.twig', {'pagination': pagination}) }}
+            <table class="table table-responsive-md table-hover table-bordered bg-white" id="tablePosts">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col" class="w-50">Titre</th>
+                    <th scope="col">Auteur</th>
+                    <th scope="col">Catégorie</th>
+                    <th scope="col">Unité</th>
+                    <th scope="col">Section</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for post in posts %}
+                    <tr>
+                        <td>{{ post.updatedDate|date('d/m/y H:i') }}</td>
+                        <td><a href="{{ path('gd_post_show', {'id': post.id}) }}">{{ post.title }}</a></td>
+                        <td><a href="{{ path('gd_personnel_show', {'id': post.author.gendarme.id}) }}">{{ post.author.gendarme }}</a>
+                        </td>
+                        <td><a href="{{ path('gd_post_category', {'category': post.category}) }}">{{ post.category }}</a></td>
+                        <td>
+                            {% if post.unit %}
+                                <a href="{{ path('gd_personnel_unit', {'id': post.unit.id}) }}">
+                                    {{ post.unit }}</a>
+                            {% else %}
+                                Global
+                            {% endif %}
+                        </td>
+                        <td>{% if post.section %}
+                                <a href="{{ path('gd_personnel_section', {'id': post.section.id}) }}">{{ post.section }}</a>
+                            {% endif %}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6">Aucun message.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {{ include('Site/pagination.html.twig', {'pagination': pagination}) }}
+        </div>
+    </div>
+
+    <div class="modal fade" id="aideModal" tabindex="-1" role="dialog" aria-labelledby="aideModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="aideModalLabel">Aide - Messages</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>La section <b>Messages</b> est la partie du site où transitent les informations dans la
+                        gendarmerie : Montée de grade, notes internes, ...</p>
+                    <ul>
+                        <li>Chaque gendarme voit les posts de la GD, de son unité et de ses sections, et les posts dont il est
+                            l'auteur.
+                        </li>
+                        <li>4 categories sont disponibles :
+                            <ul>
+                                <li>Communiqué</li>
+                                <li>Information</li>
+                                <li>Formation</li>
+                                <li>Autre</li>
+                            </ul>
+                        </li>
+                        <li>Seuls les auteurs et les CDU peuvent modifier/supprimer les posts.</li>
+                        <li>Chaque gendarme peut ajouter un message à la suite d'un post.</li>
+                        <li>Seuls les auteurs des messages, les CDU et l'auteur du post concerné peuvent supprimer les
+                            messages.
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function searchPosts() {
+            let input, filter, table, tr, td1, td2, td3, td4, td5, i;
+            input = document.getElementById("inputSearchPosts");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("tablePosts");
+            tr = table.getElementsByTagName("tr");
+
+            for (i = 0; i < tr.length; i++) {
+                td1 = tr[i].getElementsByTagName("td")[1];
+                td2 = tr[i].getElementsByTagName("td")[2];
+                td3 = tr[i].getElementsByTagName("td")[3];
+                td4 = tr[i].getElementsByTagName("td")[4];
+                td5 = tr[i].getElementsByTagName("td")[5];
+                if (td1) {
+                    if (td1.innerHTML.toUpperCase().indexOf(filter) > -1
+                        || td2.innerHTML.toUpperCase().indexOf(filter) > -1
+                        || td3.innerHTML.toUpperCase().indexOf(filter) > -1
+                        || td4.innerHTML.toUpperCase().indexOf(filter) > -1
+                        || td5.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+{% endblock %}

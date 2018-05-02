@@ -1,0 +1,151 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TAJ{% endblock %}
+{% block pageTitle %}Traitement d'antécédents judiciaires{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col">
+            <h3>Fiches</h3>
+            <p><em>Le TAJ n'affiche que les PVs et les entrées datant de moins de 15 jours (date de dernière mise à jour).</em></p>
+            <div class="btn-toolbar m-2">
+                <div class="btn-group mr-2 btn-group-lg">
+                    <button type="button" class="btn btn-outline-info" data-toggle="modal"
+                            data-target="#aideModal">
+                        <span class="oi oi-question-mark"></span></button>
+                    {% if app.user.isGendarme %}
+                        <a href="{{ path('gd_taj_new') }}" class="btn btn-outline-primary">
+                            <span class="oi oi-person"></span> Nouvelle fiche</a>
+                    {% endif %}
+                    <a href="{{ path('gd_taj_entry_new') }}" class="btn btn-outline-primary">
+                        <span class="oi oi-list-rich"></span> Nouvelle entrée</a>
+                </div>
+                <div class="input-group mt-2">
+                    <input id="inputSearchTAJ" onkeyup="searchTAJ();" class="form-control" type="search" placeholder="Rechercher"
+                           aria-label="Search">
+                    <div class="input-group-append">
+                        <div class="input-group-text"><span class="oi oi-magnifying-glass"></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <table class="table table-bordered table-hover table-responsive-md bg-white" id="tableTAJ">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Dangerosité</th>
+                    <th scope="col">Statut</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for criminel in criminels %}
+                    {% if criminel.wanted %}
+                        <tr class="table-danger">
+                    {% elseif not criminel.isFree and (criminel.fichePrison.endDate < date() or not criminel.fichePrison.valid) %}
+                        <tr class="table-warning">
+                    {% else %}
+                        <tr>
+                    {% endif %}
+                    <td><a href="{{ path('gd_taj_show', {'id': criminel.id}) }}">
+                            {{ criminel.name|upper }} {{ criminel.firstName }}</a></td>
+                    <td>{{ criminel.dangerous }}</td>
+                    <td>{% if criminel.isFree %}Libre
+                        {% else %}{{ criminel.fichePrison.type }}{% if criminel.fichePrison.enAttente %} | En attente de jugement{% endif %}
+                        {% endif %}
+                        {% if criminel.wanted %} | <b>Recherché</b>{% endif %}
+                    </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4"><em>Aucune fiche dans la base de données.</em></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal fade" id="aideModal" tabindex="-1" role="dialog" aria-labelledby="aideModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="aideModalLabel">Aide - TAJ</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>La section <b>TAJ</b> est la base de données des délinquants. Elle est constituée de 2 parties.
+                    </p>
+                    <p>La première est une liste des délinquants, qui référence leurs infractions (entrées au TAJ) et leurs
+                        implications dans un PV durant les 15 derniers jours.<br/>
+                        La <em>fiche</em> d'un délinquant :</p>
+                    <ul>
+                        <li>comporte son nom et prénom.</li>
+                        <li>comporte sa date de naissance.</li>
+                        <li>comporte un niveau de dangerosité de 0 à 10.</li>
+                        <li>indique s'il est recherché ou non.</li>
+                        <li>Possibilité de noter son numéro de téléphone, ses codes d'identification ADN et de
+                            reconnaissance faciale.
+                        </li>
+                        <li>Possibilité d'y stocker les informations connues.</li>
+                        <li>Tous peuvent modifier une fiche du TAJ.</li>
+                        <li>Seul un membre de la SR peut supprimer une fiche du TAJ.</li>
+                    </ul>
+                    <p>La deuxième partie est l'entrée "classique" au TAJ. Une <em>entrée</em> au TAJ :</p>
+                    <ul>
+                        <li>a une date.</li>
+                        <li>comporte 1 ou plusieurs infractions.</li>
+                        <li>concerne 1 ou plusieurs délinquants.</li>
+                        <li>peut se rapporter à un PV.</li>
+                    </ul>
+                    <p>Précisions :</p>
+                    <ul>
+                        <li>Seul son auteur ou un membre de la SR peut supprimer une entrée au TAJ.</li>
+                        <li>Seul un membre de la SR peut supprimer une entrée au TAJ.</li>
+                        <li>Un magistrat ne peut pas créer de fiche mais peut, à l'issue d'un jugement, créer une nouvelle entrée
+                            au TAJ.
+                        </li>
+                        <li>Une fiche rouge identifie une personne recherchée et une ligne jaune indique une fiche problématique
+                            (contrôle judiciaire non effectué, GAV ou prison terminée, ...)
+                        </li>
+                        <li>La fiche d'un individu regroupe les PVs et entrées au TAJ le concernant qui ont été mis à jour durant
+                            les 15 derniers jours.
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        function searchTAJ() {
+            let input, filter, table, tr, td, i;
+            input = document.getElementById("inputSearchTAJ");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("tableTAJ");
+            tr = table.getElementsByTagName("tr");
+
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,164 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Post{% endblock %}
+{% block pageTitle %}Messages{% endblock %}
+
+{% block body %}
+    <div class='row border-bottom mb-2'>
+        <div class="col-md-4">
+            <h3>{{ post.title }}
+                {% if post.category == "Formation" %}
+                    <span class="badge badge-primary">{{ post.category }}</span>
+                {% elseif post.category == "Communiqué" %}
+                    <span class="badge badge-success">{{ post.category }}</span>
+                {% elseif post.category == "Information" %}
+                    <span class="badge badge-warning">{{ post.category }}</span>
+                {% elseif post.category == "Autre" %}
+                    <span class="badge badge-secondary">{{ post.category }}</span>
+                {% else %}
+                    <span class="badge badge-danger">{{ post.category }}</span>
+                {% endif %}
+            </h3>
+            <div class="btn-group m-2">
+                <a href="{{ path('gd_post') }}" class="btn btn-outline-secondary">
+                    <span class="oi oi-list"></span> Retour à la liste</a>
+                {% if  app.user == post.author or (app.user.gendarme.isChef and post.author.gendarme.unit == app.user.gendarme.unit) %}
+                    <a href="{{ path('gd_post_edit', {'id': post.id}) }}" class="btn btn-outline-info">
+                        <span class="oi oi-pencil"></span> Modifier</a>
+                {% endif %}
+                <button type="button" class="btn btn-outline-primary" data-toggle="modal"
+                        data-target="#messageModal">
+                    <span class="oi oi-comment-square"></span> Message
+                </button>
+            </div>
+            <table class="table table">
+                <tbody>
+                <tr>
+                    <th>Date</th>
+                    <td>{{ post.createdDate|date('d/m/y H:i') }}</td>
+                </tr>
+                <tr>
+                    <th>Mise à jour</th>
+                    <td>{{ post.updatedDate|date('d/m/y H:i') }}</td>
+                </tr>
+                <tr>
+                    <th>Auteur</th>
+                    <td>
+                        <a href="{{ path('gd_personnel_show', {'id': post.author.gendarme.id}) }}">
+                            {{ post.author.gendarme }} | {{ post.author.gendarme.unit }}</a></td>
+                </tr>
+                <tr>
+                    <th>Unité</th>
+                    <td><a href="{{ path('gd_personnel_unit', {'id': post.unit.id}) }}">
+                            {{ post.unit }}</a></td>
+                </tr>
+                <tr>
+                    <th>Section</th>
+                    {% if post.section %}
+                        <td><a href="{{ path('gd_personnel_section', {'id': post.section.id}) }}">
+                                {{ post.section }}</a></td>
+                    {% else %}
+                        <td>Tous</td>
+                    {% endif %}
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <button class="btn float-right" id="toggleFullScreen" onclick="toggleFullScreen();">
+                        <span class="oi oi-fullscreen-enter" id="toggleIcon"></span></button>
+                    <div class="card-text text-justify">
+                        {{ post.content|raw }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        {{ include('Site/pagination.html.twig', {'pagination': pagination}) }}
+        {% for message in messages %}
+            <div class="col-sm-6 col-lg-3">
+                <div class="media border border-primary rounded p-2 m-1 bg-white">
+                    <div class="media-body">
+                        <h6 class="mt-0"><a
+                                    href="{{ path('gd_personnel_show', {'id': message.author.gendarme.id}) }}">
+                                {{ message.author.gendarme }} | {{ message.author.gendarme.unit }}</a></h6>
+                        <p class="text-muted font-weight-light">{{ message.createdDate|date('d/m/Y H:i') }}</p>
+                        <p>{{ message.content }}</p>
+                        {% if app.user.gendarme.isChef or app.user == message.author or app.user == post.author
+                            or app.user.gendarme.isSection('PJGN') %}
+                            <form method="post"
+                                  action="{{ path('gd_post_message_delete', {'idPost': post.id, 'id': message.id}) }}"
+                                  onsubmit="return confirm('Confirmer la suppression de ce message: ');">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ message.id) }}">
+                                <button class="btn btn-outline-danger btn-sm float-right"><span aria-hidden="true">&times;</span>
+                                </button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <p class="m-2 font-italic">Pas de messages pour ce post.</p>
+        {% endfor %}
+        {{ include('Site/pagination.html.twig', {'pagination': pagination}) }}
+    </div>
+
+    <form action="{{ path('gd_post_message_new', {'idPost': post.id}) }}" method="post" class="form-horizontal"
+          role="form">
+        <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="form">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="messsageModalLabel">
+                            <span class="oi oi-comment-square"></span> Nouveau message</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="col-sm-5 control-label" for="content"></label>
+                            <textarea id="content" name="_content" class="form-control"
+                                      placeholder="Contenu du message" rows="6"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-outline-primary">
+                            <span class="oi oi-envelope-closed"></span> Envoyer
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        function toggleFullScreen()
+        {
+            if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document
+                .msFullscreenElement)
+            {
+                if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+                else if (document.documentElement.msRequestFullscreen) document.documentElement.msRequestFullscreen();
+                else if (document.documentElement.mozRequestFullScreen) document.documentElement.mozRequestFullScreen();
+                else if (document.documentElement.webkitRequestFullscreen) document.documentElement.webkitRequestFullscreen();
+                $("#toggleIcon").removeClass("oi-fullscreen-enter").addClass("oi-fullscreen-exit");
+            } else
+            {
+                if (document.exitFullscreen) document.exitFullscreen();
+                else if (document.msExitFullscreen) document.msExitFullscreen();
+                else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
+                else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+                $("#toggleIcon").removeClass("oi-fullscreen-exit").addClass("oi-fullscreen-enter");
+            }
+        }
+    </script>
+{% endblock %}

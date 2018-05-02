@@ -1,0 +1,125 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil{% endblock %}
+{% block pageTitle %} Profil | {{ app.user }} {% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-4">
+            <table class="table">
+                <tbody>
+                <tr>
+                    <th>Prénom</th>
+                    <td>{{ app.user.firstName }}</td>
+                </tr>
+                <tr>
+                    <th>Nom</th>
+                    <td>{{ app.user.name }}</td>
+                </tr>
+                <tr>
+                    <th>Date de naissance</th>
+                    <td>{{ app.user.birthdate|date('d/m/Y') }}</td>
+                </tr>
+                <tr>
+                    <th>E-Mail</th>
+                    <td>{{ app.user.email }}</td>
+                </tr>
+                <tr>
+                    <th>Rôle</th>
+                    <td>
+                        {% if app.user.gendarme %}
+                            <a href="{{ path('gd_personnel_show', {'id': app.user.gendarme.id}) }}">Gendarme</a>
+                        {% elseif app.user.magistrat %}
+                            <a href="{{ path('tribunal_personnel_show', {'id': app.user.magistrat.id}) }}">Magistrat</a>
+                        {% elseif app.user.gardien %}
+                            <a href="{{ path('prison_personnel_show', {'id': app.user.gardien.id}) }}">Gardien</a>
+                        {% else %}
+                            Visiteur
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Dernière activité</th>
+                    <td>{{ app.user.lastActivity|date('d/m/y H:i') }}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Changement de mot de passe</h5>
+                </div>
+                <div class="card-body">
+                    {{ form_start(formPassword) }}
+                    {{ form_row(formPassword.oldPassword) }}
+                    {{ form_row(formPassword.newPassword.first) }}
+                    {{ form_row(formPassword.newPassword.second) }}
+                    <button type="submit" class="btn btn-success">
+                        <span class="oi oi-pencil"></span> Modifier
+                    </button>
+                    {{ form_end(formPassword) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Changement d'e-mail</h5>
+                </div>
+                <div class="card-body">
+                    {{ form_start(formEmail) }}
+                    {{ form_row(formEmail.email) }}
+                    <button type="submit" class="btn btn-success">
+                        <span class="oi oi-pencil"></span> Modifier
+                    </button>
+                    {{ form_end(formEmail) }}
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h5>Changement de date de naissance</h5>
+                </div>
+                <div class="card-body">
+                    {{ form_start(formDate) }}
+                    {{ form_row(formDate.date) }}
+                    <button type="submit" class="btn btn-success">
+                        <span class="oi oi-pencil"></span> Modifier
+                    </button>
+                    {{ form_end(formDate) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Commentaires (sur votre fiche métier) : N° de téléphone, disponibilités, adresse mail, ...</h5>
+                </div>
+                <div class="card-body">
+                    <div class="card-subtitle text-muted"><em>Gendarme: visible uniquement par les gendarmes<br/>Magistrat: visible
+                            par tous<br/>AP: visible uniquement par l'AP</em>
+                    </div>
+                    {{ form_start(formCommentaires) }}
+                    {{ form_row(formCommentaires.comment) }}
+                    <button type="submit" class="btn btn-success">
+                        <span class="oi oi-pencil"></span> Modifier
+                    </button>
+                    {{ form_end(formCommentaires) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.js"></script>
+    <script>
+        // let bb = document.querySelector('#colContent').getBoundingClientRect();
+        // width = bb.right - bb.left;
+        $(document).ready(function () {
+            $('#form_comment').summernote({
+                height: screen.availHeight * 0.5,
+            });
+        });
+    </script>
+{% endblock %}

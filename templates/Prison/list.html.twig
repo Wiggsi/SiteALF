@@ -1,0 +1,144 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Prison{% endblock %}
+{% block pageTitle %}Prison{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col">
+            <h3>{{ titre }}</h3>
+            <div class="btn-toolbar m-2">
+                <div class="btn-group mr-2 btn-group-lg">
+                    <button type="button" class="btn btn-outline-info" data-toggle="modal"
+                            data-target="#aideModal">
+                        <span class="oi oi-question-mark"></span></button>
+                    {% if titre == "En cours" %}
+                        <a href="{{ path('prison_list_ended') }}" class="btn btn-outline-secondary">
+                            <span class="oi oi-list"></span> Historique
+                        </a>
+                    {% endif %}
+                    {% if app.user.isGendarme %}
+                        <a href="{{ path('prison_new', {'type': 'Prison'}) }}" class="btn btn-outline-primary">
+                            <span class="oi oi-person"></span> Nouvelle fiche</a>
+                    {% endif %}
+                </div>
+                <div class="input-group mt-2">
+                    <input id="inputSearchPrison" onkeyup="searchPrison();" class="form-control" type="search" placeholder="Rechercher"
+                           aria-label="Search">
+                    <div class="input-group-append">
+                        <div class="input-group-text"><span class="oi oi-magnifying-glass"></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table class="table table-bordered table-hover table-responsive-sm bg-white" id="tablePrison">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Dangerosité</th>
+                    <th scope="col">Début</th>
+                    <th scope="col">Fin</th>
+                    <th scope="col">Type</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for prison in prisons %}
+                    {% if prison.type == "Évadé" %}
+                        <tr class="table-danger">
+                    {% elseif prison.endDate < date() and titre != "Terminés" %}
+                        <tr class="table-warning">
+                    {% elseif prison.criminel.dangerous > 8 %}
+                        <tr class="table-info">
+                    {% else %}
+                        <tr>
+                    {% endif %}
+                    <td><a href="{{ path('prison_show', {'id': prison.id}) }}">
+                            {{ prison.criminel.name|upper }} {{ prison.criminel.firstName }}</a></td>
+                    <td>{{ prison.criminel.dangerous }}</td>
+                    <td>{{ prison.startDate|date('d/m/y H:i') }}</td>
+                    <td>{{ prison.endDate|date('d/m/y H:i') }}</td>
+                    <td>{{ prison.status }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5">Aucun individu en prison actuellement.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal fade" id="aideModal" tabindex="-1" role="dialog" aria-labelledby="aideModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="aideModalLabel">Aide - Prison</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>La section <b>Prison</b> liste les fiches d'incarcération toujours en cours.
+                        <br/>Une fiche a :</p>
+                    <ul>
+                        <li>un auteur gendarme.</li>
+                        <li>une date de début.</li>
+                        <li>une date de fin.</li>
+                        <li>un possible lien avec un PV.</li>
+                        <li>un résumé, en quelques mots.</li>
+                        <li>un type, parmi :
+                            <ul>
+                                <li>GAV</li>
+                                <li>En attente de jugement</li>
+                                <li>Condamné</li>
+                                <li>Autre</li>
+                            </ul>
+                        </li>
+                        <li>un possible commentaire.</li>
+                    </ul>
+                    <p>Précisions :</p>
+                    <ul>
+                        <li>Seul un gendarme peut créer la fiche d'incarcération mais seul un agent pénitencier peut la modifier.</li>
+                        <li>Seul un agent pénitencier peut libérer un individu ou déclarer un individu comme évadé.</li>
+                        <li>Lors d'un dépassement de la date finale, la ligne devient orange.</li>
+                        <li>Un détenu considéré comme dangereux est en bleu.</li>
+                        <li>Un détenu cévadé est en rouge.</li>
+                    </ul>
+                    <p>Lors d'une évasion, les agents pénitentiers peuvent déclarer les individus comme évadés et sont
+                        automatiquement déclarés comme recherchés pour la gendarmerie.</p>
+                    <p>Seuls les gendarmes peuvent déclarer une évasion finie, ce qui va terminer la prison actuelle et recréer une
+                        nouvelle fiche similaire à la précédente mais en attente de jugement.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function searchPrison() {
+            let input, filter, table, tr, td, i;
+            input = document.getElementById("inputSearchPrison");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("tablePrison");
+            tr = table.getElementsByTagName("tr");
+
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+{% endblock %}

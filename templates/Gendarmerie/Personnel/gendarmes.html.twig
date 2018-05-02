@@ -1,0 +1,146 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Effectif{% endblock %}
+{% block pageTitle %}Gendarmerie{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="btn-group m-2">
+                <button type="button" class="btn btn-outline-info btn-lg" data-toggle="modal"
+                        data-target="#aideModal"><span class="oi oi-question-mark"></span></button>
+                {% if app.user.gendarme.isSection('CNEFG') %}
+                    <a href="{{ path('gd_personnel_new') }}" class="btn btn-outline-primary btn-lg">
+                        <span class="oi oi-person"></span> Recrutement
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Personnel
+                <span class="badge badge-secondary">{{ gendarmes|length }}</span>
+                <span class="badge badge-info"><span class="oi oi-person"></span> {{ nbConnected }}</span></h3>
+            <table class="table table-bordered table-hover table-responsive-sm bg-white">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Unité</th>
+                    <th scope="col">Grade</th>
+                    <th scope="col">Nom</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for gendarme in gendarmes %}
+                    {% if gendarme.blocked %}
+                        <tr class="table-danger">
+                    {% elseif gendarme.lastActivity < date('-15days', 'Europe/Paris') %}
+                        <tr class="table-warning">
+                    {% else %}
+                        <tr>
+                    {% endif %}
+                    <td><a href="{{ path('gd_personnel_unit', {'id': gendarme.unitId }) }}">{{ gendarme.unitAbrv }}</a></td>
+                    <td>{{ gendarme.gradeName }}</td>
+                    <td><a href="{{ path('gd_personnel_show', {'id': gendarme.id}) }}">{{ gendarme.name|upper }}
+                            {{ gendarme.firstName }}
+                            {% set duree =  gendarme.lastActivity.diff(date()) %}
+                            {% if duree.i < 2 and duree.h == 0  and duree.days == 0 %} ¤{% endif %}
+                        </a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <h3>Unités</h3>
+            <table class="table table-bordered table-hover table-responsive-md bg-white">
+                <thead class="thead-dark">
+                <tr>
+                    <th></th>
+                    <th scope="col">Abréviation</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Gendarmes</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for unit in units %}
+                    <tr>
+                        <td><img class="figure-img d-inline" alt="Logo d'unité" src="{{ asset(unit.icon) }}" height="50"></td>
+                        <td><a href="{{ path('gd_personnel_unit', {'id': unit.id}) }}">{{ unit.abrv }}</a></td>
+                        <td>{{ unit.name }}</td>
+                        <td>{{ unit.nbGendarmes }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <h3>Sections</h3>
+            <table class="table table-bordered table-hover table-responsive-sm bg-white">
+                <thead class="thead-dark">
+                <tr>
+                    <th></th>
+                    <th scope="col">Abréviation</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Gendarmes</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for section in sections %}
+                    <tr>
+                        <td><img class="figure-img d-inline" alt="Logo d'unité" src="{{ asset(section.icon) }}" height="50"></td>
+                        <td><a href="{{ path('gd_personnel_section', {'id': section.id}) }}">{{ section.abrv }}</a></td>
+                        <td>{{ section.name }}</td>
+                        <td>{{ section.nbGendarmes }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <h3>Hiérarchie</h3>
+            <table class="table table-bordered table-hover table-responsive-sm bg-white">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Abbréviation</th>
+                    <th scope="col">Grade</th>
+                    <th scope="col">Officier</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for grade in grades %}
+                    <tr>
+                        <td>{{ grade.abrv }}</td>
+                        <td>{{ grade.name }}</td>
+                        <td>{% if grade.officier %}Oui{% else %}Non{% endif %}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal fade" id="aideModal" tabindex="-1" role="dialog" aria-labelledby="aideModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="aideModalLabel">Aide - Effectif</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>La section <b>Effectif</b> regroupe la liste des gendarmes, des unités et des sections.</p>
+                    <ul>
+                        <li>Chaque CDU peut promouvoir des gendarmes de son unité.</li>
+                        <li>Chaque officier peut donner l'OPJ à un gendarme.</li>
+                        <li>Chaque officier peut bloquer un gendarme de grade inférieur ou égal à lui.</li>
+                        <li>Un gendarme connecté a ce symbole : ¤.</li>
+                        <li>Un gendarme absent depuis plus de 15 jours est surligné en orange.</li>
+                    </ul>
+                    <p>Une section est un groupe sans chef, regroupant plusieurs gendarmes.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

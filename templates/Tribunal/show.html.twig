@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block pageTitle %}Parquet{% endblock %}
+{% block title %}{{ magistrat }}{% endblock %}
+
+{% block body %}
+    <div class='row'>
+        <div class="col-md-5">
+            <h3>{{ magistrat }}</h3>
+            <table class="table">
+                <tbody>
+                <tr>
+                    <th>Nom</th>
+                    <td>{{ magistrat.user.name }}</td>
+                </tr>
+                <tr>
+                    <th>Prénom</th>
+                    <td>{{ magistrat.user.firstName }}</td>
+                </tr>
+                {#<tr>
+                    <th>Âge</th>
+                    <td>{{ date("now", 'Europe/Paris').diff(date(magistrat.user.birthdate)).y }} ans</td>
+                </tr>#}
+                <tr>
+                    <th>Grade</th>
+                    <td>{{ magistrat.grade }}</td>
+                </tr>
+                {% if app.user %}
+                    <tr>
+                        <th>Dernière connection</th>
+                        <td>{{ magistrat.user.lastActivity|date('d/m/y H:i') }}
+                            {% set duree =  magistrat.user.lastActivity.diff(date()) %}
+                            {% if duree.i < 2 and duree.h == 0  and duree.days == 0 %}
+                                | Connecté
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+        {% if magistrat.commentaires is not null %}
+            <div class="col-md-7">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Commentaires</h5>
+                        <p class="card-text">
+                            {{ magistrat.commentaires|raw }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

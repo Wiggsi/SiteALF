@@ -1,0 +1,196 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Infractions{% endblock %}
+{% block pageTitle %}Code pénal{% endblock %}
+
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-3">
+            <h3>Infractions</h3>
+            {#            <div class="btn-toolbar m-2">
+                            {% if app.user and (app.user.isGendarme or app.user.isMagistrat) %}
+                                <button type="button" class="btn btn-outline-primary mr-2" data-toggle="modal" data-target="#addModal">
+                                    <span class="oi oi-tag"></span> Nouvelle infraction
+                                </button>
+                            {% endif %}
+                            <div class="input-group mt-2">
+                                <input id="inputSearchInfraction" onkeyup="searchInfraction();" class="form-control" type="search"
+                                       placeholder="Rechercher" aria-label="Search">
+                                <div class="input-group-append">
+                                    <div class="input-group-text"><span class="oi oi-magnifying-glass"></span></div>
+                                </div>
+                            </div>
+                        </div>#}
+            <div class="card">
+                <div class="card-header">Code pénal</div>
+                <div class="card-body">
+                    <div class="card-text">
+                        <ul class="list-unstyled">
+                            <li><a href="https://arma3lifefrance.fr/forum/threads/codes-et-peines-juridiques.12263/" target="_blank">
+                                    Codes et peines juridiques</a></li>
+                            <li><a href="https://arma3lifefrance.fr/forum/threads/les-peines-de-prison-sur-belle-ile-en-mer.12115/"
+                                   target="_blank">Peines de prison</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">Parquet</div>
+                <div class="card-body">
+                    <div class="card-text">
+                        <ul class="list-unstyled">
+                            {% for magistrat in magistrats %}
+                                <li><a href="{{ path('tribunal_personnel_show', {'id': magistrat.id}) }}">
+                                        {{ magistrat.grade }} {{ magistrat.firstName }} {{ magistrat.name|upper }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9" id="colContent">
+            {#
+                        <table class="table table-responsive-sm table-hover table-bordered bg-white" id="tableInfraction">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th>Type</th>
+                                <th>Nom</th>
+                                <th>Définition</th>
+                                <th>Conséquences</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for infraction in infractions %}
+                                <tr>
+                                    <td>{{ infraction.type }}</td>
+                                    <td>{{ infraction.name }}</td>
+                                    <td>{{ infraction.definition|raw }}</td>
+                                    <td>{{ infraction.content|raw }}</td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="2">Aucune infraction enregistrée.</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+            #}
+            <p>Pour rechercher une infraction, utilisez <kbd><kbd>ctrl</kbd> + <kbd>F</kbd></kbd>.</p>
+            <iframe src="https://docs.google.com/spreadsheets/d/1dGpQHRY2zXq_wu-X_TSkVwhC62Y5etkPxdN76pV4uaU/htmlview"
+                    id="frameInfractions"></iframe>
+        </div>
+    </div>
+
+    {#<form action="{{ path('infraction_new') }}" method="post" class="form-horizontal">#}
+    {#<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"#}
+    {#aria-hidden="true">#}
+    {#<div class="modal-dialog modal-lg" role="form">#}
+    {#<div class="modal-content">#}
+    {#<div class="modal-header bg-dark text-white">#}
+    {#<h5 class="modal-title" id="addModalLabel">Nouvelle infraction</h5>#}
+    {#<button type="button" class="close" data-dismiss="modal" aria-label="Close">#}
+    {#<span aria-hidden="true">&times;</span>#}
+    {#</button>#}
+    {#</div>#}
+    {#<div class="modal-body">#}
+    {#<div class="row">#}
+    {#<div class="col-md-6">#}
+    {#<div class="form-group">#}
+    {#<label class="control-label" for="type">Type</label>#}
+    {#<select id="type" name="_type" class="form-control" required="required">#}
+    {#<option value="Contravention">Contravention</option>#}
+    {#<option value="Délit">Délit</option>#}
+    {#<option value="Crime">Crime</option>#}
+    {#<option value="Autre">Autre</option>#}
+    {#</select>#}
+    {#</div>#}
+    {#</div>#}
+    {#<div class="col-md-6">#}
+    {#<div class="form-group">#}
+    {#<label class="control-label" for="name">Nom</label>#}
+    {#<input type="text" class="form-control" id="name" name="_name" placeholder="Nom"/>#}
+    {#</div>#}
+    {#</div>#}
+    {#</div>#}
+    {#<div class="row">#}
+    {#<div class="col-md-6" id="colContent1">#}
+    {#<div class="form-group">#}
+    {#<label class="control-label" for="definition">Définition</label>#}
+    {#<textarea id="definition" name="_definition" class="form-control"#}
+    {#placeholder="Définition (tiré du code pénal)" rows="6"></textarea>#}
+    {#</div>#}
+    {#</div>#}
+    {#<div class="col-md-6" id="colCentent2">#}
+    {#<div class="form-group">#}
+    {#<label class="col-sm-5 control-label" for="content">Répression</label>#}
+    {#<textarea id="content" name="_content" class="form-control"#}
+    {#placeholder="Conséquences (tirées du code pénal)" rows="6"></textarea>#}
+    {#</div>#}
+    {#</div>#}
+    {#</div>#}
+    {#</div>#}
+    {#<div class="modal-footer">#}
+    {#<button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Fermer</button>#}
+    {#<button type="submit" class="btn btn-outline-primary">Enregistrer</button>#}
+    {#</div>#}
+    {#</div>#}
+    {#</div>#}
+    {#</div>#}
+    {#</form>#}
+{% endblock %}
+
+{% block javascripts %}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.js"></script>
+    <script>
+        /*function searchInfraction() {
+            let input, filter, table, tr, td, i;
+            input = document.getElementById("inputSearchInfraction");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("tableInfraction");
+            tr = table.getElementsByTagName("tr");
+
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[1];
+                if (td) {
+                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }*/
+        $(document).ready(function () {
+            /*$('#definition').summernote({
+                height: screen.availHeight * 0.4,
+                toolbar: [
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                ]
+            });
+            $('#content').summernote({
+                height: screen.availHeight * 0.4,
+                toolbar: [
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                ]
+            });*/
+            let bb = document.querySelector('#colContent').getBoundingClientRect();
+            width = bb.right - bb.left;
+            let iframe = document.getElementById('frameInfractions');
+            iframe.setAttribute('height', screen.availHeight * 0.7);
+            iframe.setAttribute('width', width * 0.95);
+            // iframe.addEventListener("load", function () {
+            //     let iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+            //     let body = iframeDocument.getElementsByTagName("body")[0];
+            //     debugger;
+            // });
+        });
+    </script>
+{% endblock %}

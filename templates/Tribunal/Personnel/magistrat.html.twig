@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block pageTitle %}Tribunal{% endblock %}
+{% block title %}{{ magistrat }}{% endblock %}
+
+{% block body %}
+    <div class='row'>
+        <div class="col-md-5">
+            <h3>{{ magistrat }}</h3>
+            {% if app.user and (app.user.gendarme or app.user.magistrat) %}
+                <div class="btn-group">
+                    <a href="{{ path('tribunal_personnel') }}" class="btn btn-outline-secondary">
+                        <span class="oi oi-list"></span> Retour à la liste</a>
+                </div>
+            {% endif %}
+            <div class="btn-group btn-group-sm mt-2 mb-2">
+                {% if app.user and (app.user.magistrat and app.user.magistrat.isOfficier and app.user.magistrat != magistrat) %}
+                    <a href="{{ path('tribunal_personnel_block', {'id': magistrat.id}) }}" class="btn btn-outline-warning"
+                       onclick="return confirm('Confirmer l\'action : ');">
+                        <span class="oi oi-ban"></span>
+                        {% if magistrat.user.getBlocked %}
+                            Débloquer
+                        {% else %}
+                            Bloquer
+                        {% endif %}
+                    </a>
+                {% endif %}
+            </div>
+            <table class="table">
+                <tbody>
+                <tr>
+                    <th>Nom</th>
+                    <td>{{ magistrat.user.name }}</td>
+                </tr>
+                <tr>
+                    <th>Prénom</th>
+                    <td>{{ magistrat.user.firstName }}</td>
+                </tr>
+                {#<tr>
+                    <th>Âge</th>
+                    <td>{{ date("now", 'Europe/Paris').diff(date(magistrat.user.birthdate)).y }} ans</td>
+                </tr>#}
+                <tr>
+                    <th>Grade</th>
+                    <td>{{ magistrat.grade }}</td>
+                </tr>
+                <tr>
+                    <th>Dernière connection</th>
+                    <td>{{ magistrat.user.lastActivity|date('d/m/y H:i') }}
+                        {% set duree =  magistrat.user.lastActivity.diff(date()) %}
+                        {% if duree.i < 2 and duree.h == 0  and duree.days == 0 %}
+                            | Connecté
+                        {% endif %}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        {% if magistrat.commentaires is not null %}
+            <div class="col-md-7">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Commentaires</h5>
+                        <p class="card-text">
+                            {{ magistrat.commentaires|raw }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    {% if app.user and (app.user.isGendarme or app.user.isMagistrat) %}
+        <div class="row">
+            <div class="col-md-12">
+                <h5 class="text-muted">PVs <span class="badge badge-secondary">{{ pagination.total }}</span></h5>
+                {{ include('PV/_affichage.html.twig', {'PVs': PVs, 'pagination': pagination}) }}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

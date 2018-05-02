@@ -1,0 +1,8 @@
+<form method="post" action="{{ path('prison_delete', {'id': prison.id}) }}"
+      onsubmit="return confirm('Confirmer la suppression dee la fiche d\incarcération :');">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ PV.id) }}">
+    <button class="btn btn-outline-danger">
+        <span class="oi oi-delete"></span> Supprimer
+    </button>
+</form>

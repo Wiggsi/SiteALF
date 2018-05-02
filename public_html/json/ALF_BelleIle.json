@@ -1,0 +1,1392 @@
+{
+  "zi_du_palais": {
+    "name": "Z.I du Palais",
+    "position": [
+      7752.22,
+      9000.11
+    ],
+    "type": "NameLocal",
+    "radiusA": 292.52,
+    "radiusB": 556.43
+  },
+  "le_palais": {
+    "name": "Le Palais",
+    "position": [
+      8508.36,
+      9468.69
+    ],
+    "type": "NameCityCapital",
+    "radiusA": 577.52,
+    "radiusB": 466.01
+  },
+  "AirPort": {
+    "name": "Aéroport de Belle ile",
+    "position": [
+      5147.03,
+      7169.98
+    ],
+    "type": "NameCity",
+    "radiusA": 847.03,
+    "radiusB": 430.84
+  },
+  "sauzon": {
+    "name": "Sauzon",
+    "position": [
+      3451.06,
+      12289.77
+    ],
+    "type": "NameCityCapital",
+    "radiusA": 618.25,
+    "radiusB": 568.22
+  },
+  "Locmaria": {
+    "name": "Locmaria",
+    "position": [
+      13722.55,
+      3709.85
+    ],
+    "type": "NameCityCapital",
+    "radiusA": 893.81,
+    "radiusB": 720.06
+  },
+  "Bangor": {
+    "name": "Bangor",
+    "position": [
+      6039.53,
+      6056.05
+    ],
+    "type": "NameCityCapital",
+    "radiusA": 461.09,
+    "radiusB": 318.31
+  },
+  "blamont": {
+    "name": "Blamont",
+    "position": [
+      9824.91,
+      4350.12
+    ],
+    "type": "NameCity",
+    "radiusA": 547.02,
+    "radiusB": 387.16
+  },
+  "boissy": {
+    "name": "Boissy",
+    "position": [
+      4265.50,
+      7126.50
+    ],
+    "type": "NameCity",
+    "radiusA": 307.23,
+    "radiusB": 237.44
+  },
+  "plaisir": {
+    "name": "Plaisir",
+    "position": [
+      8748.56,
+      4747.77
+    ],
+    "type": "NameCity",
+    "radiusA": 293.86,
+    "radiusB": 263.95
+  },
+  "d25_1": {
+    "name": "D25",
+    "position": [
+      2325.78,
+      12666.64
+    ],
+    "type": "NameVillage",
+    "radiusA": 56.36,
+    "radiusB": 40.77
+  },
+  "d25_2": {
+    "name": "D25",
+    "position": [
+      3209.80,
+      11207.31
+    ],
+    "type": "NameVillage",
+    "radiusA": 30.47,
+    "radiusB": 22.73
+  },
+  "d25_3": {
+    "name": "D25",
+    "position": [
+      4176.81,
+      8896.60
+    ],
+    "type": "NameVillage",
+    "radiusA": 102.67,
+    "radiusB": 57.47
+  },
+  "d25_4": {
+    "name": "D25",
+    "position": [
+      7783.38,
+      6093.81
+    ],
+    "type": "NameVillage",
+    "radiusA": 105.02,
+    "radiusB": 46.68
+  },
+  "d25_5": {
+    "name": "D25",
+    "position": [
+      11430.31,
+      4152.45
+    ],
+    "type": "NameVillage",
+    "radiusA": 77.48,
+    "radiusB": 89.12
+  },
+  "d25_6": {
+    "name": "D25",
+    "position": [
+      14299.31,
+      3693.91
+    ],
+    "type": "NameVillage",
+    "radiusA": 57.64,
+    "radiusB": 47.40
+  },
+  "d190_1": {
+    "name": "D190",
+    "position": [
+      5573.14,
+      7415.21
+    ],
+    "type": "NameVillage",
+    "radiusA": 40.81,
+    "radiusB": 35.65
+  },
+  "d190_2": {
+    "name": "D190",
+    "position": [
+      4794.53,
+      6346.60
+    ],
+    "type": "NameVillage",
+    "radiusA": 40.81,
+    "radiusB": 33.06
+  },
+  "d190_3": {
+    "name": "D190",
+    "position": [
+      3520.88,
+      5451.30
+    ],
+    "type": "NameVillage",
+    "radiusA": 40.09,
+    "radiusB": 34.72
+  },
+  "d190_4": {
+    "name": "D190",
+    "position": [
+      2969.41,
+      4846.19
+    ],
+    "type": "NameVillage",
+    "radiusA": 79.05,
+    "radiusB": 57.34
+  },
+  "d190_5": {
+    "name": "D190",
+    "position": [
+      4039.30,
+      5927.61
+    ],
+    "type": "NameVillage",
+    "radiusA": 76.09,
+    "radiusB": 58.13
+  },
+  "d30_1": {
+    "name": "D30",
+    "position": [
+      2486.59,
+      12063.36
+    ],
+    "type": "NameVillage",
+    "radiusA": 67.92,
+    "radiusB": 59.12
+  },
+  "d30_2": {
+    "name": "D30",
+    "position": [
+      1341.64,
+      11311.81
+    ],
+    "type": "NameVillage",
+    "radiusA": 60.38,
+    "radiusB": 47.43
+  },
+  "d30_3": {
+    "name": "D30",
+    "position": [
+      673.81,
+      10003.77
+    ],
+    "type": "NameVillage",
+    "radiusA": 76.97,
+    "radiusB": 55.79
+  },
+  "d30_4": {
+    "name": "D30",
+    "position": [
+      3652.41,
+      11861.50
+    ],
+    "type": "NameVillage",
+    "radiusA": 76.55,
+    "radiusB": 57.41
+  },
+  "d30_5": {
+    "name": "D30",
+    "position": [
+      4557.38,
+      11376.54
+    ],
+    "type": "NameVillage",
+    "radiusA": 70.86,
+    "radiusB": 82.00
+  },
+  "d30_6": {
+    "name": "D30",
+    "position": [
+      5806.69,
+      10330.88
+    ],
+    "type": "NameVillage",
+    "radiusA": 65.61,
+    "radiusB": 72.16
+  },
+  "d30_7": {
+    "name": "D30",
+    "position": [
+      7545.42,
+      10095.24
+    ],
+    "type": "NameVillage",
+    "radiusA": 125.81,
+    "radiusB": 114.43
+  },
+  "d30a_1": {
+    "name": "D30A",
+    "position": [
+      8419.63,
+      8862.62
+    ],
+    "type": "NameVillage",
+    "radiusA": 85.86,
+    "radiusB": 75.88
+  },
+  "d30a_2": {
+    "name": "D30A",
+    "position": [
+      8378.22,
+      8356.73
+    ],
+    "type": "NameVillage",
+    "radiusA": 71.67,
+    "radiusB": 78.78
+  },
+  "d30a_3": {
+    "name": "D30A",
+    "position": [
+      9165.66,
+      7809.32
+    ],
+    "type": "NameVillage",
+    "radiusA": 91.42,
+    "radiusB": 69.43
+  },
+  "d30a_4": {
+    "name": "D30A",
+    "position": [
+      10636.56,
+      6943.79
+    ],
+    "type": "NameVillage",
+    "radiusA": 92.20,
+    "radiusB": 86.15
+  },
+  "d30a_5": {
+    "name": "D30A",
+    "position": [
+      12984.53,
+      5909.89
+    ],
+    "type": "NameVillage",
+    "radiusA": 76.20,
+    "radiusB": 60.97
+  },
+  "d30a_6": {
+    "name": "D30A",
+    "position": [
+      14317.59,
+      4984.79
+    ],
+    "type": "NameVillage",
+    "radiusA": 62.98,
+    "radiusB": 55.12
+  },
+  "d190a_1": {
+    "name": "D190A",
+    "position": [
+      8346.25,
+      9012.10
+    ],
+    "type": "NameVillage",
+    "radiusA": 72.89,
+    "radiusB": 65.73
+  },
+  "d190a_2": {
+    "name": "D190A",
+    "position": [
+      7910.61,
+      8090.26
+    ],
+    "type": "NameVillage",
+    "radiusA": 65.94,
+    "radiusB": 47.04
+  },
+  "d190a_3": {
+    "name": "D190A",
+    "position": [
+      6987.66,
+      6867.82
+    ],
+    "type": "NameVillage",
+    "radiusA": 105.91,
+    "radiusB": 76.85
+  },
+  "saintes": {
+    "name": "Saintes",
+    "position": [
+      13479.06,
+      2718.09
+    ],
+    "type": "NameCity",
+    "radiusA": 225.58,
+    "radiusB": 171.63
+  },
+  "Loches": {
+    "name": "Loches",
+    "position": [
+      12927.31,
+      4017.05
+    ],
+    "type": "NameCity",
+    "radiusA": 193.22,
+    "radiusB": 187.37
+  },
+  "saujon": {
+    "name": "Saujon",
+    "position": [
+      13342.53,
+      4346.87
+    ],
+    "type": "NameCity",
+    "radiusA": 286.89,
+    "radiusB": 292.76
+  },
+  "st_germain": {
+    "name": "St-Germain",
+    "position": [
+      14217.16,
+      4416.40
+    ],
+    "type": "NameCity",
+    "radiusA": 364.48,
+    "radiusB": 273.73
+  },
+  "st_mar_air": {
+    "name": "St-Martin-d'Heres",
+    "position": [
+      14658.72,
+      5013.95
+    ],
+    "type": "NameCity",
+    "radiusA": 365.94,
+    "radiusB": 295.69
+  },
+  "Braga": {
+    "name": "Braga",
+    "position": [
+      13682.38,
+      4983.94
+    ],
+    "type": "NameCity",
+    "radiusA": 322.05,
+    "radiusB": 238.60
+  },
+  "chateaubriant": {
+    "name": "Lieu-dit Chateaubriant",
+    "position": [
+      14025.89,
+      5143.37
+    ],
+    "type": "NameVillage",
+    "radiusA": 231.27,
+    "radiusB": 221.03
+  },
+  "ld_oria": {
+    "name": "Lieu-dit Oria",
+    "position": [
+      14176.81,
+      5675.98
+    ],
+    "type": "NameVillage",
+    "radiusA": 182.88,
+    "radiusB": 185.87
+  },
+  "royan": {
+    "name": "Royan",
+    "position": [
+      13204.48,
+      5898.53
+    ],
+    "type": "NameCity",
+    "radiusA": 360.69,
+    "radiusB": 306.81
+  },
+  "Perignac": {
+    "name": "Perignac",
+    "position": [
+      12412.28,
+      5259.14
+    ],
+    "type": "NameCity",
+    "radiusA": 408.69,
+    "radiusB": 374.73
+  },
+  "Die": {
+    "name": "Die",
+    "position": [
+      11919.86,
+      5046.60
+    ],
+    "type": "NameVillage",
+    "radiusA": 311.50,
+    "radiusB": 277.54
+  },
+  "trizay": {
+    "name": "Lieu-dit Trizay",
+    "position": [
+      11474.90,
+      4727.83
+    ],
+    "type": "NameVillage",
+    "radiusA": 220.16,
+    "radiusB": 130.22
+  },
+  "amelie": {
+    "name": "Amélie-Les-Bains",
+    "position": [
+      11414.22,
+      6270.99
+    ],
+    "type": "NameCity",
+    "radiusA": 433.30,
+    "radiusB": 273.73
+  },
+  "Muzillac": {
+    "name": "Muzillac",
+    "position": [
+      10700.74,
+      6268.13
+    ],
+    "type": "NameCity",
+    "radiusA": 326.44,
+    "radiusB": 184.44
+  },
+  "Beurlay": {
+    "name": "Beurlay",
+    "position": [
+      10349.82,
+      6039.48
+    ],
+    "type": "NameCity",
+    "radiusA": 418.64,
+    "radiusB": 244.45
+  },
+  "marmitte": {
+    "name": "Lieu-dit La Marmitte",
+    "position": [
+      10975.44,
+      5234.89
+    ],
+    "type": "NameVillage",
+    "radiusA": 169.80,
+    "radiusB": 175.65
+  },
+  "Roquevaire": {
+    "name": "Roquevaire",
+    "position": [
+      10853.84,
+      4328.25
+    ],
+    "type": "NameCity",
+    "radiusA": 218.84,
+    "radiusB": 180.62
+  },
+  "Souvigny": {
+    "name": "Souvigny",
+    "position": [
+      10397.25,
+      3772.36
+    ],
+    "type": "NameCity",
+    "radiusA": 417.19,
+    "radiusB": 327.89
+  },
+  "Caudry": {
+    "name": "Caudry",
+    "position": [
+      11842.69,
+      3523.51
+    ],
+    "type": "NameVillage",
+    "radiusA": 252.50,
+    "radiusB": 190.29
+  },
+  "arzon": {
+    "name": "Arzon",
+    "position": [
+      11643.25,
+      3853.77
+    ],
+    "type": "NameCity",
+    "radiusA": 201.27,
+    "radiusB": 217.74
+  },
+  "Loiron": {
+    "name": "Loiron",
+    "position": [
+      8479.12,
+      5234.30
+    ],
+    "type": "NameCity",
+    "radiusA": 387.61,
+    "radiusB": 247.09
+  },
+  "carnoux": {
+    "name": "Carnoux",
+    "position": [
+      7901.53,
+      5473.06
+    ],
+    "type": "NameCity",
+    "radiusA": 366.53,
+    "radiusB": 279.88
+  },
+  "Maiche": {
+    "name": "Maiche",
+    "position": [
+      9692.33,
+      5792.55
+    ],
+    "type": "NameCity",
+    "radiusA": 316.19,
+    "radiusB": 240.06
+  },
+  "chalais": {
+    "name": "Lieu-dit Chalais",
+    "position": [
+      7526.28,
+      6823.08
+    ],
+    "type": "NameVillage",
+    "radiusA": 332.56,
+    "radiusB": 186.19
+  },
+  "beaulieu": {
+    "name": "Beaulieu",
+    "position": [
+      10062.20,
+      7032.04
+    ],
+    "type": "NameCity",
+    "radiusA": 373.34,
+    "radiusB": 272.43
+  },
+  "chateaulin": {
+    "name": "Chateaulin",
+    "position": [
+      9383.38,
+      7367.79
+    ],
+    "type": "NameCity",
+    "radiusA": 301.44,
+    "radiusB": 276.22
+  },
+  "chemille": {
+    "name": "Chemille",
+    "position": [
+      8948.25,
+      7367.05
+    ],
+    "type": "NameCity",
+    "radiusA": 219.45,
+    "radiusB": 210.63
+  },
+  "stdenis": {
+    "name": "St-Denis",
+    "position": [
+      8396.11,
+      8089.36
+    ],
+    "type": "NameCity",
+    "radiusA": 672.03,
+    "radiusB": 368.53
+  },
+  "blaise": {
+    "name": "St-Blaise-La-Roche",
+    "position": [
+      7741.72,
+      7786.85
+    ],
+    "type": "NameCity",
+    "radiusA": 608.95,
+    "radiusB": 603.05
+  },
+  "rochefort": {
+    "name": "Rochefort",
+    "position": [
+      7980.50,
+      10116.11
+    ],
+    "type": "NameCity",
+    "radiusA": 1083.91,
+    "radiusB": 901.61
+  },
+  "confolens": {
+    "name": "Confolens",
+    "position": [
+      6443.71,
+      9128.81
+    ],
+    "type": "NameCity",
+    "radiusA": 496.63,
+    "radiusB": 457.21
+  },
+  "grandvillage": {
+    "name": "Le Grand Village",
+    "position": [
+      6903.86,
+      8705.92
+    ],
+    "type": "NameCity",
+    "radiusA": 400.06,
+    "radiusB": 441.45
+  },
+  "pavillons": {
+    "name": "Lieu-dit Les Pavillons",
+    "position": [
+      6324.42,
+      11232.53
+    ],
+    "type": "NameVillage",
+    "radiusA": 447.36,
+    "radiusB": 585.31
+  },
+  "stsiffret": {
+    "name": "St-Siffret",
+    "position": [
+      4821.09,
+      11678.34
+    ],
+    "type": "NameVillage",
+    "radiusA": 375.23,
+    "radiusB": 266.44
+  },
+  "amboise": {
+    "name": "Amboise",
+    "position": [
+      4318.94,
+      11982.63
+    ],
+    "type": "NameVillage",
+    "radiusA": 452.48,
+    "radiusB": 395.72
+  },
+  "stastier": {
+    "name": "St-Astier",
+    "position": [
+      4167.07,
+      11064.95
+    ],
+    "type": "NameCity",
+    "radiusA": 357.88,
+    "radiusB": 345.27
+  },
+  "Stleger": {
+    "name": "St-Leger",
+    "position": [
+      4768.51,
+      10780.21
+    ],
+    "type": "NameCity",
+    "radiusA": 334.23,
+    "radiusB": 368.92
+  },
+  "Chatellerault": {
+    "name": "Chatellerault",
+    "position": [
+      3776.23,
+      6466.14
+    ],
+    "type": "NameCity",
+    "radiusA": 352.77,
+    "radiusB": 279.84
+  },
+  "fontainebleau": {
+    "name": "Fontainebleau",
+    "position": [
+      4393.42,
+      6040.45
+    ],
+    "type": "NameVillage",
+    "radiusA": 419.78,
+    "radiusB": 344.88
+  },
+  "latremblade": {
+    "name": "La Tremblade",
+    "position": [
+      3685.81,
+      5683.50
+    ],
+    "type": "NameCity",
+    "radiusA": 541.95,
+    "radiusB": 441.44
+  },
+  "arvert": {
+    "name": "Lieu-dit Arvert",
+    "position": [
+      3264.75,
+      5189.61
+    ],
+    "type": "NameLocal",
+    "radiusA": 249.23,
+    "radiusB": 207.86
+  },
+  "cieux": {
+    "name": "Cieux",
+    "position": [
+      3681.70,
+      4990.84
+    ],
+    "type": "NameCity",
+    "radiusA": 353.16,
+    "radiusB": 279.50
+  },
+  "perroy": {
+    "name": "Perroy",
+    "position": [
+      3851.16,
+      4526.32
+    ],
+    "type": "NameCity",
+    "radiusA": 331.08,
+    "radiusB": 286.94
+  },
+  "parlavan": {
+    "name": "Parlavan",
+    "position": [
+      4885.19,
+      4976.30
+    ],
+    "type": "NameCity",
+    "radiusA": 349.80,
+    "radiusB": 354.73
+  },
+  "neubois": {
+    "name": "Neubois",
+    "position": [
+      5285.77,
+      4948.88
+    ],
+    "type": "NameCity",
+    "radiusA": 305.45,
+    "radiusB": 266.05
+  },
+  "vannes": {
+    "name": "Vannes",
+    "position": [
+      4619.77,
+      4438.28
+    ],
+    "type": "NameCity",
+    "radiusA": 347.34,
+    "radiusB": 226.63
+  },
+  "Eybens": {
+    "name": "Eybens",
+    "position": [
+      6081.19,
+      4409.72
+    ],
+    "type": "NameCity",
+    "radiusA": 455.73,
+    "radiusB": 315.32
+  },
+  "Beuzac": {
+    "name": "Beuzac",
+    "position": [
+      6640.52,
+      5122.76
+    ],
+    "type": "NameCity",
+    "radiusA": 339.95,
+    "radiusB": 288.22
+  },
+  "SaintSever": {
+    "name": "Saint Sever",
+    "position": [
+      7163.01,
+      5098.14
+    ],
+    "type": "NameVillage",
+    "radiusA": 297.97,
+    "radiusB": 182.88
+  },
+  "tulle": {
+    "name": "Tulle",
+    "position": [
+      2440.11,
+      6084.69
+    ],
+    "type": "NameCity",
+    "radiusA": 293.64,
+    "radiusB": 202.99
+  },
+  "ussel": {
+    "name": "Ussel",
+    "position": [
+      2849.66,
+      6066.84
+    ],
+    "type": "NameCity",
+    "radiusA": 201.81,
+    "radiusB": 169.52
+  },
+  "Glay": {
+    "name": "Glay",
+    "position": [
+      3019.44,
+      6601.03
+    ],
+    "type": "NameCity",
+    "radiusA": 303.72,
+    "radiusB": 254.27
+  },
+  "bellefosse": {
+    "name": "Lieu-dit Belle Fosse",
+    "position": [
+      2540.63,
+      7989.79
+    ],
+    "type": "NameVillage",
+    "radiusA": 280.52,
+    "radiusB": 221.98
+  },
+  "chaniers": {
+    "name": "Chaniers",
+    "position": [
+      3336.81,
+      8384.15
+    ],
+    "type": "NameVillage",
+    "radiusA": 215.67,
+    "radiusB": 282.52
+  },
+  "Poisas": {
+    "name": "Poisas",
+    "position": [
+      4337.00,
+      8605.50
+    ],
+    "type": "NameCity",
+    "radiusA": 210.64,
+    "radiusB": 230.81
+  },
+  "grenade": {
+    "name": "Grenade",
+    "position": [
+      2631.63,
+      9222.01
+    ],
+    "type": "NameCity",
+    "radiusA": 232.08,
+    "radiusB": 250.99
+  },
+  "bono": {
+    "name": "Lieu-dit Bono",
+    "position": [
+      1849.11,
+      9428.11
+    ],
+    "type": "NameVillage",
+    "radiusA": 200.53,
+    "radiusB": 176.58
+  },
+  "bonchamp": {
+    "name": "Bonchamp",
+    "position": [
+      2044.84,
+      10677.87
+    ],
+    "type": "NameCity",
+    "radiusA": 300.19,
+    "radiusB": 310.27
+  },
+  "paimpol": {
+    "name": "Paimpol",
+    "position": [
+      1557.22,
+      11226.47
+    ],
+    "type": "NameCity",
+    "radiusA": 253.27,
+    "radiusB": 220.97
+  },
+  "noe": {
+    "name": "Noe",
+    "position": [
+      3059.60,
+      11029.78
+    ],
+    "type": "NameVillage",
+    "radiusA": 211.91,
+    "radiusB": 233.34
+  },
+  "wisches": {
+    "name": "Wisches",
+    "position": [
+      3361.31,
+      10620.51
+    ],
+    "type": "NameVillage",
+    "radiusA": 205.58,
+    "radiusB": 322.89
+  },
+  "blois": {
+    "name": "Blois",
+    "position": [
+      4100.78,
+      10141.24
+    ],
+    "type": "NameCity",
+    "radiusA": 335.48,
+    "radiusB": 481.81
+  },
+  "Belluire": {
+    "name": "Belluire",
+    "position": [
+      4616.25,
+      9767.99
+    ],
+    "type": "NameCity",
+    "radiusA": 253.52,
+    "radiusB": 282.53
+  },
+  "bernier": {
+    "name": "Lieu-dit Bernier",
+    "position": [
+      5294.37,
+      9460.37
+    ],
+    "type": "NameVillage",
+    "radiusA": 218.20,
+    "radiusB": 232.07
+  },
+  "bouzols": {
+    "name": "Lieu-dit Bouzols",
+    "position": [
+      5364.82,
+      9862.64
+    ],
+    "type": "NameVillage",
+    "radiusA": 238.39,
+    "radiusB": 194.24
+  },
+  "hippolyte": {
+    "name": "Lieu-dit Hippolyte",
+    "position": [
+      5469.09,
+      11158.35
+    ],
+    "type": "NameVillage",
+    "radiusA": 247.22,
+    "radiusB": 166.49
+  },
+  "ruffec": {
+    "name": "Lieu-dit Ruffec",
+    "position": [
+      6358.17,
+      7224.64
+    ],
+    "type": "NameVillage",
+    "radiusA": 288.83,
+    "radiusB": 184.15
+  },
+  "theza": {
+    "name": "Theza",
+    "position": [
+      5428.66,
+      6393.12
+    ],
+    "type": "NameCity",
+    "radiusA": 295.13,
+    "radiusB": 220.72
+  },
+  "mortmoiron": {
+    "name": "Mortmoiron",
+    "position": [
+      2326.70,
+      11333.35
+    ],
+    "type": "NameCity",
+    "radiusA": 213.16,
+    "radiusB": 213.15
+  },
+  "meylan": {
+    "name": "Meylan",
+    "position": [
+      2667.88,
+      11811.38
+    ],
+    "type": "NameCity",
+    "radiusA": 277.47,
+    "radiusB": 250.99
+  },
+  "moirans": {
+    "name": "Moirans",
+    "position": [
+      2186.70,
+      12259.76
+    ],
+    "type": "NameCity",
+    "radiusA": 185.41,
+    "radiusB": 136.22
+  },
+  "marmoutier": {
+    "name": "Marmoutier",
+    "position": [
+      2788.33,
+      12712.55
+    ],
+    "type": "NameCity",
+    "radiusA": 235.84,
+    "radiusB": 191.71
+  },
+  "ld_crolles": {
+    "name": "Lieu-dit Crolles",
+    "position": [
+      2177.88,
+      12916.25
+    ],
+    "type": "NameVillage",
+    "radiusA": 137.47,
+    "radiusB": 114.78
+  },
+  "venon": {
+    "name": "Venon",
+    "position": [
+      1969.77,
+      13270.67
+    ],
+    "type": "NameCity",
+    "radiusA": 301.44,
+    "radiusB": 230.81
+  },
+  "ld_jarrie": {
+    "name": "Lieu-dit Jarrie",
+    "position": [
+      3601.16,
+      11154.64
+    ],
+    "type": "NameVillage",
+    "radiusA": 169.52,
+    "radiusB": 145.30
+  },
+  "echirolles": {
+    "name": "Echirolles",
+    "position": [
+      4185.38,
+      7895.78
+    ],
+    "type": "NameCity",
+    "radiusA": 295.61,
+    "radiusB": 321.23
+  },
+  "lubine": {
+    "name": "Lieu-dit Lubine",
+    "position": [
+      3341.14,
+      7314.91
+    ],
+    "type": "NameVillage",
+    "radiusA": 270.00,
+    "radiusB": 228.61
+  },
+  "petitvillage": {
+    "name": "Lieu-dit Le Petit Village",
+    "position": [
+      4376.50,
+      4864.15
+    ],
+    "type": "NameVillage",
+    "radiusA": 188.08,
+    "radiusB": 175.17
+  },
+  "Sarzeau": {
+    "name": "Lieu-dit Sarzeau",
+    "position": [
+      5411.52,
+      4283.77
+    ],
+    "type": "NameVillage",
+    "radiusA": 144.66,
+    "radiusB": 125.28
+  },
+  "Ld_montcuq": {
+    "name": "Lieu-dit Montcuq",
+    "position": [
+      5960.94,
+      5268.24
+    ],
+    "type": "NameVillage",
+    "radiusA": 217.95,
+    "radiusB": 179.60
+  },
+  "Pons": {
+    "name": "Pons",
+    "position": [
+      8598.79,
+      6334.76
+    ],
+    "type": "NameCity",
+    "radiusA": 272.44,
+    "radiusB": 275.46
+  },
+  "daux": {
+    "name": "Daux",
+    "position": [
+      8562.41,
+      7532.99
+    ],
+    "type": "NameCity",
+    "radiusA": 286.31,
+    "radiusB": 228.29
+  },
+  "SainteMarie": {
+    "name": "Sainte Marie",
+    "position": [
+      13021.40,
+      5280.13
+    ],
+    "type": "NameCity",
+    "radiusA": 303.53,
+    "radiusB": 266.06
+  },
+  "monsur": {
+    "name": "Lieu-dit Montsurs",
+    "position": [
+      3093.28,
+      8950.34
+    ],
+    "type": "NameVillage",
+    "radiusA": 370.05,
+    "radiusB": 414.54
+  },
+  "tremblay": {
+    "name": "Lieu-dit Tremblay",
+    "position": [
+      8167.08,
+      6763.81
+    ],
+    "type": "NameVillage",
+    "radiusA": 278.13,
+    "radiusB": 316.18
+  },
+  "Granges": {
+    "name": "Lieu-dit Les Granges",
+    "position": [
+      6860.64,
+      5632.61
+    ],
+    "type": "NameLocal",
+    "radiusA": 204.45,
+    "radiusB": 147.49
+  },
+  "hoedic": {
+    "name": "Hoedic",
+    "position": [
+      12575.79,
+      10189.31
+    ],
+    "type": "NameCityCapital",
+    "radiusA": 519.66,
+    "radiusB": 338.14
+  },
+  "porthoedic": {
+    "name": "Port d'Hoedic",
+    "position": [
+      12803.59,
+      10547.89
+    ],
+    "type": "NameVillage",
+    "radiusA": 269.19,
+    "radiusB": 150.54
+  },
+  "pointechateau": {
+    "name": "Pointe du vieux chateau",
+    "position": [
+      11955.63,
+      10736.71
+    ],
+    "type": "NameVillage",
+    "radiusA": 295.02,
+    "radiusB": 203.32
+  },
+  "begerfaut": {
+    "name": "Beg er Faut",
+    "position": [
+      12417.28,
+      9437.71
+    ],
+    "type": "NameVillage",
+    "radiusA": 189.16,
+    "radiusB": 125.93
+  },
+  "portdelacroix": {
+    "name": "Port de la Croix",
+    "position": [
+      12727.19,
+      9712.85
+    ],
+    "type": "NameVillage",
+    "radiusA": 164.70,
+    "radiusB": 123.32
+  },
+  "aeroprthoedic": {
+    "name": "Aéroport d'Hoedic",
+    "position": [
+      13269.91,
+      10864.05
+    ],
+    "type": "NameVillage",
+    "radiusA": 506.20,
+    "radiusB": 342.91
+  },
+  "houat": {
+    "name": "Houat",
+    "position": [
+      9035.36,
+      14183.68
+    ],
+    "type": "NameCityCapital",
+    "radiusA": 845.34,
+    "radiusB": 572.71
+  },
+  "EnTal": {
+    "name": "En Tal",
+    "position": [
+      10404.71,
+      14752.71
+    ],
+    "type": "NameVillage",
+    "radiusA": 800.50,
+    "radiusB": 578.65
+  },
+  "portHalai": {
+    "name": "Plage de Port Halai",
+    "position": [
+      6908.92,
+      15230.06
+    ],
+    "type": "NameVillage",
+    "radiusA": 307.98,
+    "radiusB": 180.34
+  },
+  "begervachif": {
+    "name": "Beg er Vachif",
+    "position": [
+      6416.56,
+      15479.47
+    ],
+    "type": "NameVillage",
+    "radiusA": 466.95,
+    "radiusB": 305.93
+  },
+  "BegSalus": {
+    "name": "Beg Salus",
+    "position": [
+      8615.13,
+      13435.46
+    ],
+    "type": "NameVillage",
+    "radiusA": 281.05,
+    "radiusB": 160.38
+  },
+  "begpell": {
+    "name": "Beg Pell",
+    "position": [
+      9765.25,
+      12231.61
+    ],
+    "type": "NameVillage",
+    "radiusA": 199.08,
+    "radiusB": 146.38
+  },
+  "begcreiz": {
+    "name": "Beg Creiz",
+    "position": [
+      9655.47,
+      12459.96
+    ],
+    "type": "NameVillage",
+    "radiusA": 175.66,
+    "radiusB": 149.31
+  },
+  "BegTost": {
+    "name": "Beg Tost",
+    "position": [
+      9549.98,
+      12677.31
+    ],
+    "type": "NameVillage",
+    "radiusA": 185.03,
+    "radiusB": 138.18
+  },
+  "ErYoch": {
+    "name": "Er Yoc'h",
+    "position": [
+      10459.36,
+      14072.39
+    ],
+    "type": "NameVillage",
+    "radiusA": 176.28,
+    "radiusB": 173.88
+  },
+  "BegerGorle": {
+    "name": "Beg er Gorle",
+    "position": [
+      8694.84,
+      14629.87
+    ],
+    "type": "NameVillage",
+    "radiusA": 143.52,
+    "radiusB": 111.66
+  },
+  "plat_pet": {
+    "name": "Plateforme Petroliere",
+    "position": [
+      3806.44,
+      14969.52
+    ],
+    "type": "NameVillage",
+    "radiusA": 155.14,
+    "radiusB": 138.66
+  }
+}

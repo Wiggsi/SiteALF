@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}COG{% endblock %}
+{% block pageTitle %}Centre d'Opérations de la Gendarmerie{% endblock %}
+
+
+{% block body %}
+    <div class="row">
+        <div class="col">
+            <h3>Appels</h3>
+            <div class="btn-group btn-group-lg m-2">
+                <button type="button" class="btn btn-outline-info" data-toggle="modal"
+                        data-target="#aideModal">
+                    <span class="oi oi-question-mark"></span></button>
+                <a href="{{ path('gd_cog_new') }}" class="btn btn-outline-primary">
+                    <span class="oi oi-phone"></span> Nouvel appel</a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table class="table table-responsive-md table-hover table-bordered bg-white">
+                <thead class="thead-dark">
+                <tr>
+                    <th>N°</th>
+                    <th>Date</th>
+                    <th>Heure</th>
+                    <th>Nom</th>
+                    <th>Téléphone</th>
+                    <th>Gendarme</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for appelCOG in appelCOGs %}
+                    <tr>
+                        <td>{{ appelCOG.id }}</td>
+                        <td>{{ appelCOG.createdDate|date('d/m/y') }}</td>
+                        <td>{{ appelCOG.createdDate|date('H:m') }}</td>
+                        <td>{{ appelCOG.name|upper }} {{ appelCOG.firstName }}</td>
+                        <td>{{ appelCOG.tel }}</td>
+                        <td><a href="{{ path('gd_personnel_show', {'id': appelCOG.author.id}) }}">{{ appelCOG.author }}</a></td>
+                        <td class="btn-group w-100 border-0 p-1">
+                            <a href="{{ path('gd_cog_edit', {'id': appelCOG.id}) }}" class="btn btn-outline-info">
+                                <span class="oi oi-pencil"></span> Modifier</a>
+                            <a href="{{ path('gd_cog_show', {'id': appelCOG.id}) }}" class="btn btn-outline-primary">
+                                <span class="oi oi-chevron-right"></span> Afficher</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="7">Aucun appel enregistré durant les 2 derniers jours.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal fade" id="aideModal" tabindex="-1" role="dialog" aria-labelledby="aideModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="aideModalLabel">Aide - COG</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>La section <b>COG</b> regroupe les appels ajoutés par le planton de service. Un appel a:</p>
+                    <ul>
+                        <li>le nom et le prénom de l'appelant.</li>
+                        <li>le numéro de téléphone de l'appelant.</li>
+                        <li>une page de commentaires sur les informations de l'appel.</li>
+                        <li>un auteur et une date de création (automatique).</li>
+                        <li>Tous peuvent modifier un appel pour le corriger/compléter.</li>
+                        <li>Seuls le gendarme ayant pris l'appel ou un officier peuvent supprimer un appel.</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

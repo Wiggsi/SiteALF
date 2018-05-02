@@ -1,0 +1,142 @@
+{% extends 'base.html.twig' %}
+
+{% block pageTitle %}Gendarmerie{% endblock %}
+{% block title %}{{ gendarme }}{% endblock %}
+
+{% block body %}
+    <div class='row'>
+        <div class="col-md-5">
+            <h3>{{ gendarme }}</h3>
+            <div class="btn-group">
+                <a href="{{ path('gd_personnel') }}" class="btn btn-outline-secondary">
+                    <span class="oi oi-list"></span> Retour à la liste</a>
+            </div>
+            <div class="btn-group btn-group-sm mt-2 mb-2">
+                {% if not app.user.gendarme.sections.isEmpty or app.user.gendarme.isChef %}
+                    <div class="btn-group btn-group-sm" role="group">
+                        <button id="btnGroupEngager" type="button" class="btn btn-outline-primary dropdown-toggle"
+                                data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                            Engager
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="btnGroupEngager">
+                            {% if app.user.gendarme.isChef and app.user.gendarme.unit != gendarme.unit %}
+                                <a href="{{ path('gd_personnel_unit_enrole', {'id': gendarme.id, 'idUnit': app.user.gendarme.unit.id}) }}"
+                                   class="dropdown-item" onclick="return confirm('Confirmer l\'enrôlement : ');">
+                                    {{ app.user.gendarme.unit }}</a>
+                            {% endif %}
+                            {% for section in app.user.gendarme.sections %}
+                                {% if section not in gendarme.sections %}
+                                    <a href="{{ path('gd_personnel_section_enrole', {'id': gendarme.id, 'idSection': section.id}) }}"
+                                       class="dropdown-item" onclick="return confirm('Confirmer l\'ajout : ');">
+                                        {{ section }}</a>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+                {% if app.user.gendarme.isOfficier and app.user.gendarme != gendarme and not gendarme.opj %}
+                    <a href="{{ path('gd_personnel_opj', {'id': gendarme.id}) }}" class="btn btn-outline-success"
+                       onclick="return confirm('Confirmer l\'OPJ : ');">
+                        <span class="oi oi-tag"></span> OPJ</a>
+                {% endif %}
+                {% if app.user.gendarme.isOfficier and app.user.gendarme.grade.id > gendarme.grade.id %}
+                    <a href="{{ path('gd_personnel_promote', {'id': gendarme.id}) }}" class="btn btn-outline-success"
+                       onclick="return confirm('Confirmer la promotion : ');">
+                        <span class="oi oi-tag"></span> Promouvoir</a>
+                    <a href="{{ path('gd_personnel_block', {'id': gendarme.id}) }}" class="btn btn-outline-warning"
+                       onclick="return confirm('Confirmer l\'action : ');">
+                        <span class="oi oi-ban"></span>
+                        {% if gendarme.user.getBlocked %}
+                            Débloquer
+                        {% else %}
+                            Bloquer
+                        {% endif %}
+                    </a>
+                {% endif %}
+            </div>
+            <table class="table">
+                <tbody>
+                <tr>
+                    <th>Nom</th>
+                    <td>{{ gendarme.user.name }}</td>
+                </tr>
+                <tr>
+                    <th>Prénom</th>
+                    <td>{{ gendarme.user.firstName }}</td>
+                </tr>
+                <tr>
+                    <th>Matricule</th>
+                    <td>{{ gendarme.matricule }}</td>
+                </tr>
+                {#<tr>
+                    <th>Âge</th>
+                    <td>{{ date("now", 'Europe/Paris').diff(date(gendarme.user.birthdate)).y }} ans</td>
+                </tr>#}
+                <tr>
+                    <th>Grade</th>
+                    <td>{{ gendarme.grade }}</td>
+                </tr>
+                <tr>
+                    <th>Unité</th>
+                    <td>
+                        <a href="{{ path('gd_personnel_unit', {'id': gendarme.unit.id}) }}">
+                            <img class="figure-img d-inline" alt="Logo d'unité" src="{{ asset(gendarme.unit.icon) }}"
+                                 height="50">
+                            {{ gendarme.unit }}{% if gendarme.isChef() %} | CDU{% endif %}</a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Sections</th>
+                    <td>
+                        <ul class="list-unstyled">
+                            {% for section in gendarme.sections %}
+                                <li><a href="{{ path('gd_personnel_section', {'id': section.id}) }}">
+                                        <img class="figure-img d-inline" alt="Logo d'unité" src="{{ asset(section.icon) }}"
+                                             height="50"> {{ section }}</a></li>
+                            {% else %}
+                                <em>Aucune section</em>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <th>OPJ</th>
+                    <td>
+                        {% if gendarme.opj %}
+                            <img alt="Logo OPJ" class="figure-img d-inline" height="50"
+                                 src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Ecusson_OPJ_Gendarmerie.png/220px-Ecusson_OPJ_Gendarmerie.png">
+                            Oui
+                        {% else %}Non{% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Dernière connection</th>
+                    <td>{{ gendarme.user.lastActivity|date('d/m/y H:i') }}
+                        {% set duree =  gendarme.user.lastActivity.diff(date()) %}
+                        {% if duree.i < 2 and duree.h == 0  and duree.days == 0 %}
+                            | Connecté
+                        {% endif %}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-7">
+            <h5 class="text-muted">PVs <span class="badge badge-secondary">{{ pagination.total }}</span></h5>
+            {{ include('PV/_affichage.html.twig', {'PVs': PVs, 'pagination': pagination}) }}
+        </div>
+    </div>
+    {% if gendarme.commentaires is not null %}
+        <div class="row">
+            <div class="card col-md-12">
+                <div class="card-body">
+                    <h5 class="card-title">Commentaires</h5>
+                    <p class="card-text">
+                        {{ gendarme.commentaires|raw }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

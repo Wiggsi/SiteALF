@@ -1,0 +1,16 @@
+{{ form_start(form) }}
+<div class="row">
+    <div class="col-md-4">
+        {{ form_errors(form) }}
+        {{ form_row(form.title) }}
+        {{ form_row(form.public) }}
+        {{ form_row(form.unit) }}
+        {{ form_row(form.section) }}
+        {{ form_row(form.category) }}
+        {{ form_row(form.save) }}
+    </div>
+    <div class="col-md-8" id="colContent">
+        {{ form_row(form.content) }}
+    </div>
+</div>
+{{ form_end(form) }}

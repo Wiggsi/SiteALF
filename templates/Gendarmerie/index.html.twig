@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord{% endblock %}
+{% block pageTitle %}Tableau de bord{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-6">
+            {{ include('Site/pagination.html.twig', {'pagination': pagination}) }}
+            <table class="table table-responsive-sm table-hover table-bordered bg-white">
+                <caption>Vos PVs en cours</caption>
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">N°</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Résumé</th>
+                    <th scope="col">Statut</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for PV in PVs %}
+                    {% if PV.status == "En cours" %}
+                        <tr class="table-primary">
+                    {% elseif PV.status == "Transféré" %}
+                        <tr class="table-success">
+                    {% elseif PV.status == "En cours de jugement" %}
+                        <tr class="table-info">
+                    {% elseif PV.status == "Autre" %}
+                        <tr class="table-warning">
+                    {% elseif PV.status == "Terminé" %}
+                        <tr class="table-secondary">
+                    {% else %}
+                        <tr class="table-danger">
+                    {% endif %}
+                    <td>{{ PV.numero }}</td>
+                    <td><a href="{{ path('gd_pv_show', {'id': PV.id}) }}">{{ PV.updatedDate|date('d/m/y H:m') }}</a></td>
+                    <td>{{ PV.resume }}</td>
+                    <td><em>{{ PV.status }}</em></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4"><em>Vous n'avez rédigé aucun PV.</em></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {{ include('Site/pagination.html.twig', {'pagination': pagination}) }}
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <h5 class="card-header">Liens utiles</h5>
+                <div class="card-body">
+                    <h6><a href="{{ path('gd_post_category', {'category': 'Formation'}) }}">Formation</a></h6>
+                    <h6>Fichiers annexes</h6>
+                    <ul>
+                        <li><a href="https://arma3lifefrance.fr/forum/threads/liste-des-avocats-du-barreau-de-belle-ile-en-mer.11277/">
+                                Liste des avocats du barreau</a></li>
+                        <li><a href="https://arma3lifefrance.fr/forum/forums/pr%C3%A9fecture.115/">
+                                Arrêtés et décrets | Préfecture</a></li>
+                        <li><a href="https://arma3lifefrance.fr/forum/threads/r%C3%A8glement-gendarmerie.5/">
+                                Règlement Gendarmerie</a></li>
+                        <li><a href="https://arma3lifefrance.fr/forum/threads/les-peines-de-prison-sur-belle-ile-en-mer.12115/">
+                                Peines de prison</a></li>
+                        <li><a href="https://arma3lifefrance.fr/forum/threads/niveau-de-vigilance.52/">
+                                Niveau de vigilance</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card mt-2">
+                <h5 class="card-header">Aide</h5>
+                <div class="card-body">
+                    <ul>
+                        <li>Dans tous les formulaires, les champs obligatoires sont précédés d'une étoile *.</li>
+                        <li>Les liens qui mènent vers un site externe sont suivis d'une flèche ↱.</li>
+                        <li>Les liens qui mènent vers une image sont suivis d'une icône ⒤.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-10 justify-content-center" id="colContent">
+            <div id="mapDiv"></div>
+        </div>
+    </div>
+{% endblock %}

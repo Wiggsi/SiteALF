@@ -1,0 +1,8 @@
+<form method="post" action="{{ path('gd_taj_delete', {'id': criminel.id}) }}"
+      onsubmit="return confirm('Confirmer la suppression du TAJ:');">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ criminel.id) }}">
+    <button class="btn btn-outline-danger">
+        <span class="oi oi-delete"></span> Supprimer
+    </button>
+</form>

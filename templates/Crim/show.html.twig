@@ -1,0 +1,119 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TAJ - {{ criminel }}{% endblock %}
+{% block pageTitle %}Traitement d'antécédents judiciaires{% endblock %}
+
+{% block body %}
+    <div class='row'>
+        <div class="col-md-5">
+            <h3>{{ criminel }}
+                {% if criminel.wanted %}
+                    <span class="badge badge-danger">Recherché</span>
+                {% elseif criminel.hasBracelet %}
+                    <span class="badge badge-primary">Bracelet électronique</span>
+                {% elseif criminel.isInPrison %}
+                    <span class="badge badge-primary">Prison</span>
+                {% elseif criminel.isInGAV %}
+                    <span class="badge badge-primary">GAV</span>
+                {% endif %}
+                {% if not criminel.isFree and criminel.fichePrison.enAttente %}
+                    <span class="badge badge-info">En attente de jugement</span>
+                {% endif %}
+                {% if criminel.isEvade %}
+                    <span class="badge badge-warning">Évadé</span>
+                {% elseif not criminel.isFree and not criminel.fichePrison.isValid %}
+                    <span class="badge badge-warning">Contrôle non effectué</span>
+                {% elseif not criminel.isFree and criminel.fichePrison.endDate < date() %}
+                    <span class="badge badge-warning">Dépassé</span>
+                {% endif %}
+            </h3>
+            <div class="btn-group p-1">
+                <a href="{{ path('gd_taj') }}" class="btn btn-outline-secondary">
+                    <span class="oi oi-list"></span> Retour à la liste</a>
+                {% if app.user.isGendarme %}
+                    <a href="{{ path('gd_taj_edit', {'id': criminel.id}) }}" class="btn btn-outline-info">
+                        <span class="oi oi-pencil"></span> Modifier</a>
+                    {% if criminel.isEvade %}
+                        <a href="{{ path('prison_evasion_end', {'id': criminel.fichePrison.id}) }}" class="btn btn-outline-success"
+                           onclick="return confirm('Confirmer la fin d\'évasion : ');">Fin d'évasion</a>
+                    {% endif %}
+                {% endif %}
+            </div>
+            <table class="table">
+                <tbody>
+                <tr>
+                    <th>Date de naissance</th>
+                    <td>{{ criminel.birthdate|date('d/m/Y') }}</td>
+                </tr>
+                <tr>
+                    <th>Status</th>
+                    <td>{% if criminel.isFree %}Libre
+                        {% elseif criminel.isInPrison %}Prison | {{ criminel.fichePrison.type }}
+                        {% else %}{{ criminel.fichePrison.type }}
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Dangerosité</th>
+                    <td>{{ criminel.dangerous }}/10</td>
+                </tr>
+                {% if not criminel.isFree %}
+                    <tr>
+                        <th>Fiche d'incarcération</th>
+                        <td><a href="{{ path('prison_show', {'id': criminel.fichePrison.id}) }}">{{ criminel.fichePrison }}</a></td>
+                    </tr>
+                {% endif %}
+                <tr>
+                    <th>Téléphone</th>
+                    <td>{{ criminel.tel }}</td>
+                </tr>
+                {% if app.user.gendarme %}
+                    <tr>
+                        <th>Code ADN</th>
+                        <td>{{ criminel.ADNCode }}</td>
+                    </tr>
+                    <tr>
+                        <th>Reconnaissance faciale</th>
+                        <td>{{ criminel.photoCode }}</td>
+                    </tr>
+                {% endif %}
+                <tr>
+                    <th>Antécédents judiciaires</th>
+                    <td>
+
+                        {% for TAJ in TAJs %}
+                            <ul>
+                                {% for infraction in TAJ.infractions %}
+                                    <li>
+                                        <a href="{{ path('gd_taj_entry_show', {'id': TAJ.id}) }}">{{ infraction }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <em>Aucune entrée au TAJ durant les 15 derniers jours.</em>
+                        {% endfor %}
+
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-7">
+            <h5 class="text-muted">Implications</h5>
+            {{ include('PV/_affichage.html.twig', {'PVs': PVs, 'pagination': pagination}) }}
+        </div>
+    </div>
+    {% if criminel.commentaires is not null and app.user.gendarme %}
+        <div class="row">
+            <div class="card col-md-12">
+                <div class="card-body">
+                    <h5 class="card-title">Commentaires</h5>
+                    <div class="card-text text-justify">
+                        {{ criminel.commentaires|raw }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

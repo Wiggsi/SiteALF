@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block pageTitle %}Carte{% endblock %}
+{% block title %}{{ lieu }}{% endblock %}
+
+{% block body %}
+    <div class='row' id="PVContent">
+        <div class="col-md-4">
+            <h3>{{ lieu }}</h3>
+            <div class="btn-group m-2">
+                <a href="{{ path('gd_carte') }}" class="btn btn-outline-secondary">
+                    <span class="oi oi-map"></span> Retour à la carte</a>
+                <a href="{{ path('gd_carte_edit', {'id': lieu.id}) }}" class="btn btn-outline-primary">
+                    <span class="oi oi-pencil"></span> Modifier</a>
+            </div>
+            <table class="table">
+                <tbody>
+                <tr>
+                    <th>Coordonnées</th>
+                    <td>{{ lieu.getCoordsArma[0] }}.{{ lieu.getCoordsArma[1] }} <em>({{ lieu.x }},{{ lieu.y }})</em></td>
+                </tr>
+                <tr>
+                    <th>Unités</th>
+                    <td>
+                        <ul class="list-unstyled">
+                            {% for unit in lieu.units %}
+                                <li><a href="{{ path('gd_personnel_unit', {'id': unit.id}) }}">{{ unit }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Création</th>
+                    <td>{{ lieu.createdDate|date('d/m/y H:i') }}</td>
+                </tr>
+                <tr>
+                    <th>Mise à jour</th>
+                    <td>{{ lieu.updatedDate|date('d/m/y H:i') }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-text text-justify">
+                        {{ lieu.content|raw }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

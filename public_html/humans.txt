@@ -1,0 +1,15 @@
+/* TEAM */
+	Chef: Albéric Bertin
+	Contact: albe [at] hotmail.fr
+	From: France
+
+/* THANKS */
+
+    ALF : arma3lifefrance.fr
+
+/* SITE */
+	Last update: 2018/05/02
+	Language: French
+	Doctype: HTML5
+	Components: Symfony, jQuery, Bootstrap v4
+	IDE: PhpStorm

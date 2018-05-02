@@ -1,0 +1,39 @@
+<div class="row" id="rowPVs">
+    {{ include('Site/pagination.html.twig', {'pagination': pagination}) }}
+    {% for PV in PVs %}
+        <div class="col-sm-6 col-lg-4">
+            <div class="card mb-1">
+                <a href="{{ path('gd_pv_show', {'id': PV.id}) }}">
+                    <h5 class="card-header">n°{{ PV.numero }} | {{ PV.authorUnit }} <em>({{ PV.visibility }})</em>
+                        {% if PV.status == "En cours" %}
+                            <span class="badge badge-primary">{{ PV.status }}</span>
+                        {% elseif PV.status == "Transféré" %}
+                            <span class="badge badge-success">{{ PV.status }}</span>
+                        {% elseif PV.status == "En cours de jugement" %}
+                            <span class="badge badge-info">{{ PV.status }}</span>
+                        {% elseif PV.status == "Autre" %}
+                            <span class="badge badge-warning">{{ PV.status }}</span>
+                        {% elseif PV.status == "Terminé" %}
+                            <span class="badge badge-secondary">{{ PV.status }}</span>
+                        {% else %}
+                            <span class="badge badge-danger">{{ PV.status }}</span>
+                        {% endif %}
+                    </h5>
+                </a>
+                <div class="card-body">
+                    <h6 class="card-title"><a href="{{ path('gd_personnel_show', {'id': PV.gdId}) }}">
+                            {{ PV.authorGrade }} {{ PV.authorName }}</a></h6>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ PV.updatedDate|date('d/m/y H:i') }}</h6>
+                    <p class="card-text text-justify">
+                        {{ PV.resume }}
+                        {% if PV.magistratName %}<br/><em class="text-muted">Traité
+                            par {{ PV.magistratGrade }}  {{ PV.magistratName }}</em>{% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <p class="col m-2"><em>Aucun PV dans cette section.</em></p>
+    {% endfor %}
+    {{ include('Site/pagination.html.twig', {'pagination': pagination}) }}
+</div>

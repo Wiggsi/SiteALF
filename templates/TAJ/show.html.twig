@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block pageTitle %}Traitement d'antécédents judiciaires{% endblock %}
+{% block title %}Entrée {{ TAJ }}{% endblock %}
+
+{% block body %}
+    <div class='row'>
+        <div class="col-md-12">
+            <h3>Entrée {{ TAJ }}</h3>
+            <div class="btn-group m-2">
+                <a href="{{ path('gd_taj') }}" class="btn btn-outline-secondary">
+                    <span class="oi oi-list"></span> Retour au TAJ</a>
+                {% if app.user.isGendarme %}
+                    <a href="{{ path('gd_taj_entry_edit', {'id': TAJ.id}) }}" class="btn btn-outline-info">
+                        <span class="oi oi-pencil"></span> Modifier</a>
+                {% endif %}
+            </div>
+            <table class="table">
+                <tbody>
+                <tr>
+                    <th>Date</th>
+                    <td>{{ TAJ.updatedDate|date('d/m/y H:i') }}</td>
+                </tr>
+                <tr>
+                    <th>Individus</th>
+                    <td>
+                        <ul class="">
+                            {% for criminel in TAJ.criminels %}
+                                <li><a href="{{ path('gd_taj_show', {'id': criminel.id}) }}">{{ criminel }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Infractions</th>
+                    <td>
+                        <ul class="">
+                            {% for infraction in TAJ.infractions %}
+                                <li>
+                                    {#<a href="{{ path('gd_infraction_show', {"id": infraction.id}) }}">{{ infraction }}</a>#}
+                                    {{ infraction }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+                {% if TAJ.PV is not null %}
+                    <tr>
+                        <th>PV</th>
+                        <td><a href="{{ path('gd_pv_show', {'id': TAJ.PV.id}) }}">{{ TAJ.PV }}</a></td>
+                    </tr>
+                {% endif %}
+                <tr>
+                    <th>Auteur</th>
+                    {% if app.user.gendarme %}
+                        <td><a href="{{ path('gd_personnel_show', {'id': TAJ.author.id}) }}">{{ TAJ.author }}</a></td>
+                    {% else %}
+                        <td>{{ TAJ.author }}</td>
+                    {% endif %}
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,61 @@
+easy_admin:
+    site_name: 'Gendarmerie - ALF'
+    list:
+        max_results: 50
+
+    formats:
+        date:     'd/m/y'
+        time:     'H:i'
+        datetime: 'd/m/y H:i'
+
+    entities:
+        Utilisateur:
+            class: App\Entity\User
+        Gendarme:
+             class: App\Entity\Gendarme
+        Unit:
+            class: App\Entity\Unit
+        Grade:
+            class: App\Entity\Grade
+        Criminel:
+            class: App\Entity\Criminel
+        PV:
+            class: App\Entity\PV
+        TAJ:
+            class: App\Entity\TAJ
+        Magistrat:
+            class: App\Entity\Magistrat
+        Gardien:
+            class: App\Entity\Gardien
+        FVV:
+            class: App\Entity\Vehicule
+        COG:
+            class: App\Entity\AppelCOG
+        Post:
+            class: App\Entity\Post
+        Section:
+            class: App\Entity\Section
+        Prison:
+            class: App\Entity\Prison
+        Lieu:
+            class: App\Entity\Lieu
+
+    design:
+        menu:
+            - label: 'Manager'
+            - { entity: 'Utilisateur', icon: 'users', label: 'Utilisateurs' }
+            - { entity: 'Gendarme', icon: 'user-circle', label: 'Gendarmes' }
+            - { entity: 'Magistrat', icon: 'user-circle', label: 'Magistrats' }
+            - { entity: 'Gardien', icon: 'user-circle', label: 'Agents pénitenciers' }
+            - { entity: 'PV', icon: 'folder', label: 'PVs' }
+            - { entity: 'Criminel', icon: 'ban', label: 'Fiches TAJ' }
+            - { entity: 'TAJ', icon: 'window-restore', label: 'Entrées TAJ' }
+            - { entity: 'Prison', icon: 'window-restore', label: 'Prison' }
+            - { entity: 'Post', icon: 'window-restore', label: 'Posts' }
+            - { entity: 'COG', icon: 'window-restore', label: 'C.O.G.' }
+            - { entity: 'FVV', icon: 'window-restore', label: 'F.V.V.' }
+            - { entity: 'Lieu', icon: 'tag', label: 'Lieux' }
+            - { entity: 'Grade', icon: 'tags', label: 'Grades' }
+            - { entity: 'Unit', icon: 'object-group', label: 'Unités' }
+            - { entity: 'Section', icon: 'object-group', label: 'Sections' }
+            - label: 'Env: %env(APP_ENV)%'

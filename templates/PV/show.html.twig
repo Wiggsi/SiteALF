@@ -1,0 +1,164 @@
+{% extends 'base.html.twig' %}
+
+{% block pageTitle %}Procès-Verbaux{% endblock %}
+{% block title %}PV n°{{ PV.numero }}{% endblock %}
+
+{% block body %}
+    <div class='row' id="PVContent">
+        <div class="col-md-4">
+            <h3>PV n°{{ PV.numero }}
+                {% if PV.status == "En cours" %}
+                    <span class="badge badge-primary">{{ PV.status }}</span>
+                {% elseif PV.status == "Transféré" %}
+                    <span class="badge badge-success">{{ PV.status }}</span>
+                {% elseif PV.status == "En cours de jugement" %}
+                    <span class="badge badge-info">{{ PV.status }}</span>
+                {% elseif PV.status == "Autre" %}
+                    <span class="badge badge-warning">{{ PV.status }}</span>
+                {% elseif PV.status == "Terminé" %}
+                    <span class="badge badge-secondary">{{ PV.status }}</span>
+                {% else %}
+                    <span class="badge badge-danger">{{ PV.status }}</span>
+                {% endif %}
+            </h3>
+            <div class="btn-group m-2">
+                {% if app.user.isGendarme %}
+                    <a href="{{ path('gd_pvs') }}" class="btn btn-outline-secondary">
+                        <span class="oi oi-list"></span> Retour à la liste</a>
+                    {% if app.user.gendarme == PV.author or app.user.gendarme == PV.OPJ or app.user.gendarme.isUnit('SR')
+                        or app.user.gendarme.isSection('PJGN') %}
+                        <a href="{{ path('gd_pv_edit', {'id': PV.id}) }}" class="btn btn-outline-info">
+                            <span class="oi oi-pencil"></span> Modifier</a>
+                    {% endif %}
+                {% elseif app.user.isMagistrat %}
+                    <a href="{{ path('tribunal_pv') }}" class="btn btn-outline-secondary">
+                        <span class="oi oi-list"></span> Retour à la liste</a>
+                    {% if PV.status == 'Transféré' %}
+                        <a href="{{ path('tribunal_pv_encours', {'id': PV.id}) }}" class="btn btn-outline-info">
+                            <span class="oi oi-action-redo"></span> En cours de jugement</a>
+                    {% elseif PV.status == 'En cours de jugement' and PV.magistrat == app.user.magistrat %}
+                        <a href="{{ path('tribunal_pv_termine', {'id': PV.id}) }}" class="btn btn-outline-success">
+                            <span class="oi oi-check"></span> Terminé</a>
+                    {% endif %}
+                {% endif %}
+            </div>w
+            <table class="table">
+                <tbody>
+                <tr>
+                    <th>Création</th>
+                    <td>{{ PV.createdDate|date('d/m/y H:i') }}</td>
+                </tr>
+                <tr>
+                    <th>Mise à jour</th>
+                    <td>{{ PV.updatedDate|date('d/m/y H:i') }}</td>
+                </tr>
+                <tr>
+                    <th>Status</th>
+                    <td>{{ PV.status }}</td>
+                </tr>
+                <tr>
+                    <th>Visibilité</th>
+                    <td>{{ PV.visibility }}</td>
+                </tr>
+                <tr>
+                    <th>Résumé</th>
+                    <td>{{ PV.resume }}</td>
+                </tr>
+                <tr>
+                    <th>Auteur</th>
+                    {% if app.user.gendarme %}
+                        <td><a href="{{ path('gd_personnel_show', {'id': PV.author.id}) }}">{{ PV.author }} | {{ PV.author.unit }}</a>
+                        </td>
+                    {% else %}
+                        <td>{{ PV.author }} | {{ PV.author.unit }}</td>
+                    {% endif %}
+                </tr>
+                <tr>
+                    <th>OPJ référent</th>
+                    {% if app.user.gendarme %}
+                        <td><a href="{{ path('gd_personnel_show', {'id': PV.OPJ.id}) }}">{{ PV.OPJ }}</a></td>
+                    {% else %}
+                        <td>{{ PV.OPJ }}</td>
+                    {% endif %}
+                </tr>
+                {% if PV.magistrat %}
+                    <tr>
+                        <th>Magistrat</th>
+                        <td><a href="{{ path('tribunal_personnel_show', {'id': PV.magistrat.id}) }}">{{ PV.magistrat }}</a></td>
+                    </tr>
+                {% endif %}
+                <tr>
+                    <th>Criminels</th>
+                    <td>
+                        <ul class="list-unstyled">
+                            {% for criminel in PV.criminels %}
+                                <li><a href="{{ path('gd_taj_show', {'id': criminel.id}) }}">{{ criminel }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Entrées au TAJ</th>
+                    <td>
+                        <ul class="list-unstyled">
+                            {% for TAJ in PV.TAJs %}
+                                <li><a href="{{ path('gd_taj_entry_show', {'id': TAJ.id}) }}">{{ TAJ }}</a></li>
+                            {% else %}
+                                <li><em>Pas d'entrée au TAJ en lien avec ce PV.</em></li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Fiches d'incarcérations</th>
+                    <td>
+                        <ul class="list-unstyled">
+                            {% for prison in PV.prisons %}
+                                <li><a href="{{ path('prison_show', {'id': prison.id}) }}">{{ prison }}</a></li>
+                            {% else %}
+                                <li><em>Pas de fiche associée répertoriée.</em></li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <button class="btn float-right" id="toggleFullScreen" onclick="toggleFullScreen();">
+                        <span class="oi oi-fullscreen-enter" id="toggleIcon"></span></button>
+                    <div class="card-text text-justify">
+                        {{ PV.content|raw }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        function toggleFullScreen()
+        {
+            if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document
+                .msFullscreenElement)
+            {
+                if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+                else if (document.documentElement.msRequestFullscreen) document.documentElement.msRequestFullscreen();
+                else if (document.documentElement.mozRequestFullScreen) document.documentElement.mozRequestFullScreen();
+                else if (document.documentElement.webkitRequestFullscreen) document.documentElement.webkitRequestFullscreen();
+                $("#toggleIcon").removeClass("oi-fullscreen-enter").addClass("oi-fullscreen-exit");
+            } else
+            {
+                if (document.exitFullscreen) document.exitFullscreen();
+                else if (document.msExitFullscreen) document.msExitFullscreen();
+                else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
+                else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+                $("#toggleIcon").removeClass("oi-fullscreen-exit").addClass("oi-fullscreen-enter");
+            }
+        }
+    </script>
+{% endblock %}

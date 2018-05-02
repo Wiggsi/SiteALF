@@ -1,0 +1,129 @@
+{#<nav id="menu" class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">#}
+<nav id="menu" class="navbar navbar-expand-md navbar-dark bg-dark">
+    <a class="navbar-brand" href="{{ path('homepage') }}">
+        <img src="{{ asset('img/logo.png') }}" width="50" height="30" class="d-inline-block align-top" alt="">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            {% if app.user.isGendarme %}
+                <li class="nav-item">
+                    <a class="nav-link active" href="{{ path('gd_homepage') }}">
+                        <span class="oi oi-dashboard"></span> Tableau de bord</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown">
+                        P.V.
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{{ path('gd_pvs') }}">Vos PVs</a>
+                        {% if app.user.gendarme.opj %}
+                            <a class="dropdown-item" href="{{ path('gd_pvs_opj') }}">Référent OPJ</a>
+                        {% endif %}
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{ path('gd_pvs_global') }}">En cours</a>
+                        <a class="dropdown-item" href="{{ path('gd_pvs_termines') }}">Terminés</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{ path('gd_pv_new') }}">
+                            <span class="oi oi-document"></span> Nouveau PV</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('gd_taj') }}">T.A.J.</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('gd_gav') }}">G.A.V.</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('gd_bracelet') }}">S.E.</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('gd_cog') }}">C.O.G.</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('gd_fvv') }}">F.V.V.</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('prison_list') }}">Prison</a>
+                </li>
+                {#<li class="nav-item">
+                    <a class="nav-link" href="{{ path('gd_carte') }}">Carte</a>
+                </li>#}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('gd_post') }}">Messages</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('gd_personnel') }}">Effectif</a>
+                </li>
+            {% elseif app.user.isMagistrat %}
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ path('tribunal_homepage') }}">
+                        <span class="oi oi-dashboard"></span> Tableau de bord</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('tribunal_pv') }}">PVs</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('tribunal_pv_termines') }}">Terminés</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('gd_taj') }}">T.A.J.</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('tribunal_enattente') }}">En attente de jugement</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('tribunal_personnel') }}">Effectif</a>
+                </li>
+            {% elseif app.user.isGardien %}
+                <li class="nav-item">
+                    <a class="nav-link active" href="{{ path('prison_homepage') }}">
+                        <span class="oi oi-dashboard"></span> Tableau de bord</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('prison_list') }}">Prison</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('prison_personnel') }}">Effectif</a>
+                </li>
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('infractions') }}">Pénal</a>
+            </li>
+        </ul>
+
+        <div class="dropdown">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {% if app.user.isGendarme %}
+                    {{ app.user.gendarme.grade.abrv }} {{ app.user }} | {{ app.user.gendarme.unit }}
+                {% elseif app.user.isMagistrat %}
+                    {{ app.user.magistrat.grade.abrv }} {{ app.user }} | Tribunal
+                {% elseif app.user.isGardien %}
+                    {{ app.user.gardien.grade.abrv }} {{ app.user }} | Prison
+                {% else %}
+                    {{ app.user }}
+                {% endif %}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="{{ path('user_homepage') }}">
+                    <span class="oi oi-person"></span> Profil</a>
+                <a class="dropdown-item" href="https://arma3lifefrance.fr/forum/conversations/"
+                   target="_blank" rel="noopener">
+                    <span class="oi oi-chat"></span> Conversations</a>
+                <div class="dropdown-divider"></div>
+                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                    <a class="dropdown-item" href="{{ path('easyadmin') }}">
+                        <span class="oi oi-briefcase"></span> Panel admin</a>
+                    <div class="dropdown-divider"></div>
+                {% endif %}
+                <a class="dropdown-item" href="{{ path('security_logout') }}">
+                    <span class="oi oi-account-logout"></span> Déconnexion</a>
+            </div>
+        </div>
+    </div>
+</nav>

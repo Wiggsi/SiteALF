@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Enregistrement{% endblock %}
+
+{% block body %}
+    <style>
+        body {
+            background-color: #071a30;
+            background-image: url("{{ asset('img/background.jpg') }}");
+            background-repeat: no-repeat;
+            background-size: auto;
+            background-position: top center;
+            background-attachment: fixed;
+        }
+
+        #pageTitre {
+            color: white;
+        }
+    </style>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            {{ form_start(form) }}
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Enregistrement</h5>
+                    <div class="card-subtitle small">Ces informations concernent votre personnage RP (Nom/Prénom/Date de naissance/...)
+                        . L'email servira (peut-être) pour communiquer des informations importantes.
+                    </div>
+                    <br/>
+                    <div class="card-text">
+                        {{ form_row(form.firstName) }}
+                        {{ form_row(form.name) }}
+                        {{ form_row(form.username) }}
+                        {{ form_row(form.birthdate) }}
+                        {{ form_row(form.email) }}
+                        {{ form_row(form.password.first) }}
+                        {{ form_row(form.password.second) }}
+                        <button type="submit" class="btn btn-success">
+                            <span class="oi oi-check"></span> S'inscrire !
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
