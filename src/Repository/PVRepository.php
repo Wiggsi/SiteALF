@@ -54,8 +54,8 @@ class PVRepository extends ServiceEntityRepository {
                 ->setParameter('termine', "Terminé");
         }
         $queryB->andWhere("pv.status != 'Terminé'")
-            ->orderBy('pv.updatedDate', 'DESC')
-            ->orderBy('pv.status', 'ASC');
+            ->addOrderBy('pv.status', 'ASC')
+            ->addOrderBy('pv.updatedDate', 'DESC');
 
         if ($result) {
             $queryB
@@ -105,7 +105,7 @@ class PVRepository extends ServiceEntityRepository {
                 ->setParameter('termine', "Terminé");
         }
         $qb->andWhere('pv.status = :val')->setParameter('val', $status)
-            ->orderBy('pv.updatedDate', 'DESC')
+            ->addOrderBy('pv.updatedDate', 'DESC')
             ->setMaxResults($pageLimit)
             ->setFirstResult(($page - 1) * $pageLimit);
 
@@ -161,8 +161,8 @@ class PVRepository extends ServiceEntityRepository {
         WHEN pv.status = 'Transféré' THEN 4
         WHEN pv.status = 'Terminé' THEN 5
         ELSE 6 END) AS HIDDEN ORD ")
-            ->orderBy('pv.updatedDate', 'DESC')
-            ->orderBy('ORD', 'ASC')
+            ->addOrderBy('ORD', 'ASC')
+            ->addOrderBy('pv.updatedDate', 'DESC')
             ->setMaxResults($pageLimit)
             ->setFirstResult(($page - 1) * $pageLimit);
 
@@ -198,8 +198,8 @@ class PVRepository extends ServiceEntityRepository {
         WHEN pv.status = 'Transféré' THEN 4
         WHEN pv.status = 'Terminé' THEN 5
         ELSE 6 END) AS HIDDEN ORD ")
-            ->orderBy('pv.updatedDate', 'DESC')
-            ->orderBy('ORD', 'ASC')
+            ->addOrderBy('ORD', 'ASC')
+            ->addOrderBy('pv.updatedDate', 'DESC')
             ->setMaxResults($pageLimit)
             ->setFirstResult(($page - 1) * $pageLimit);
 
@@ -235,8 +235,47 @@ class PVRepository extends ServiceEntityRepository {
         WHEN pv.status = 'Transféré' THEN 4
         WHEN pv.status = 'Terminé' THEN 5
         ELSE 6 END) AS HIDDEN ORD ")
-            ->orderBy('pv.updatedDate', 'DESC')
-            ->orderBy('ORD', 'ASC')
+            ->addOrderBy('ORD', 'ASC')
+            ->addOrderBy('pv.updatedDate', 'DESC')
+            ->setMaxResults($pageLimit)
+            ->setFirstResult(($page - 1) * $pageLimit);
+
+        $paginator = new Paginator($qb);
+        $paginator->setUseOutputWalkers(FALSE);
+
+        return $paginator;
+    }
+
+    public function findByOPJ(User $user, Gendarme $OPJ, $pageLimit = 9, $page = 1)
+    {
+        $qb = $this->createQueryBuilder('pv')
+            ->join('pv.author', 'gd')->join('gd.grade', 'gdGrade')->join('gd.user', 'gdUser')
+            ->leftJoin('pv.magistrat', 'm')->leftJoin('m.grade', 'mGrade')->leftJoin('m.user', 'mUser')
+            ->join('gd.unit', 'unit')
+            ->select('pv.updatedDate, pv.numero, pv.resume, pv.visibility, pv.status, pv.id')
+            ->addSelect('gdGrade.abrv AS authorGrade, unit.abrv AS authorUnit, gdUser.username as authorName, gd.id AS gdId')
+            ->addSelect('mGrade.abrv AS magistratGrade, mUser.username AS magistratName')
+//            ->where('pv.visibility = :visibUnit AND gd.unit = :unit')
+//            ->orwhere('pv.visibility = :visibPerso AND gd = :user')
+//            ->orWhere('pv.visibility = :visibTous')
+            //Inutile : l'OPJ doit voir le PV même s'il ne pourrait pas normalement.
+            ->andWhere('pv.OPJ = :opj')
+//            ->setParameter('visibTous', 'Tous')
+//            ->setParameter('visibUnit', 'Unité')
+//            ->setParameter('visibPerso', 'Perso')
+//            ->setParameter('user', $user->getGendarme())
+//            ->setParameter('unit', $user->getGendarme()->getUnit())
+            ->setParameter('opj', $OPJ)
+            ->addSelect("(CASE 
+        WHEN pv.status = 'Autre' THEN 0 
+        WHEN pv.status = 'À modifier' THEN 1 
+        WHEN pv.status = 'En cours' THEN 2
+        WHEN pv.status = 'En cours de jugement' THEN 3
+        WHEN pv.status = 'Transféré' THEN 4
+        WHEN pv.status = 'Terminé' THEN 5
+        ELSE 6 END) AS HIDDEN ORD ")
+            ->addOrderBy('ORD', 'ASC')
+            ->addOrderBy('pv.updatedDate', 'DESC')
             ->setMaxResults($pageLimit)
             ->setFirstResult(($page - 1) * $pageLimit);
 
@@ -278,8 +317,8 @@ class PVRepository extends ServiceEntityRepository {
         WHEN pv.status = 'Transféré' THEN 4
         WHEN pv.status = 'Terminé' THEN 5
         ELSE 6 END) AS HIDDEN ORD ")
-            ->orderBy('pv.updatedDate', 'DESC')
-            ->orderBy('ORD', 'ASC')
+            ->addOrderBy('ORD', 'ASC')
+            ->addOrderBy('pv.updatedDate', 'DESC')
             ->setMaxResults($pageLimit)
             ->setFirstResult(($page - 1) * $pageLimit);
         $paginator = new Paginator($qb);
