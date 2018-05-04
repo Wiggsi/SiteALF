@@ -20,13 +20,7 @@ class PVController extends Controller {
     public function index(PVRepository $rep, Request $request)
     {
         $page = $request->query->getInt('page', 1);
-        $query = $rep->createQueryBuilder('pv')->join('pv.author', 'author')
-            ->join('pv.magistrat', 'm')
-            ->join('m.grade', 'mg')->join('author.grade', 'gg')
-            ->where('author = :gd')->setParameter('gd', $this->getUser()->getGendarme())
-            ->orderBy('pv.updatedDate', 'DESC')->orderBy('pv.status', 'ASC')
-            ->setFirstResult(($page - 1) * 21)->setMaxResults(21);
-        $PVs = new Paginator($query);
+        $PVs = $rep->findByAuthor($this->getUser(), $this->getUser()->getGendarme(), 21, $page);
         $pagination = array(
             'page'         => $page,
             'route'        => 'gd_pvs',
@@ -48,14 +42,8 @@ class PVController extends Controller {
     public function PVsOPJ(PVRepository $rep, Request $request)
     {
         $page = $request->query->getInt('page', 1);
-        $query = $rep->createQueryBuilder('pv')->join('pv.author', 'author')
-            ->join('pv.magistrat', 'm')
-            ->join('m.grade', 'mg')->join('author.grade', 'gg')
-            ->where('pv.OPJ = :gd')
-            ->andWhere('pv.author != :gd')->setParameter('gd', $this->getUser()->getGendarme())
-            ->orderBy('pv.updatedDate', 'DESC')->orderBy('pv.status', 'ASC')
-            ->setFirstResult(($page - 1) * 21)->setMaxResults(21);
-        $PVs = new Paginator($query);
+        $PVs = $rep->findByOPJ($this->getUser(), $this->getUser()->getGendarme(), 21, $page);
+
         $pagination = array(
             'page'         => $page,
             'route'        => 'gd_pvs_opj',
