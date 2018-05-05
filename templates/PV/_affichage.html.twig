@@ -21,8 +21,13 @@
                     </h5>
                 </a>
                 <div class="card-body">
-                    <h6 class="card-title"><a href="{{ path('gd_personnel_show', {'id': PV.gdId}) }}">
-                            {{ PV.authorGrade }} {{ PV.authorName }}</a></h6>
+                    <h6 class="card-title">
+                        {% if app.user.gendarme %}<a href="{{ path('gd_personnel_show', {'id': PV.gdId}) }}">
+                            {{ PV.authorGrade }} {{ PV.authorName }}</a>
+                        {% else %}
+                            {{ PV.authorGrade }} {{ PV.authorName }}
+                        {% endif %}
+                    </h6>
                     <h6 class="card-subtitle mb-2 text-muted">{{ PV.updatedDate|date('d/m/y H:i') }}</h6>
                     <p class="card-text text-justify">
                         {{ PV.resume }}
