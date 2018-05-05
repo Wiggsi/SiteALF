@@ -273,7 +273,7 @@ class Prison {
 
     public function getDuree(): \DateInterval
     {
-        return $this->startDate->diff($this->endDate, TRUE);
+        return $this->startDate->diff(new \DateTime(), TRUE);
     }
 
     public function getEnAttente(): ?bool

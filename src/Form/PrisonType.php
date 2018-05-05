@@ -44,20 +44,21 @@ class PrisonType extends AbstractType {
                 ),
                 'required' => FALSE,
             ))
+            ->add('validation', ChoiceType::class, array(
+                'choices' => array(
+                    'Jamais'  => 'Jamais',
+                    '24h'     => '24h',
+                    '48h'     => '48h',
+                    '72h'     => '72h',
+                    'Semaine' => 'Semaine',
+                ),
+                'label'   => 'Contrôle judiciaire',
+            ))
             ->add('save', SubmitType::class, array(
                 'label' => "Enregistrer la fiche"));
 
-        if ($this->user->isGendarme()) {
+        if ($this->user->isGendarme() or $this->user->isMagistrat()) {
             $builder
-                ->add('PV', EntityType::class, array(
-                    'class'         => 'App:PV',
-                    'query_builder' => function (EntityRepository $er) {
-                        return $er->findNonTermines($this->user, FALSE);
-                    },
-                    'label'         => 'PV',
-                    'multiple'      => FALSE,
-                    'required'      => FALSE,
-                ))
                 ->add('criminel', EntityType::class, array(
                     'class'         => 'App:Criminel',
                     'query_builder' => function (EntityRepository $er) {
@@ -84,19 +85,34 @@ class PrisonType extends AbstractType {
                 ->add('enAttente', CheckboxType::class, array(
                     'label'    => 'En attente de jugement',
                     'required' => FALSE,
-                ))
-                ->add('validation', ChoiceType::class, array(
-                    'choices' => array(
-                        'Jamais'  => 'Jamais',
-                        '24h'     => '24h',
-                        '48h'     => '48h',
-                        '72h'     => '72h',
-                        'Semaine' => 'Semaine',
-                    ),
-                    'label'   => 'Contrôle judiciaire',
                 ));
         }
 
+        if ($this->user->isGendarme()) {
+            $builder->add('PV', EntityType::class, array(
+                'class'         => 'App:PV',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->findNonTermines($this->user, FALSE);
+                },
+                'label'         => 'PV',
+                'multiple'      => FALSE,
+                'required'      => FALSE,
+            ));
+        }
+        else if ($this->user->isMagistrat()) {
+            $builder->add('PV', EntityType::class, array(
+                'class'         => 'App:PV',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('pv')
+                        ->where('pv.status = :termine')->setParameter('termine', 'Terminé')
+                        ->orWhere('pv.status = :encours')->setParameter('encours', "En cours de jugement")
+                        ->orderBy('pv.updatedDate', 'DESC');
+                },
+                'label'         => 'PV',
+                'multiple'      => FALSE,
+                'required'      => FALSE,
+            ));
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver)

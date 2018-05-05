@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Criminel;
 use App\Entity\Gardien;
 use App\Entity\Prison;
 use App\Entity\User;
@@ -47,7 +48,9 @@ class PrisonController extends Controller {
     public function newIncarceration(Request $request, $type)
     {
         $prison = new Prison();
-        $prison->setAuthor($this->getUser()->getGendarme())->setType($type);
+        $prison->setType($type);
+        $prison->setAuthor($this->getUser()->getGendarme());
+
         if ($type == "GAV") {
             $typeA = "de GAV";
         }
@@ -72,11 +75,12 @@ class PrisonController extends Controller {
                 }
                 else
                     $crim->getFichePrison()->setEnded(TRUE);
+                $this->addFlash('info', 'La fiche précédente a été terminée.');
             }
-
             if ($crim->getWanted()) {
                 $this->addFlash('success', "L'individu n'est plus recherché.");
             }
+            if ($this->getUser()->isMagistrat()) $prison->setAuthor($prison->getPV()->getAuthor());
 
             $crim->setFichePrison($prison)->setWanted(FALSE);
             $em = $this->getDoctrine()->getManager();
@@ -162,9 +166,34 @@ class PrisonController extends Controller {
         $prison->setEnded(TRUE);
         $prison->getCriminel()->setFichePrison(NULL);
         $this->getDoctrine()->getManager()->flush();
-        $this->addFlash('info', 'La fiche '.$prison.' est terminée.');
+        $this->addFlash('info', $prison);
 
         return $this->redirectToRoute('prison_list');
+    }
+
+    /**
+     * @Route("/Prisonniers/{id}/liberation", name="prison_liberation", requirements={"id"="\d+"})
+     */
+    public function liberationIncarceration(Prison $prison)
+    {
+        if (!$this->getUser()->isMagistrat()) throw $this->createAccessDeniedException('Vous devez être un magistrat pour autoriser une libération conditionelle.');
+        $prison->setEnded(TRUE);
+
+        $prison2 = new Prison();
+        $prison2->setType("Bracelet électronique")->setEnAttente(FALSE)->setStartDate(new \Datetime())
+            ->setEndDate(new \Datetime('+7days'))->setValidation('72h')->setAuthor($prison->getAuthor())
+            ->setCriminel($prison->getCriminel())
+            ->setComment('Libération conditionelle de la fiche<br/><a href="'.$this->generateUrl('prison_show', ['id' => $prison->getId()])
+                         .'">'.$prison.'</a><br/>
+                        Libération autorisée par '.$this->getUser()->getMagistrat())
+            ->setPV($prison->getPV());
+        $prison->getCriminel()->setFichePrison($prison2);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($prison2);
+        $em->flush();
+        $this->addFlash('info', $prison->getCriminel().' a été placé en liberté conditionelle.');
+
+        return $this->redirectToRoute('prison_show', ['id' => $prison2->getId()]);
     }
 
     /**

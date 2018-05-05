@@ -18,7 +18,7 @@ class PrisonRepository extends ServiceEntityRepository {
         parent::__construct($registry, Prison::class);
     }
 
-    public function findByType(array $types, $ended = FALSE, $limit = 50)
+    public function findByType(array $types, $ended = FALSE, $enAttente = NULL, $limit = 100)
     {
         $query = $this->createQueryBuilder('p')
             ->join('p.criminel', 'c')
@@ -28,9 +28,11 @@ class PrisonRepository extends ServiceEntityRepository {
             $param = 'type'.$i;
             $query->orWhere("p.type = :".$param)->setParameter($param, $types[$i]);
         }
+        if ($enAttente !== NULL) $query->andWhere('p.enAttente = :attente')->setParameter('attente', $enAttente);
 
         return $query->andWhere('p.ended = :end')->setParameter('end', $ended)
-            ->orderBy('p.endDate', 'ASC')
+            ->addOrderBy('p.type', 'DESC')
+            ->addOrderBy('p.endDate', 'ASC')
             ->setMaxResults($limit)
             ->getQuery()->getResult();
     }

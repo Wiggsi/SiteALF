@@ -35,6 +35,7 @@
                     <th scope="col">Début</th>
                     <th scope="col">Fin</th>
                     <th scope="col">Contrôle judiciaire</th>
+                    <th scope="col">Type</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -49,16 +50,17 @@
                     <td><a href="{{ path('prison_show', {'id': bracelet.id}) }}">
                             {{ bracelet.criminel.name|upper }} {{ bracelet.criminel.firstName }}</a></td>
                     <td>{{ bracelet.criminel.dangerous }}</td>
-                    <td>{{ bracelet.startDate|date('d/m/y H:i') }}</td>
+                    <td>{{ bracelet.startDate|date('d/m/y H:i') }} (Depuis {{ bracelet.getDuree.d }} jours)</td>
                     <td>{{ bracelet.endDate|date('d/m/y H:i') }}</td>
                     <td>{{ bracelet.validation }}
                         {% if bracelet.validation != 'Jamais' %}
                             <em> ({{ bracelet.validationDate|date('d/m/y H:i') }})</em>
                         {% endif %}</td>
+                    <td>{{ bracelet.status }}</td>
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="5">Aucun individu sous surveillance électronique actuellement.</td>
+                        <td colspan="6">Aucun individu sous surveillance électronique actuellement.</td>
                     </tr>
                 {% endfor %}
                 </tbody>
