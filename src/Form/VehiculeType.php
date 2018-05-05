@@ -18,9 +18,15 @@ class VehiculeType extends AbstractType {
         $builder
             ->add('propName', TextType::class, array(
                 'label' => '*Nom du propriétaire',
+                'attr'  => array(
+                    'autocomplete' => 'off',
+                ),
             ))
             ->add('propFirstName', TextType::class, array(
                 'label' => '*Prénom du propriétaire',
+                'attr'  => array(
+                    'autocomplete' => 'off',
+                ),
             ))
             ->add('date', DateTimeType::class, array(
                 'label'       => 'Date et Heure',
@@ -37,7 +43,8 @@ class VehiculeType extends AbstractType {
                 'label'    => 'Plaque du véhicule',
                 'required' => FALSE,
                 'attr'     => array(
-                    'placeholder' => 'AB-123-CD',
+                    'placeholder'  => 'AB-123-CD',
+                    'autocomplete' => 'off',
                 ),
             ))
             ->add('comment', TextareaType::class, array(

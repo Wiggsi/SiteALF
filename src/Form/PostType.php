@@ -34,6 +34,9 @@ class PostType extends AbstractType {
             ->add('content', TextareaType::class, array(
                 'label'    => '*Contenu',
                 'required' => FALSE,
+                'attr'     => array(
+                    'autocomplete' => 'off',
+                ),
             ))
             ->add('public', CheckboxType::class, array(
                 'label'    => 'Communiqué à tous les services publics',

@@ -46,7 +46,7 @@
                     <td><a href="{{ path('prison_show', {'id': gav.id}) }}">
                             {{ gav.criminel.name|upper }} {{ gav.criminel.firstName }}</a></td>
                     <td>{{ gav.criminel.dangerous }}</td>
-                    <td>{{ gav.startDate|date('d/m/y H:i') }}</td>
+                    <td>{{ gav.startDate|date('d/m/y H:i') }} (Depuis {{ gav.getDuree.d }} jours)</td>
                     <td>{{ gav.endDate|date('d/m/y H:i') }}</td>
                     </tr>
                 {% else %}

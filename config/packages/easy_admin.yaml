@@ -1,5 +1,5 @@
 easy_admin:
-    site_name: 'Services Publics - ALF'
+    site_name: '<img src="../img/logo.png" alt="Logo ALF"/><em style="font-size: 60%;">Services Publics</em> '
     list:
         max_results: 50
 
@@ -42,20 +42,30 @@ easy_admin:
 
     design:
         menu:
-            - label: 'Manager'
+            - { label: 'Accueil', route: 'homepage', icon: 'home' }
             - { entity: 'Utilisateur', icon: 'users', label: 'Utilisateurs' }
-            - { entity: 'Gendarme', icon: 'user-circle', label: 'Gendarmes' }
-            - { entity: 'Magistrat', icon: 'user-circle', label: 'Magistrats' }
-            - { entity: 'Gardien', icon: 'user-circle', label: 'Agents pénitenciers' }
-            - { entity: 'PV', icon: 'folder', label: 'PVs' }
-            - { entity: 'Criminel', icon: 'ban', label: 'Fiches TAJ' }
-            - { entity: 'TAJ', icon: 'window-restore', label: 'Entrées TAJ' }
-            - { entity: 'Prison', icon: 'window-restore', label: 'Prison' }
-            - { entity: 'Post', icon: 'window-restore', label: 'Posts' }
-            - { entity: 'COG', icon: 'window-restore', label: 'C.O.G.' }
-            - { entity: 'FVV', icon: 'window-restore', label: 'F.V.V.' }
-            - { entity: 'Lieu', icon: 'tag', label: 'Lieux' }
-            - { entity: 'Grade', icon: 'tags', label: 'Grades' }
-            - { entity: 'Unit', icon: 'object-group', label: 'Unités' }
-            - { entity: 'Section', icon: 'object-group', label: 'Sections' }
+            - label: 'Gendarmerie'
+              children:
+                - { entity: 'Gendarme', icon: 'user-circle', label: 'Effectif' }
+                - { entity: 'PV', icon: 'folder', label: 'PVs' }
+                - { entity: 'COG', icon: 'window-restore', label: 'C.O.G.' }
+                - { entity: 'FVV', icon: 'window-restore', label: 'F.V.V.' }
+                - { entity: 'Lieu', icon: 'tag', label: 'Lieux' }
+            - label: 'Tribunal'
+              children:
+                - { entity: 'Magistrat', icon: 'user-circle', label: 'Effectif' }
+            - label: 'Prison'
+              children:
+                - { entity: 'Gardien', icon: 'user-circle', label: 'Effectif' }
+            - label: 'T.A.J.'
+              children:
+                - { entity: 'Criminel', icon: 'ban', label: 'Fiches' }
+                - { entity: 'TAJ', icon: 'window-restore', label: 'Entrées' }
+                - { entity: 'Prison', icon: 'window-restore', label: 'Incarcérations' }
+            - label: 'Autre'
+              children:
+                - { entity: 'Grade', icon: 'tags', label: 'Grades' }
+                - { entity: 'Unit', icon: 'object-group', label: 'Unités' }
+                - { entity: 'Section', icon: 'object-group', label: 'Sections' }
+                - { entity: 'Post', icon: 'window-restore', label: 'Posts' }
             - label: 'Env: %env(APP_ENV)%'

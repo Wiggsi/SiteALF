@@ -114,9 +114,19 @@ class TribunalController extends Controller {
      */
     public function enAttente(PrisonRepository $rep)
     {
-        $prisons = $rep->findBy(["enAttente" => TRUE, "ended" => FALSE], ['endDate' => "ASC"]);
+        $prisons = $rep->findByType(["Bracelet électronique", "Prison", "Évadé", "Autre"], FALSE, TRUE);
 
-        return $this->render("Tribunal/individus.html.twig", ['prisons' => $prisons]);
+        return $this->render("Tribunal/individus.html.twig", ['prisons' => $prisons, 'titre' => 'En attente de jugement']);
+    }
+
+    /**
+     * @Route("Prison/Condamnés", name="tribunal_condamnes", options={"utf8": true})
+     */
+    public function condamnés(PrisonRepository $rep)
+    {
+        $prisons = $rep->findByType(["Bracelet électronique", "Prison", "Évadé", "Autre"], FALSE, FALSE);
+
+        return $this->render("Tribunal/individus.html.twig", ['prisons' => $prisons, 'titre' => 'Condamnés']);
     }
 
     /**

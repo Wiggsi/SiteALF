@@ -46,7 +46,7 @@
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="4"><em>Aucune véhicule volé enregistré.</em></td>
+                        <td colspan="4">Aucune véhicule volé enregistré.</td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -86,28 +86,23 @@
     </div>
 
     <script>
-        function searchFVV()
-        {
+        function searchFVV() {
             let input, filter, table, tr, td1, td2, td3, i;
             input = document.getElementById("inputSearchFVV");
             filter = input.value.toUpperCase();
             table = document.getElementById("tableFVV");
             tr = table.getElementsByTagName("tr");
 
-            for (i = 0; i < tr.length; i++)
-            {
+            for (i = 0; i < tr.length; i++) {
                 td1 = tr[i].getElementsByTagName("td")[1];
                 td2 = tr[i].getElementsByTagName("td")[2];
                 td3 = tr[i].getElementsByTagName("td")[3];
-                if (td1)
-                {
+                if (td1) {
                     if (td1.innerHTML.toUpperCase().indexOf(filter) > -1
                         || td2.innerHTML.toUpperCase().indexOf(filter) > -1
-                        || td3.innerHTML.toUpperCase().indexOf(filter) > -1)
-                    {
+                        || td3.innerHTML.toUpperCase().indexOf(filter) > -1) {
                         tr[i].style.display = "";
-                    } else
-                    {
+                    } else {
                         tr[i].style.display = "none";
                     }
                 }

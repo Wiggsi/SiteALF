@@ -58,6 +58,9 @@ class PVType extends AbstractType {
             ))
             ->add('resume', TextType::class, array(
                 'label' => '*Résumé',
+                'attr'  => array(
+                    'autocomplete' => 'off',
+                ),
             ))
             ->add('numero', TextType::class, array(
                 'label' => '*Numéro',
@@ -74,6 +77,9 @@ class PVType extends AbstractType {
                 'label'    => '*Contenu',
                 'trim'     => FALSE,
                 'required' => FALSE,
+                'attr'     => array(
+                    'autocomplete' => 'off',
+                ),
             ))
             ->add('criminels', EntityType::class, array(
                 'class'         => 'App:Criminel',

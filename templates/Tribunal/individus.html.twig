@@ -6,8 +6,8 @@
 {% block body %}
     <div class="row">
         <div class="col">
-            <h3>En attente de jugement</h3>
-            <p><em>Liste des individus en attente de jugement (en détention provisoire ou en liberté conditionelle).</em></p>
+            <h3>{{ titre }}</h3>
+            <p><em>Liste des individus {{ titre|lower }} (en détention ou sous bracelet).</em></p>
         </div>
     </div>
     <div class="row">
@@ -32,13 +32,11 @@
                     {% else %}
                         <tr>
                     {% endif %}
-                    <td>{% if prison.PV %}
-                            <a href="{{ path('gd_pv_show', {'id': prison.PV.id}) }}">
-                                {{ prison.criminel.name|upper }} {{ prison.criminel.firstName }} (PV {{ prison.PV }})
-                            </a>
-                        {% else %}
+                    <td>
+                        <a href="{{ path('prison_show', {'id': prison.id}) }}">
                             {{ prison.criminel.name|upper }} {{ prison.criminel.firstName }}
-                        {% endif %}
+                            {% if prison.PV %}(PV {{ prison.PV }}){% endif %}
+                        </a>
                     </td>
                     <td>{{ prison.criminel.dangerous }}</td>
                     <td>{{ prison.type }}</td>
@@ -48,7 +46,7 @@
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="3">Aucun individu en attente de jugement.</td>
+                        <td colspan="4">Pas d'individus {{ titre|lower }}.</td>
                     </tr>
                 {% endfor %}
                 </tbody>

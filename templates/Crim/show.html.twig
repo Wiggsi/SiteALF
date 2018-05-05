@@ -9,7 +9,8 @@
             <h3>{{ criminel }}
                 {% if criminel.wanted %}
                     <span class="badge badge-danger">Recherché</span>
-                {% elseif criminel.hasBracelet %}
+                {% endif %}
+                {% if criminel.hasBracelet %}
                     <span class="badge badge-primary">Bracelet électronique</span>
                 {% elseif criminel.isInPrison %}
                     <span class="badge badge-primary">Prison</span>
@@ -80,7 +81,6 @@
                 <tr>
                     <th>Antécédents judiciaires</th>
                     <td>
-
                         {% for TAJ in TAJs %}
                             <ul>
                                 {% for infraction in TAJ.infractions %}
@@ -92,7 +92,6 @@
                         {% else %}
                             <em>Aucune entrée au TAJ durant les 15 derniers jours.</em>
                         {% endfor %}
-
                     </td>
                 </tr>
                 </tbody>

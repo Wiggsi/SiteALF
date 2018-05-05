@@ -34,10 +34,12 @@
                     <a href="{{ path('tribunal_pv') }}" class="btn btn-outline-secondary">
                         <span class="oi oi-list"></span> Retour à la liste</a>
                     {% if PV.status == 'Transféré' %}
-                        <a href="{{ path('tribunal_pv_encours', {'id': PV.id}) }}" class="btn btn-outline-info">
+                        <a href="{{ path('tribunal_pv_encours', {'id': PV.id}) }}" class="btn btn-outline-info"
+                           onclick="return confirm('Confirmer le début de jugement : ');">
                             <span class="oi oi-action-redo"></span> En cours de jugement</a>
                     {% elseif PV.status == 'En cours de jugement' and PV.magistrat == app.user.magistrat %}
-                        <a href="{{ path('tribunal_pv_termine', {'id': PV.id}) }}" class="btn btn-outline-success">
+                        <a href="{{ path('tribunal_pv_termine', {'id': PV.id}) }}" class="btn btn-outline-success"
+                           onclick="return confirm('Confirmer la fermeture du PV : ');">
                             <span class="oi oi-check"></span> Terminé</a>
                     {% endif %}
                 {% endif %}
@@ -141,18 +143,15 @@
 
 {% block javascripts %}
     <script>
-        function toggleFullScreen()
-        {
+        function toggleFullScreen() {
             if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document
-                .msFullscreenElement)
-            {
+                .msFullscreenElement) {
                 if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
                 else if (document.documentElement.msRequestFullscreen) document.documentElement.msRequestFullscreen();
                 else if (document.documentElement.mozRequestFullScreen) document.documentElement.mozRequestFullScreen();
                 else if (document.documentElement.webkitRequestFullscreen) document.documentElement.webkitRequestFullscreen();
                 $("#toggleIcon").removeClass("oi-fullscreen-enter").addClass("oi-fullscreen-exit");
-            } else
-            {
+            } else {
                 if (document.exitFullscreen) document.exitFullscreen();
                 else if (document.msExitFullscreen) document.msExitFullscreen();
                 else if (document.mozCancelFullScreen) document.mozCancelFullScreen();

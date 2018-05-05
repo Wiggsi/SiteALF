@@ -18,14 +18,21 @@ class UserType extends AbstractType {
         $builder
             ->add('firstName', TextType::class, array(
                 'label' => '*Prénom',
+                'attr'  => array(
+                    'autocomplete' => 'off',
+                ),
             ))
             ->add('name', TextType::class, array(
                 'label' => '*Nom',
+                'attr'  => array(
+                    'autocomplete' => 'off',
+                ),
             ))
             ->add('username', TextType::class, array(
                 'label' => "*Nom d'utilisateur : Prénom + Nom",
                 'attr'  => array(
-                    'placeholder' => 'Prénom Nom',
+                    'placeholder'  => 'Prénom Nom',
+                    'autocomplete' => 'off',
                 ),
             ))
             ->add('birthdate', DateType::class, array(

@@ -58,7 +58,7 @@
                     <td><a href="{{ path('prison_show', {'id': prison.id}) }}">
                             {{ prison.criminel.name|upper }} {{ prison.criminel.firstName }}</a></td>
                     <td>{{ prison.criminel.dangerous }}</td>
-                    <td>{{ prison.startDate|date('d/m/y H:i') }}</td>
+                    <td>{{ prison.startDate|date('d/m/y H:i') }} (Depuis {{ prison.getDuree.d }} jours)</td>
                     <td>{{ prison.endDate|date('d/m/y H:i') }}</td>
                     <td>{{ prison.status }}</td>
                     </tr>
@@ -105,9 +105,10 @@
                     <ul>
                         <li>Seul un gendarme peut créer la fiche d'incarcération mais seul un agent pénitencier peut la modifier.</li>
                         <li>Seul un agent pénitencier peut libérer un individu ou déclarer un individu comme évadé.</li>
+                        <li>Un magistrat a tout les droits.</li>
                         <li>Lors d'un dépassement de la date finale, la ligne devient orange.</li>
                         <li>Un détenu considéré comme dangereux est en bleu.</li>
-                        <li>Un détenu cévadé est en rouge.</li>
+                        <li>Un détenu évadé est en rouge.</li>
                     </ul>
                     <p>Lors d'une évasion, les agents pénitentiers peuvent déclarer les individus comme évadés et sont
                         automatiquement déclarés comme recherchés pour la gendarmerie.</p>
