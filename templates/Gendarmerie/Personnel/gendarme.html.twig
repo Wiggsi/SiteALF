@@ -19,18 +19,16 @@
                                 aria-haspopup="true" aria-expanded="false">
                             Engager
                         </button>
-                        <div class="dropdown-menu" aria-labelledby="btnGroupEngager">
+                        <div class="dropdown-menu" aria-labelledby="btnGroupEngager" id="dropdownRecrutement">
                             {% if app.user.gendarme.isChef and app.user.gendarme.unit != gendarme.unit %}
                                 <a href="{{ path('gd_personnel_unit_enrole', {'id': gendarme.id, 'idUnit': app.user.gendarme.unit.id}) }}"
                                    class="dropdown-item" onclick="return confirm('Confirmer l\'enrôlement : ');">
                                     {{ app.user.gendarme.unit }}</a>
                             {% endif %}
-                            {% for section in app.user.gendarme.sections %}
-                                {% if section not in gendarme.sections %}
-                                    <a href="{{ path('gd_personnel_section_enrole', {'id': gendarme.id, 'idSection': section.id}) }}"
-                                       class="dropdown-item" onclick="return confirm('Confirmer l\'ajout : ');">
-                                        {{ section }}</a>
-                                {% endif %}
+                            {% for section in app.user.gendarme.sections if section not in gendarme.sections %}
+                                <a href="{{ path('gd_personnel_section_enrole', {'id': gendarme.id, 'idSection': section.id}) }}"
+                                   class="dropdown-item" onclick="return confirm('Confirmer l\'ajout : ');">
+                                    {{ section }}</a>
                             {% endfor %}
                         </div>
                     </div>
@@ -139,4 +137,8 @@
             </div>
         </div>
     {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    <script>if ($('#dropdownRecrutement').html().trim() === '') $('#btnGroupEngager').hide();</script>
 {% endblock %}
