@@ -20,6 +20,9 @@ class LieuType extends AbstractType {
             ->add('name', TextType::class, array(
                 'label'    => '*Nom',
                 'required' => FALSE,
+                'attr'     => array(
+                    'autocomplete' => 'off',
+                ),
             ))
             ->add('units', EntityType::class, array(
                 'class'    => 'App:Unit',

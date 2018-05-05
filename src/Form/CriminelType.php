@@ -24,9 +24,15 @@ class CriminelType extends AbstractType {
         $builder
             ->add('name', TextType::class, array(
                 'label' => '*Nom',
+                'attr'  => array(
+                    'autocomplete' => 'off',
+                ),
             ))
             ->add('firstName', TextType::class, array(
                 'label' => '*Prénom',
+                'attr'  => array(
+                    'autocomplete' => 'off',
+                ),
             ))
             ->add('dangerous', RangeType::class, array(
                 'label' => '*Dangerosité',
@@ -40,12 +46,16 @@ class CriminelType extends AbstractType {
                 "label"    => "Date de naissance",
                 'widget'   => 'single_text',
                 'required' => FALSE,
+                'attr'     => array(
+                    'autocomplete' => 'off',
+                ),
             ))
             ->add('tel', TextType::class, array(
                 'label'    => 'Téléphone',
                 'required' => FALSE,
                 'attr'     => array(
-                    'maxlength' => 10,
+                    'maxlength'    => 10,
+                    'autocomplete' => 'off',
                 ),
             ))
             ->add('wanted', CheckboxType::class, array(
@@ -56,14 +66,23 @@ class CriminelType extends AbstractType {
                 'label'    => 'Commentaires',
                 'trim'     => FALSE,
                 'required' => FALSE,
+                'attr'     => array(
+                    'autocomplete' => 'off',
+                ),
             ))
             ->add('ADNCode', IntegerType::class, array(
                 'label'    => 'Code ADN',
                 'required' => FALSE,
+                'attr'     => array(
+                    'autocomplete' => 'off',
+                ),
             ))
             ->add('photoCode', IntegerType::class, array(
                 'label'    => 'Reconnaissance faciale',
                 'required' => FALSE,
+                'attr'     => array(
+                    'autocomplete' => 'off',
+                ),
             ))
             ->add('save', SubmitType::class, array(
                 'label' => "Enregistrer"));

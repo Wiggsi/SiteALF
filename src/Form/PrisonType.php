@@ -39,7 +39,8 @@ class PrisonType extends AbstractType {
             ->add('comment', TextareaType::class, array(
                 'label'    => 'Commentaires',
                 'attr'     => array(
-                    'row' => 10,
+                    'row'          => 10,
+                    'autocomplete' => 'off',
                 ),
                 'required' => FALSE,
             ))
