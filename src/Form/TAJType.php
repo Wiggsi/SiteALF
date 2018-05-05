@@ -75,9 +75,8 @@ class TAJType extends AbstractType {
                 'class'         => 'App:PV',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('pv')
-                        ->where('pv.status = :termine')
-                        ->orWhere('pv.status = :encours')
-                        ->setParameter('encours', "En cours de jugement")
+                        ->where('pv.status = :termine')->setParameter('termine', 'Terminé')
+                        ->orWhere('pv.status = :encours')->setParameter('encours', "En cours de jugement")
                         ->orderBy('pv.updatedDate', 'DESC');
                 },
                 'multiple'      => FALSE,
