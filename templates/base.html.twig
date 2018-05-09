@@ -50,20 +50,12 @@
                             </div>
                         </div>
                     {% endfor %}
-                    {#<div class="row">
-                        <div id="url" class="url"></div>
-                        <button onClick="window.history.back();"
-                                class="col-xs-offset-3 col-xs-6 col-sm-offset-1 col-sm-2 btn btn-default">
-                            <span class="glyphicon glyphicon-arrow-left"></span> {{ 'Return'|trans }}
-                        </button>
-                    </div>#}
                 {% endif %}
             </div>
         </header>
 
         <section>
             {% block body %}
-
             {% endblock %}
         </section>
     </div>

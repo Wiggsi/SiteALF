@@ -18,9 +18,10 @@
     <div class='row'>
         <div class="col-md-6">
             <div class="btn-group m-2">
+                <button onClick="window.history.back();" class="btn btn-outline-secondary">
+                    <span class="oi oi-chevron-left"></span> Retour
+                </button>
                 {% if prison.isPrison and app.user.isGardien %}
-                    <a href="{{ path('prison_list') }}" class="btn btn-outline-secondary">
-                        <span class="oi oi-list"></span> Retour à la liste</a>
                     <a href="{{ path('prison_edit', {'id': prison.id}) }}" class="btn btn-outline-info">
                         <span class="oi oi-pencil"></span> Modifier</a>
                     <a href="{{ path('prison_end', {'id': prison.id}) }}" class="btn btn-outline-warning"
@@ -32,8 +33,6 @@
                             <span class="oi oi-ban"></span> Évadé</a>
                     {% endif %}
                 {% elseif prison.isGendarmerie and app.user.isGendarme %}
-                    <a href="{{ path('gd_taj') }}" class="btn btn-outline-secondary">
-                        <span class="oi oi-list"></span> Retour au TAJ</a>
                     <a href="{{ path('prison_edit', {'id': prison.id}) }}" class="btn btn-outline-info">
                         <span class="oi oi-pencil"></span> Modifier</a>
                     {% if prison.type == "Évadé" and not prison.ended %}
