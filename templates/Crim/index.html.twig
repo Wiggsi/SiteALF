@@ -43,21 +43,18 @@
                 </thead>
                 <tbody>
                 {% for criminel in criminels %}
-                    {% if criminel.wanted %}
-                        <tr class="table-danger">
-                    {% elseif not criminel.isFree and (criminel.fichePrison.endDate < date() or not criminel.fichePrison.valid) %}
-                        <tr class="table-warning">
-                    {% else %}
-                        <tr>
-                    {% endif %}
-                    <td><a href="{{ path('gd_taj_show', {'id': criminel.id}) }}">
-                            {{ criminel.name|upper }} {{ criminel.firstName }}</a></td>
-                    <td>{{ criminel.dangerous }}</td>
-                    <td>{% if criminel.isFree %}Libre
-                        {% else %}{{ criminel.fichePrison.type }}{% if criminel.fichePrison.enAttente %} | En attente de jugement{% endif %}
-                        {% endif %}
-                        {% if criminel.wanted %} | <b>Recherché</b>{% endif %}
-                    </td>
+                    <tr class="{% if criminel.wanted %}table-danger
+                    {% elseif not criminel.isFree and (criminel.fichePrison.endDate < date() or not criminel.fichePrison.valid) %}table-warning
+                    {% endif %}" onclick="window.location = '{{ url('gd_taj_show', {'id': criminel.id}) }}';">
+                        <td><a href="{{ path('gd_taj_show', {'id': criminel.id}) }}">
+                                {{ criminel.name|upper }} {{ criminel.firstName }}</a></td>
+                        <td>{{ criminel.dangerous }}</td>
+                        <td>{% if criminel.isFree %}Libre
+                            {% else %}{{ criminel.fichePrison.type }}{% if criminel.fichePrison.enAttente %} | En attente de jugement{% endif %}
+                            {% endif %}
+                            {% if criminel.isEvade %} | <b>Évadé</b>
+                            {% elseif criminel.wanted %} | <b>Recherché</b>{% endif %}
+                        </td>
                     </tr>
                 {% else %}
                     <tr>

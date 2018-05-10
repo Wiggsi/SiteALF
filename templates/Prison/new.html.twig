@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Nouvelle fiche {{ type }}{% endblock %}
-{% block pageTitle %}Prison{% endblock %}
+{% block pageTitle %}{% endblock %}
 
 {% block body %}
     <div class="row">
@@ -20,9 +20,17 @@
           rel="stylesheet"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     <script>
+        if ($('#prison_type').val() !== "Bracelet électronique")
+            $('#validationGroup').hide();
+        $('#prison_type').change(function () {
+            if ($(this).val() !== "Bracelet électronique")
+                $('#validationGroup').hide();
+            else
+                $('#validationGroup').show();
+        });
         $(document).ready(function () {
             let bb = document.querySelector('#colContent').getBoundingClientRect();
-            width = bb.right - bb.left;
+            let width = bb.right - bb.left;
             $(document).ready(function () {
                 $('#prison_comment').summernote({
                     height: screen.availHeight * 0.9,
@@ -31,14 +39,6 @@
             });
             $("#prison_criminel").select2({theme: "bootstrap"});
             $("#prison_PV").select2({placeholder: "", allowClear: true, theme: "bootstrap"});
-            if ($('#prison_type').val() !== "Bracelet électronique")
-                $('#validationGroup').hide();
-            $('#prison_type').change(function () {
-                if ($(this).val() !== "Bracelet électronique")
-                    $('#validationGroup').hide();
-                else
-                    $('#validationGroup').show();
-            })
         });
     </script>
 {% endblock %}

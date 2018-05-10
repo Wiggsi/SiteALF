@@ -48,7 +48,8 @@ class VehiculeType extends AbstractType {
                 ),
             ))
             ->add('comment', TextareaType::class, array(
-                'label' => 'Commentaires',
+                'label'    => 'Commentaires',
+                'required' => FALSE,
             ))
             ->add('save', SubmitType::class, array(
                 'label' => "Enregistrer le véhicule"));

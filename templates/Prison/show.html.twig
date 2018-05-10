@@ -1,7 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ prison }}{% endblock %}
-{% block pageTitle %}Incarcérations{% endblock %}
+{% block pageTitle %}
+    {% if prison.type == "GAV" %}Gardes à vues
+    {% elseif prison.type == "Bracelet électronique" %}Surveillance électronique
+    {% else %}Incarcérations
+    {% endif %}
+{% endblock %}
 
 {% block body %}
     <h3>{{ prison }}
@@ -18,9 +23,10 @@
     <div class='row'>
         <div class="col-md-6">
             <div class="btn-group m-2">
-                {% if prison.isPrison and app.user.isGardien %}
-                    <a href="{{ path('prison_list') }}" class="btn btn-outline-secondary">
-                        <span class="oi oi-list"></span> Retour à la liste</a>
+                <button onClick="window.history.back();" class="btn btn-outline-secondary">
+                    <span class="oi oi-chevron-left"></span> Retour
+                </button>
+                {% if prison.isPrison and app.user.isGardien and not prison.ended %}
                     <a href="{{ path('prison_edit', {'id': prison.id}) }}" class="btn btn-outline-info">
                         <span class="oi oi-pencil"></span> Modifier</a>
                     <a href="{{ path('prison_end', {'id': prison.id}) }}" class="btn btn-outline-warning"
@@ -29,34 +35,29 @@
                     {% if not prison.criminel.isEvade %}
                         <a href="{{ path('prison_evasion', {'id': prison.id}) }}" class="btn btn-outline-danger"
                            onclick="return confirm('Confirmer l\'évasion : ');">
-                            <span class="oi oi-ban"></span> Évadé</a>
+                            <span class="oi oi-ban"></span> Évasion</a>
                     {% endif %}
-                {% elseif prison.isGendarmerie and app.user.isGendarme %}
-                    <a href="{{ path('gd_taj') }}" class="btn btn-outline-secondary">
-                        <span class="oi oi-list"></span> Retour au TAJ</a>
-                    <a href="{{ path('prison_edit', {'id': prison.id}) }}" class="btn btn-outline-info">
-                        <span class="oi oi-pencil"></span> Modifier</a>
-                    {% if prison.type == "Évadé" and not prison.ended %}
+                {% elseif prison.isGendarmerie and app.user.isGendarme and not prison.ended %}
+                    {% if app.user.gendarme.isOfficier %}
+                        <a href="{{ path('prison_edit', {'id': prison.id}) }}" class="btn btn-outline-info">
+                            <span class="oi oi-pencil"></span> Modifier</a>
+                    {% endif %}
+                    {% if prison.evaded %}
                         <a href="{{ path('prison_evasion_end', {'id': prison.id}) }}" class="btn btn-outline-success"
-                           onclick="return confirm('Confirmer la fin d\'évasion : ');">Fin d'évasion</a>
+                           onclick="return confirm('Confirmer la fin d\'évasion : ');">
+                            <span class="oi oi-check"></span> Fin d'évasion</a>
+                    {% elseif not prison.evaded %}
+                        <a href="{{ path('prison_evasion', {'id': prison.id}) }}" class="btn btn-outline-danger"
+                           onclick="return confirm('Confirmer l\'évasion : ');">
+                            <span class="oi oi-ban"></span> Évasion</a>
                     {% elseif prison.type == "Bracelet électronique" %}
                         <a href="{{ path('prison_pointage', {'id': prison.id}) }}" class="btn btn-outline-success"
                            onclick="return confirm('Confirmer le pointage de l\'individu : ');">
                             <span class="oi oi-check"></span> Pointage</a>
-                        {% if not prison.criminel.isEvade %}
-                            <a href="{{ path('prison_evasion', {'id': prison.id}) }}" class="btn btn-outline-danger"
-                               onclick="return confirm('Confirmer l\'évasion : ');">
-                                <span class="oi oi-ban"></span> Évadé</a>
-                        {% endif %}
                     {% else %}
                         <a href="{{ path('prison_end', {'id': prison.id}) }}" class="btn btn-outline-warning"
                            onclick="return confirm('Confirmer la fin : ');">
                             <span class="oi oi-bullhorn"></span> Fin</a>
-                        {% if not prison.criminel.isEvade %}
-                            <a href="{{ path('prison_evasion', {'id': prison.id}) }}" class="btn btn-outline-danger"
-                               onclick="return confirm('Confirmer l\'évasion : ');">
-                                <span class="oi oi-ban"></span> Évadé</a>
-                        {% endif %}
                     {% endif %}
                 {% elseif app.user.isMagistrat %}
                     <a href="{{ path('prison_edit', {'id': prison.id}) }}" class="btn btn-outline-info">

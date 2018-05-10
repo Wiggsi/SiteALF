@@ -116,6 +116,9 @@ class PrisonController extends Controller {
      */
     public function editIncarceration(Request $request, Prison $prison)
     {
+        if ($this->getUser()->isGendarme() and $this->getUser()->getGendarme()->isOfficier() and $prison->isGendarmerie())
+            throw $this->createAccessDeniedException('Vous devez être officier pour modifier cette fiche.');
+
         $form = $this->createForm(PrisonType::class, $prison);
         $form->handleRequest($request);
 
@@ -150,7 +153,7 @@ class PrisonController extends Controller {
      */
     public function evasionIncarceration(Request $request, Prison $prison)
     {
-        $prison->setType("Évadé");
+        $prison->setEvaded(TRUE);
         $prison->getCriminel()->setWanted(TRUE);
         $this->getDoctrine()->getManager()->flush();
         $this->addFlash('info', $prison->getCriminel().' a été déclaré comme évadé et est désormais recherché.');
@@ -168,7 +171,7 @@ class PrisonController extends Controller {
         $this->getDoctrine()->getManager()->flush();
         $this->addFlash('info', $prison);
 
-        return $this->redirectToRoute('prison_list');
+        return $this->redirectToRoute('prison_show', ['id' => $prison->getId()]);
     }
 
     /**
@@ -197,19 +200,19 @@ class PrisonController extends Controller {
     }
 
     /**
-     * @Route("Prisonniers/{id}/endEvasion", name="prison_evasion_end", requirements={"id"="\d+"})
+     * @Route("/Prisonniers/{id}/endEvasion", name="prison_evasion_end", requirements={"id"="\d+"})
      */
     public function endEvasion(Prison $prison)
     {
         if (!$this->getUser()->isGendarme())
             throw $this->createAccessDeniedException("Seul un gendarme peut valider la fin d'évasion");
 
-        if (!$prison->getCriminel()->getFichePrison() != $prison)
+        if ($prison->getCriminel()->getFichePrison() !== $prison)
             throw $this->createNotFoundException("La fiche d'incarcération de l'individu concerné n'est pas la même");
 
         $prisonNew = new Prison();
         $prisonNew->setCriminel($prison->getCriminel())->setAuthor($this->getUser()->getGendarme())
-            ->setType("En attente de jugement")->setPV($prison->getPV())
+            ->setType("En attente de jugement")->setPV($prison->getPV())->setEnAttente(TRUE)
             ->setStartDate(new \DateTime())->setEndDate(new \DateTime("+7days"))
             ->setComment($prison->getComment()."<br/><em>Fiche créée à cause de la fin de l'évasion : <a href='"
                          .$this->generateUrl("prison_show", ['id' => $prison->getId()])."'>"

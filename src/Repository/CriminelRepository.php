@@ -22,8 +22,8 @@ class CriminelRepository extends ServiceEntityRepository {
         return $this->createQueryBuilder('c')
             ->leftJoin('c.fichePrison', 'p')
             ->addSelect('c, p')
-            ->orderBy('c.name', 'ASC')
-            ->orderBy('c.wanted', 'DESC')
+            ->addOrderBy('c.wanted', 'DESC')
+            ->addOrderBy('c.name', 'ASC')
             ->getQuery()->getResult();
     }
 }

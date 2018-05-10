@@ -29,14 +29,16 @@
                 {% endif %}
             </h3>
             <div class="btn-group p-1">
-                <a href="{{ path('gd_taj') }}" class="btn btn-outline-secondary">
-                    <span class="oi oi-list"></span> Retour à la liste</a>
+                <button onClick="window.history.back();" class="btn btn-outline-secondary">
+                    <span class="oi oi-chevron-left"></span> Retour
+                </button>
                 {% if app.user.isGendarme %}
                     <a href="{{ path('gd_taj_edit', {'id': criminel.id}) }}" class="btn btn-outline-info">
                         <span class="oi oi-pencil"></span> Modifier</a>
                     {% if criminel.isEvade %}
                         <a href="{{ path('prison_evasion_end', {'id': criminel.fichePrison.id}) }}" class="btn btn-outline-success"
-                           onclick="return confirm('Confirmer la fin d\'évasion : ');">Fin d'évasion</a>
+                           onclick="return confirm('Confirmer la fin d\'évasion : ');">
+                            <span class="oi oi-check"></span> Fin d'évasion</a>
                     {% endif %}
                 {% endif %}
             </div>

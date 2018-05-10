@@ -13,8 +13,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *     message="Cette plaque existe déja."
  * )
  */
-class Vehicule
-{
+class Vehicule {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -64,6 +63,11 @@ class Vehicule
      */
     private $type;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $retrouve;
+
     public function __construct()
     {
         $this->date = new \DateTime();
@@ -71,7 +75,7 @@ class Vehicule
 
     public function __toString()
     {
-        return $this->getPlaque();
+        return $this->getType().' |  '.$this->getPlaque();
     }
 
     public function getPlaque(): ?string
@@ -159,6 +163,18 @@ class Vehicule
     public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getRetrouve(): ?bool
+    {
+        return $this->retrouve;
+    }
+
+    public function setRetrouve(bool $retrouve): self
+    {
+        $this->retrouve = $retrouve;
 
         return $this;
     }

@@ -16,6 +16,10 @@
                         <a href="{{ path('prison_list_ended') }}" class="btn btn-outline-secondary">
                             <span class="oi oi-list"></span> Historique
                         </a>
+                    {% else %}
+                        <a href="{{ path('prison_list') }}" class="btn btn-outline-secondary">
+                            <span class="oi oi-list"></span> En cours
+                        </a>
                     {% endif %}
                     {% if app.user.isGendarme %}
                         <a href="{{ path('prison_new', {'type': 'Prison'}) }}" class="btn btn-outline-primary">
@@ -46,21 +50,16 @@
                 </thead>
                 <tbody>
                 {% for prison in prisons %}
-                    {% if prison.type == "Évadé" %}
-                        <tr class="table-danger">
-                    {% elseif prison.endDate < date() and titre != "Terminés" %}
-                        <tr class="table-warning">
-                    {% elseif prison.criminel.dangerous > 8 %}
-                        <tr class="table-info">
-                    {% else %}
-                        <tr>
-                    {% endif %}
-                    <td><a href="{{ path('prison_show', {'id': prison.id}) }}">
-                            {{ prison.criminel.name|upper }} {{ prison.criminel.firstName }}</a></td>
-                    <td>{{ prison.criminel.dangerous }}</td>
-                    <td>{{ prison.startDate|date('d/m/y H:i') }} (Depuis {{ prison.getDuree.d }} jours)</td>
-                    <td>{{ prison.endDate|date('d/m/y H:i') }}</td>
-                    <td>{{ prison.status }}</td>
+                    <tr class="{% if prison.type == "Évadé" %}table-danger
+                                {% elseif prison.endDate < date() and titre != 'Terminés' %}table-warning
+                    {% elseif prison.criminel.dangerous > 8 %}table-info
+                    {% endif %}" onclick="window.location = '{{ url('prison_show', {'id': prison.id}) }}';">
+                        <td><a href="{{ path('prison_show', {'id': prison.id}) }}">
+                                {{ prison.criminel.name|upper }} {{ prison.criminel.firstName }}</a></td>
+                        <td>{{ prison.criminel.dangerous }}</td>
+                        <td>{{ prison.startDate|date('d/m/y H:i') }} (Depuis {{ prison.getDuree.d }} jours)</td>
+                        <td>{{ prison.endDate|date('d/m/y H:i') }}</td>
+                        <td>{{ prison.status }}</td>
                     </tr>
                 {% else %}
                     <tr>
