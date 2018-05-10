@@ -13,16 +13,25 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/Gendarmerie/FVV")
  */
-class FVVController extends Controller
-{
+class FVVController extends Controller {
     /**
      * @Route("", name="gd_fvv", methods="GET")
      */
     public function index(VehiculeRepository $vehiculeRepository)
     {
-        $vehicules = $vehiculeRepository->findBy([], ['date' => 'DESC']);
+        $vehicules = $vehiculeRepository->findBy(['retrouve' => FALSE], ['date' => 'DESC']);
 
-        return $this->render('FVV/index.html.twig', ['vehicules' => $vehicules]);
+        return $this->render('FVV/index.html.twig', ['vehicules' => $vehicules, 'historique' => FALSE]);
+    }
+
+    /**
+     * @Route("/Historique", name="gd_fvv_historique", methods="GET")
+     */
+    public function historique(VehiculeRepository $vehiculeRepository)
+    {
+        $vehicules = $vehiculeRepository->findBy(['retrouve' => TRUE], ['date' => 'DESC']);
+
+        return $this->render('FVV/index.html.twig', ['vehicules' => $vehicules, 'historique' => TRUE]);
     }
 
     /**
@@ -31,12 +40,12 @@ class FVVController extends Controller
     public function new(Request $request): Response
     {
         $vehicule = new Vehicule();
-        $vehicule->setAuthor($this->getUser()->getGendarme());
+        $vehicule->setAuthor($this->getUser()->getGendarme())->setRetrouve(FALSE);
         $form = $this->createForm(VehiculeType::class, $vehicule);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($vehicule->getPlaque() == NULL) $vehicule->setPlaque('');
             $em = $this->getDoctrine()->getManager();
             $em->persist($vehicule);
             $em->flush();
@@ -60,6 +69,18 @@ class FVVController extends Controller
     }
 
     /**
+     * @Route("/{id}/retrouve", name="gd_fvv_retrouve", methods="GET", requirements={"id"="\d+"})
+     */
+    public function retrouve(Vehicule $vehicule): Response
+    {
+        $vehicule->setRetrouve(TRUE);
+        $this->getDoctrine()->getManager()->flush();
+        $this->addFlash('info', "Le véhicule volé a été déclaré retrouvé.");
+
+        return $this->redirectToRoute('gd_fvv');
+    }
+
+    /**
      * @Route("/{id}/edit", name="gd_fvv_edit", methods="GET|POST",
      *                      requirements={"id"="\d+"})
      */
@@ -68,8 +89,7 @@ class FVVController extends Controller
         $form = $this->createForm(VehiculeType::class, $vehicule);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('info', "Le véhicule volé a été modifié.");
 
@@ -87,8 +107,10 @@ class FVVController extends Controller
      */
     public function delete(Request $request, Vehicule $vehicule)
     {
-        if ($this->isCsrfTokenValid('delete'.$vehicule->getId(), $request->request->get('_token')))
-        {
+        if (!$this->getUser()->getGendarme()->isOfficier())
+            throw $this->createAccessDeniedException('Seul un officier peut supprimer un véhicule du FVV.');
+
+        if ($this->isCsrfTokenValid('delete'.$vehicule->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($vehicule);
             $em->flush();

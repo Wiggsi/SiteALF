@@ -6,14 +6,21 @@
 {% block body %}
     <div class="row">
         <div class="col">
-            <h3>Véhicules volés</h3>
+            <h3>Véhicules volés{% if historique %} - Historique{% endif %}</h3>
             <div class="btn-toolbar m-2">
                 <div class="btn-group btn-group-lg mr-2">
                     <button type="button" class="btn btn-outline-info" data-toggle="modal"
                             data-target="#aideModal">
                         <span class="oi oi-question-mark"></span></button>
-                    <a href="{{ path('gd_fvv_new') }}" class="btn btn-outline-primary">
-                        <span class="oi oi-plus"></span> Nouveau véhicule volé</a>
+                    {% if not historique %}
+                        <a href="{{ path('gd_fvv_historique') }}" class="btn btn-outline-secondary">
+                            <span class="oi oi-list"></span> Historique</a>
+                        <a href="{{ path('gd_fvv_new') }}" class="btn btn-outline-primary">
+                            <span class="oi oi-plus"></span> Nouveau véhicule volé</a>
+                    {% else %}
+                        <a href="{{ path('gd_fvv') }}" class="btn btn-outline-secondary">
+                            <span class="oi oi-list"></span> En cours</a>
+                    {% endif %}
                 </div>
                 <div class="input-group mt-2">
                     <input id="inputSearchFVV" onkeyup="searchFVV();" class="form-control" type="search" placeholder="Rechercher">
@@ -38,7 +45,7 @@
                 </thead>
                 <tbody>
                 {% for vehicule in vehicules %}
-                    <tr>
+                    <tr onclick="window.location = '{{ url('gd_fvv_show', {'id': vehicule.id}) }}';">
                         <td>{{ vehicule.date|date('d/m/y H:i') }}</td>
                         <td>{{ vehicule.propName|upper }} {{ vehicule.propFirstName }}</td>
                         <td>{{ vehicule.type }}</td>
@@ -46,7 +53,7 @@
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="4">Aucune véhicule volé enregistré.</td>
+                        <td colspan="4">Aucune véhicule volé {% if not historique %}enregistré{% else %}retrouvé{% endif %}.</td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -75,7 +82,8 @@
                         <li>un commentaire.</li>
                         <li>un gendarme ayant noté le véhicule.</li>
                     </ul>
-                    <p>Tout gendarme peut ajouter/modifier/supprimer un véhicule volé.</p>
+                    <p>Tout gendarme peut ajouter/modifier/déclarer retrouvé un véhicule volé.</p>
+                    <p>Seul un officier peut supprimer une entrée au FVV.</p>
                     <p>La recherche peut se faire sur la plaque, le type ou le propriétaire du véhicule.</p>
                 </div>
                 <div class="modal-footer">

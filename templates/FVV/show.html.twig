@@ -6,13 +6,22 @@
 {% block body %}
     <div class='row'>
         <div class="col-md-5">
-            <h3>Véhicule {{ vehicule }}</h3>
+            <h3>Véhicule {{ vehicule }}
+                {% if vehicule.retrouve %} <span class="badge badge-primary">Retrouvé</span>{% endif %}
+            </h3>
             <div class="btn-group m-2">
                 <a href="{{ path('gd_fvv') }}" class="btn btn-outline-secondary">
                     <span class="oi oi-list"></span> Retour au FVV</a>
-                <a href="{{ path('gd_fvv_edit', {'id': vehicule.id}) }}" class="btn btn-outline-info">
-                    <span class="oi oi-pencil"></span> Modifier</a>
-                {{ include('FVV/_delete_form.html.twig') }}
+                {% if not vehicule.retrouve %}
+                    <a href="{{ path('gd_fvv_edit', {'id': vehicule.id}) }}" class="btn btn-outline-info">
+                        <span class="oi oi-pencil"></span> Modifier</a>
+                    <a href="{{ path('gd_fvv_retrouve', {'id': vehicule.id}) }}" class="btn btn-outline-success"
+                       onclick="return confirm('Confirmer que le véhicule a bien été retrouvé : ');">
+                        <span class="oi oi-check"></span> Véhicule retrouvé</a>
+                {% endif %}
+                {% if app.user.gendarme.isOfficier %}
+                    {{ include('FVV/_delete_form.html.twig') }}
+                {% endif %}
             </div>
             <table class="table">
                 <tbody>
