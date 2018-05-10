@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -45,11 +46,21 @@ class VehiculeType extends AbstractType {
                 'attr'     => array(
                     'placeholder'  => 'AB-123-CD',
                     'autocomplete' => 'off',
+                    'pattern'      => '^[A-Z]{2}[-][0-9]{3}[-][A-Z]{2}$',
+                    'title'        => "Plaque d'immatriculation valide demandée",
                 ),
             ))
             ->add('comment', TextareaType::class, array(
                 'label'    => 'Commentaires',
                 'required' => FALSE,
+            ))
+            ->add('tel', TelType::class, array(
+                'label' => '*N° de téléphone du propriétaire',
+                'attr'  => array(
+                    'autocomplete' => 'off',
+                    'pattern'      => '^(0)[1-9][0-9]{8}$',
+                    'title'        => 'N° de téléphone valide demandé',
+                ),
             ))
             ->add('save', SubmitType::class, array(
                 'label' => "Enregistrer le véhicule"));

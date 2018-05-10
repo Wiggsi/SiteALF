@@ -68,6 +68,17 @@ class Vehicule {
      */
     private $retrouve;
 
+    /**
+     * @ORM\Column(type="string", length=10)
+     *
+     * @Assert\NotBlank(message="Le numéro ne peut pas être vide.")
+     * @Assert\Regex(
+     *     pattern="/^(0)[1-9][0-9]{8}$/",
+     *     message="Le numéro de téléphone doit être valide."
+     * )
+     */
+    private $tel;
+
     public function __construct()
     {
         $this->date = new \DateTime();
@@ -175,6 +186,18 @@ class Vehicule {
     public function setRetrouve(bool $retrouve): self
     {
         $this->retrouve = $retrouve;
+
+        return $this;
+    }
+
+    public function getTel(): ?string
+    {
+        return $this->tel;
+    }
+
+    public function setTel(string $tel): self
+    {
+        $this->tel = $tel;
 
         return $this;
     }

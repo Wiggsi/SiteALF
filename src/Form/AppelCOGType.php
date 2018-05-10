@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\AppelCOG;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -35,10 +36,12 @@ class AppelCOGType extends AbstractType {
                 ),
                 'required' => FALSE,
             ))
-            ->add('tel', TextType::class, array(
+            ->add('tel', TelType::class, array(
                 'label' => '*N° de téléphone',
                 'attr'  => array(
                     'autocomplete' => 'off',
+                    'pattern'      => '^(0)[1-9][0-9]{8}$',
+                    'title'        => 'N° de téléphone valide demandé',
                 ),
             ))
             ->add('save', SubmitType::class, array(
