@@ -40,6 +40,11 @@ class Gardien {
         return $this->getGrade()->getAbrv()." ".$this->getUser().$data;
     }
 
+    public function getName()
+    {
+        return $this->getGrade()->getAbrv()." ".$this->getUser();
+    }
+
     public function getUser(): ?User
     {
         return $this->user;
