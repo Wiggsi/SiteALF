@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Nouvelle fiche {{ type }}{% endblock %}
-{% block pageTitle %}Prison{% endblock %}
+{% block pageTitle %}{% endblock %}
 
 {% block body %}
     <div class="row">
@@ -30,7 +30,7 @@
         });
         $(document).ready(function () {
             let bb = document.querySelector('#colContent').getBoundingClientRect();
-            width = bb.right - bb.left;
+            let width = bb.right - bb.left;
             $(document).ready(function () {
                 $('#prison_comment').summernote({
                     height: screen.availHeight * 0.9,

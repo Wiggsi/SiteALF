@@ -51,7 +51,7 @@
                 <tbody>
                 {% for prison in prisons %}
                     <tr class="{% if prison.type == "Évadé" %}table-danger
-                                {% elseif prison.endDate < date() and titre != Terminés %}table-warning
+                                {% elseif prison.endDate < date() and titre != 'Terminés' %}table-warning
                     {% elseif prison.criminel.dangerous > 8 %}table-info
                     {% endif %}" onclick="window.location = '{{ url('prison_show', {'id': prison.id}) }}';">
                         <td><a href="{{ path('prison_show', {'id': prison.id}) }}">
