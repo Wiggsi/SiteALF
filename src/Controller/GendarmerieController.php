@@ -79,7 +79,7 @@ class GendarmerieController extends Controller {
 
 
     /**
-     * @Route("/Bracelets", name="gd_bracelet")
+     * @Route("/SE", name="gd_bracelet")
      */
     public function Bracelets(PrisonRepository $rep)
     {

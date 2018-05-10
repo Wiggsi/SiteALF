@@ -16,14 +16,14 @@
                         <a href="{{ path('prison_list_ended') }}" class="btn btn-outline-secondary">
                             <span class="oi oi-list"></span> Historique
                         </a>
+                        {% if app.user.isGendarme %}
+                            <a href="{{ path('prison_new', {'type': 'Prison'}) }}" class="btn btn-outline-primary">
+                                <span class="oi oi-person"></span> Nouvelle fiche</a>
+                        {% endif %}
                     {% else %}
                         <a href="{{ path('prison_list') }}" class="btn btn-outline-secondary">
                             <span class="oi oi-list"></span> En cours
                         </a>
-                    {% endif %}
-                    {% if app.user.isGendarme %}
-                        <a href="{{ path('prison_new', {'type': 'Prison'}) }}" class="btn btn-outline-primary">
-                            <span class="oi oi-person"></span> Nouvelle fiche</a>
                     {% endif %}
                 </div>
                 <div class="input-group mt-2">

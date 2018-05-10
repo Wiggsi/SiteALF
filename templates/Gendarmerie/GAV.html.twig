@@ -15,12 +15,12 @@
                     {% if not historique %}
                         <a href="{{ path('gd_gav_historique') }}" class="btn btn-outline-secondary">
                             <span class="oi oi-list"></span> Historique</a>
+                        <a href="{{ path('prison_new', {'type': 'GAV'}) }}" class="btn btn-outline-primary">
+                            <span class="oi oi-person"></span> Nouvelle GAV</a>
                     {% else %}
                         <a href="{{ path('gd_gav') }}" class="btn btn-outline-secondary">
                             <span class="oi oi-list"></span> En cours</a>
                     {% endif %}
-                    <a href="{{ path('prison_new', {'type': 'GAV'}) }}" class="btn btn-outline-primary">
-                        <span class="oi oi-person"></span> Nouvelle GAV</a>
                 </div>
                 <div class="input-group mt-2">
                     <input id="inputSearchPrison" onkeyup="searchPrison();" class="form-control" type="search" placeholder="Rechercher"
