@@ -28,24 +28,18 @@
                     <th>Nom</th>
                     <th>Téléphone</th>
                     <th>Gendarme</th>
-                    <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for appelCOG in appelCOGs %}
-                    <tr>
+                    <tr onclick="window.location = '{{ url('gd_cog_show', {'id': appelCOG.id}) }}';">
                         <td>{{ appelCOG.id }}</td>
                         <td>{{ appelCOG.createdDate|date('d/m/y') }}</td>
                         <td>{{ appelCOG.createdDate|date('H:m') }}</td>
-                        <td>{{ appelCOG.name|upper }} {{ appelCOG.firstName }}</td>
+                        <td><a href="{{ path('gd_cog_show', {'id': appelCOG.id}) }}">
+                                {{ appelCOG.name|upper }} {{ appelCOG.firstName }}</a></td>
                         <td>{{ appelCOG.tel }}</td>
                         <td><a href="{{ path('gd_personnel_show', {'id': appelCOG.author.id}) }}">{{ appelCOG.author }}</a></td>
-                        <td class="btn-group w-100 border-0 p-1">
-                            <a href="{{ path('gd_cog_edit', {'id': appelCOG.id}) }}" class="btn btn-outline-info">
-                                <span class="oi oi-pencil"></span> Modifier</a>
-                            <a href="{{ path('gd_cog_show', {'id': appelCOG.id}) }}" class="btn btn-outline-primary">
-                                <span class="oi oi-chevron-right"></span> Afficher</a>
-                        </td>
                     </tr>
                 {% else %}
                     <tr>

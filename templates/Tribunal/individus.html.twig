@@ -23,26 +23,22 @@
                 </thead>
                 <tbody>
                 {% for prison in prisons %}
-                    {% if prison.criminel.isEvade %}
-                        <tr class="table-danger">
-                    {% elseif prison.endDate < date() %}
-                        <tr class="table-warning">
-                    {% elseif prison.criminel.dangerous > 8 %}
-                        <tr class="table-info">
-                    {% else %}
-                        <tr>
-                    {% endif %}
-                    <td>
-                        <a href="{{ path('prison_show', {'id': prison.id}) }}">
-                            {{ prison.criminel.name|upper }} {{ prison.criminel.firstName }}
-                            {% if prison.PV %}(PV {{ prison.PV }}){% endif %}
-                        </a>
-                    </td>
-                    <td>{{ prison.criminel.dangerous }}</td>
-                    <td>{{ prison.type }}</td>
-                    <td>{{ prison.startDate|date('d/m/y') }} - {{ prison.endDate|date('d/m/y') }}
-                        (Depuis {{ prison.getDuree.d }} jours)
-                    </td>
+                    <tr class="
+                    {% if prison.criminel.isEvade %}table-danger
+                    {% elseif prison.endDate < date() %}table-warning
+                    {% elseif prison.criminel.dangerous > 8 %}table-info
+                    {% endif %}" onclick="window.location = '{{ url('prison_show', {'id': prison.id}) }}';">
+                        <td>
+                            <a href="{{ path('prison_show', {'id': prison.id}) }}">
+                                {{ prison.criminel.name|upper }} {{ prison.criminel.firstName }}
+                                {% if prison.PV %}(PV {{ prison.PV }}){% endif %}
+                            </a>
+                        </td>
+                        <td>{{ prison.criminel.dangerous }}</td>
+                        <td>{{ prison.type }}</td>
+                        <td>{{ prison.startDate|date('d/m/y') }} - {{ prison.endDate|date('d/m/y') }}
+                            (Depuis {{ prison.getDuree.d }} jours)
+                        </td>
                     </tr>
                 {% else %}
                     <tr>

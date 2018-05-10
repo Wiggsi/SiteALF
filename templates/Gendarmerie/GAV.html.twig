@@ -38,16 +38,14 @@
                 </thead>
                 <tbody>
                 {% for gav in gavs %}
-                    {% if gav.endDate < date() %}
-                        <tr class="table-warning">
-                    {% else %}
-                        <tr>
-                    {% endif %}
-                    <td><a href="{{ path('prison_show', {'id': gav.id}) }}">
-                            {{ gav.criminel.name|upper }} {{ gav.criminel.firstName }}</a></td>
-                    <td>{{ gav.criminel.dangerous }}</td>
-                    <td>{{ gav.startDate|date('d/m/y H:i') }} (Depuis {{ gav.getDuree.d }} jours)</td>
-                    <td>{{ gav.endDate|date('d/m/y H:i') }}</td>
+                    <tr class="
+                    {% if gav.endDate < date() %}table-warning
+                    {% endif %}" onclick="window.location = '{{ url('prison_show', {'id': gav.id}) }}';">
+                        <td><a href="{{ path('prison_show', {'id': gav.id}) }}">
+                                {{ gav.criminel.name|upper }} {{ gav.criminel.firstName }}</a></td>
+                        <td>{{ gav.criminel.dangerous }}</td>
+                        <td>{{ gav.startDate|date('d/m/y H:i') }} (Depuis {{ gav.getDuree.d }} jours)</td>
+                        <td>{{ gav.endDate|date('d/m/y H:i') }}</td>
                     </tr>
                 {% else %}
                     <tr>

@@ -9,8 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AppelCOGRepository")
  */
-class AppelCOG
-{
+class AppelCOG {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -40,7 +39,6 @@ class AppelCOG
      * @Assert\NotBlank(message="Le nom de l'appelant ne peut pas être vide. (Inconnu sinon)")
      */
     private $name;
-
 
     //Regex acceptant les numéros nuls : /^(^(0)[1-9][0-9]{8}|)$/
 

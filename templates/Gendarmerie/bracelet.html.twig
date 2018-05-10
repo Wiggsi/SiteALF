@@ -40,23 +40,20 @@
                 </thead>
                 <tbody>
                 {% for bracelet in bracelets %}
-                    {% if bracelet.endDate < date() %}
-                        <tr class="table-info">
-                    {% elseif not bracelet.isValid %}
-                        <tr class="table-warning">
-                    {% else %}
-                        <tr>
-                    {% endif %}
-                    <td><a href="{{ path('prison_show', {'id': bracelet.id}) }}">
-                            {{ bracelet.criminel.name|upper }} {{ bracelet.criminel.firstName }}</a></td>
-                    <td>{{ bracelet.criminel.dangerous }}</td>
-                    <td>{{ bracelet.startDate|date('d/m/y H:i') }} (Depuis {{ bracelet.getDuree.d }} jours)</td>
-                    <td>{{ bracelet.endDate|date('d/m/y H:i') }}</td>
-                    <td>{{ bracelet.validation }}
-                        {% if bracelet.validation != 'Jamais' %}
-                            <em> ({{ bracelet.validationDate|date('d/m/y H:i') }})</em>
-                        {% endif %}</td>
-                    <td>{{ bracelet.status }}</td>
+                    <tr class="
+                    {% if bracelet.endDate < date() %}table-info
+                    {% elseif not bracelet.isValid %}table-warning
+                    {% endif %}" onclick="window.location = '{{ url('prison_show', {'id': bracelet.id}) }}';">
+                        <td><a href="{{ path('prison_show', {'id': bracelet.id}) }}">
+                                {{ bracelet.criminel.name|upper }} {{ bracelet.criminel.firstName }}</a></td>
+                        <td>{{ bracelet.criminel.dangerous }}</td>
+                        <td>{{ bracelet.startDate|date('d/m/y H:i') }} (Depuis {{ bracelet.getDuree.d }} jours)</td>
+                        <td>{{ bracelet.endDate|date('d/m/y H:i') }}</td>
+                        <td>{{ bracelet.validation }}
+                            {% if bracelet.validation != 'Jamais' %}
+                                <em> ({{ bracelet.validationDate|date('d/m/y H:i') }})</em>
+                            {% endif %}</td>
+                        <td>{{ bracelet.status }}</td>
                     </tr>
                 {% else %}
                     <tr>

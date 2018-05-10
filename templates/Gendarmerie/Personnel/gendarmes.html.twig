@@ -32,20 +32,16 @@
                 </thead>
                 <tbody>
                 {% for gendarme in gendarmes %}
-                    {% if gendarme.blocked %}
-                        <tr class="table-danger">
-                    {% elseif gendarme.lastActivity < date('-15days', 'Europe/Paris') %}
-                        <tr class="table-warning">
-                    {% else %}
-                        <tr>
-                    {% endif %}
-                    <td><a href="{{ path('gd_personnel_unit', {'id': gendarme.unitId }) }}">{{ gendarme.unitAbrv }}</a></td>
-                    <td>{{ gendarme.gradeName }}</td>
-                    <td><a href="{{ path('gd_personnel_show', {'id': gendarme.id}) }}">{{ gendarme.name|upper }}
-                            {{ gendarme.firstName }}
-                            {% set duree =  gendarme.lastActivity.diff(date()) %}
-                            {% if duree.i < 2 and duree.h == 0  and duree.days == 0 %} ¤{% endif %}
-                        </a></td>
+                    <tr class="{% if gendarme.blocked %}table-danger
+                        {% elseif gendarme.lastActivity < date('-15days', 'Europe/Paris') %}table-warning{% endif %}"
+                        onclick="window.location = '{{ url('gd_personnel_show', {'id': gendarme.id}) }}';">
+                        <td><a href="{{ path('gd_personnel_unit', {'id': gendarme.unitId }) }}">{{ gendarme.unitAbrv }}</a></td>
+                        <td>{{ gendarme.gradeName }}</td>
+                        <td><a href="{{ path('gd_personnel_show', {'id': gendarme.id}) }}">{{ gendarme.name|upper }}
+                                {{ gendarme.firstName }}
+                                {% set duree =  gendarme.lastActivity.diff(date()) %}
+                                {% if duree.i < 2 and duree.h == 0  and duree.days == 0 %} ¤{% endif %}
+                            </a></td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -64,7 +60,7 @@
                 </thead>
                 <tbody>
                 {% for unit in units %}
-                    <tr>
+                    <tr onclick="window.location = '{{ url('gd_personnel_unit', {'id': unit.id}) }}';">
                         <td><img class="figure-img d-inline" alt="Logo d'unité" src="{{ asset(unit.icon) }}" height="50"></td>
                         <td><a href="{{ path('gd_personnel_unit', {'id': unit.id}) }}">{{ unit.abrv }}</a></td>
                         <td>{{ unit.name }}</td>
@@ -85,7 +81,7 @@
                 </thead>
                 <tbody>
                 {% for section in sections %}
-                    <tr>
+                    <tr onclick="window.location = '{{ url('gd_personnel_section', {'id': section.id}) }}';">
                         <td><img class="figure-img d-inline" alt="Logo d'unité" src="{{ asset(section.icon) }}" height="50"></td>
                         <td><a href="{{ path('gd_personnel_section', {'id': section.id}) }}">{{ section.abrv }}</a></td>
                         <td>{{ section.name }}</td>
@@ -95,7 +91,7 @@
                 </tbody>
             </table>
             <h3>Hiérarchie</h3>
-            <table class="table table-bordered table-hover table-responsive-sm bg-white">
+            <table class="table table-bordered table-responsive-sm bg-white">
                 <thead class="thead-dark">
                 <tr>
                     <th scope="col">Abbréviation</th>
