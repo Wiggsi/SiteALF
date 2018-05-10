@@ -50,11 +50,11 @@
                         <a href="{{ path('prison_evasion', {'id': prison.id}) }}" class="btn btn-outline-danger"
                            onclick="return confirm('Confirmer l\'évasion : ');">
                             <span class="oi oi-ban"></span> Évasion</a>
-                    {% elseif prison.type == "Bracelet électronique" %}
-                        <a href="{{ path('prison_pointage', {'id': prison.id}) }}" class="btn btn-outline-success"
-                           onclick="return confirm('Confirmer le pointage de l\'individu : ');">
-                            <span class="oi oi-check"></span> Pointage</a>
-                    {% else %}
+                        {% if prison.type == "Bracelet électronique" %}
+                            <a href="{{ path('prison_pointage', {'id': prison.id}) }}" class="btn btn-outline-success"
+                               onclick="return confirm('Confirmer le pointage de l\'individu : ');">
+                                <span class="oi oi-check"></span> Pointage</a>
+                        {% endif %}
                         <a href="{{ path('prison_end', {'id': prison.id}) }}" class="btn btn-outline-warning"
                            onclick="return confirm('Confirmer la fin : ');">
                             <span class="oi oi-bullhorn"></span> Fin</a>
