@@ -37,7 +37,8 @@
                         <span class="oi oi-pencil"></span> Modifier</a>
                     {% if criminel.isEvade %}
                         <a href="{{ path('prison_evasion_end', {'id': criminel.fichePrison.id}) }}" class="btn btn-outline-success"
-                           onclick="return confirm('Confirmer la fin d\'évasion : ');">Fin d'évasion</a>
+                           onclick="return confirm('Confirmer la fin d\'évasion : ');">
+                            <span class="oi oi-check"></span> Fin d'évasion</a>
                     {% endif %}
                 {% endif %}
             </div>
