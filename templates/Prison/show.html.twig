@@ -10,10 +10,11 @@
 
 {% block body %}
     <h3>{{ prison }}
+        {% if prison.criminel.isEvade %}
+            <span class="badge badge-danger">Évadé</span>
+        {% endif %}
         {% if prison.ended %}
             <span class="badge badge-secondary">Terminé</span>
-        {% elseif prison.criminel.isEvade %}
-            <span class="badge badge-danger">Évadé</span>
         {% elseif not prison.isValid %}
             <span class="badge badge-warning">Contrôle non effectué</span>
         {% elseif prison.endDate < date() %}
