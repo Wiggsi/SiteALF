@@ -116,6 +116,9 @@ class PrisonController extends Controller {
      */
     public function editIncarceration(Request $request, Prison $prison)
     {
+        if ($this->getUser()->isGendarme() and $this->getUser()->getGendarme()->isOfficier() and $prison->isGendarmerie())
+            throw $this->createAccessDeniedException('Vous devez être officier pour modifier cette fiche.');
+
         $form = $this->createForm(PrisonType::class, $prison);
         $form->handleRequest($request);
 
@@ -150,7 +153,7 @@ class PrisonController extends Controller {
      */
     public function evasionIncarceration(Request $request, Prison $prison)
     {
-        $prison->setType("Évadé");
+        $prison->setEvaded(TRUE);
         $prison->getCriminel()->setWanted(TRUE);
         $this->getDoctrine()->getManager()->flush();
         $this->addFlash('info', $prison->getCriminel().' a été déclaré comme évadé et est désormais recherché.');
@@ -168,7 +171,7 @@ class PrisonController extends Controller {
         $this->getDoctrine()->getManager()->flush();
         $this->addFlash('info', $prison);
 
-        return $this->redirectToRoute('prison_list');
+        return $this->redirectToRoute('prison_show', ['id' => $prison->getId()]);
     }
 
     /**

@@ -59,9 +59,24 @@ class GendarmerieController extends Controller {
         $GAVS = $rep->findByType(['GAV']);
 
         return $this->render('Gendarmerie/GAV.html.twig', [
-            'gavs' => $GAVS,
+            'gavs'       => $GAVS,
+            'historique' => FALSE,
         ]);
     }
+
+    /**
+     * @Route("/GAV/Historique", name="gd_gav_historique")
+     */
+    public function GAVHistorique(PrisonRepository $rep)
+    {
+        $GAVS = $rep->findByType(['GAV'], TRUE);
+
+        return $this->render('Gendarmerie/GAV.html.twig', [
+            'gavs'       => $GAVS,
+            'historique' => TRUE,
+        ]);
+    }
+
 
     /**
      * @Route("/Bracelets", name="gd_bracelet")

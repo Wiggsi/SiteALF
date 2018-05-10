@@ -52,7 +52,8 @@
                         <td>{% if criminel.isFree %}Libre
                             {% else %}{{ criminel.fichePrison.type }}{% if criminel.fichePrison.enAttente %} | En attente de jugement{% endif %}
                             {% endif %}
-                            {% if criminel.wanted %} | <b>Recherché</b>{% endif %}
+                            {% if criminel.isEvade %} | <b>Évadé</b>
+                            {% elseif criminel.wanted %} | <b>Recherché</b>{% endif %}
                         </td>
                     </tr>
                 {% else %}

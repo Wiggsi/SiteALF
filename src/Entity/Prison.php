@@ -86,23 +86,28 @@ class Prison {
      */
     private $enAttente;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $evaded;
+
     public function __construct()
     {
         $this->startDate = new \DateTime();
         $this->endDate = new \DateTime("+2days");
         $this->validationDate = new \DateTime();
         $this->ended = FALSE;
-        $this->ended = FALSE;
+        $this->evaded = FALSE;
         $this->validation = "Jamais";
     }
 
     public function __toString()
     {
-        $data = ' - '.$this->getStatus();
         if ($this->ended) $data2 = " - Terminé";
+        else if ($this->evaded) $data2 = " - Évadé";
         else $data2 = "";
 
-        return $this->getCriminel().' - '.$this->getType().$data.' | '.$this->getStartDate()->format('d/m').$data2;
+        return $this->getCriminel().' - '.$this->getType().' - '.$this->getStatus().' | '.$this->getStartDate()->format('d/m').$data2;
     }
 
     public function getType(): ?string
@@ -290,6 +295,18 @@ class Prison {
     public function setEnAttente(bool $enAttente): self
     {
         $this->enAttente = $enAttente;
+
+        return $this;
+    }
+
+    public function getEvaded(): ?bool
+    {
+        return $this->evaded;
+    }
+
+    public function setEvaded(bool $evaded): self
+    {
+        $this->evaded = $evaded;
 
         return $this;
     }

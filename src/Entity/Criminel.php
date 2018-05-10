@@ -187,7 +187,7 @@ class Criminel {
     {
         if ($this->fichePrison == NULL) return FALSE;
         else {
-            if ($this->getFichePrison()->getType() == "Évadé") return TRUE;
+            if ($this->getFichePrison()->getEvaded()) return TRUE;
             else return FALSE;
         }
     }

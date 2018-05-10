@@ -6,12 +6,19 @@
 {% block body %}
     <div class="row">
         <div class="col">
-            <h3>En cours</h3>
+            <h3>{% if not historique %}En cours{% else %}Terminées{% endif %}</h3>
             <div class="btn-toolbar m-2">
                 <div class="btn-group mr-2 btn-group-lg">
                     <button type="button" class="btn btn-outline-info" data-toggle="modal"
                             data-target="#aideModal">
                         <span class="oi oi-question-mark"></span></button>
+                    {% if not historique %}
+                        <a href="{{ path('gd_gav_historique') }}" class="btn btn-outline-secondary">
+                            <span class="oi oi-list"></span> Historique</a>
+                    {% else %}
+                        <a href="{{ path('gd_gav') }}" class="btn btn-outline-secondary">
+                            <span class="oi oi-list"></span> En cours</a>
+                    {% endif %}
                     <a href="{{ path('prison_new', {'type': 'GAV'}) }}" class="btn btn-outline-primary">
                         <span class="oi oi-person"></span> Nouvelle GAV</a>
                 </div>
@@ -39,7 +46,7 @@
                 <tbody>
                 {% for gav in gavs %}
                     <tr class="
-                    {% if gav.endDate < date() %}table-warning
+                    {% if gav.endDate < date() and not gav.getEnded %}table-warning
                     {% endif %}" onclick="window.location = '{{ url('prison_show', {'id': gav.id}) }}';">
                         <td><a href="{{ path('prison_show', {'id': gav.id}) }}">
                                 {{ gav.criminel.name|upper }} {{ gav.criminel.firstName }}</a></td>
@@ -49,7 +56,7 @@
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="4">Aucun individu en GAV actuellement.</td>
+                        <td colspan="4">Aucun GAV {% if not historique %}actuellement{% else %}terminée{% endif %}.</td>
                     </tr>
                 {% endfor %}
                 </tbody>
