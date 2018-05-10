@@ -32,11 +32,9 @@
         $(document).ready(function () {
             let bb = document.querySelector('#colContent').getBoundingClientRect();
             width = bb.right - bb.left;
-            $(document).ready(function () {
-                $('#pv_content').summernote({
-                    height: screen.availHeight * 0.9,
-                    width: width * 0.9
-                });
+            $('#pv_content').summernote({
+                height: screen.availHeight * 0.9,
+                width: width * 0.9
             });
             $("#pv_OPJ").select2({theme: "bootstrap"});
             $("#pv_criminels").select2({theme: "bootstrap"});

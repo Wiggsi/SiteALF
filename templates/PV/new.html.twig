@@ -26,12 +26,14 @@
         $(document).ready(function () {
             let bb = document.querySelector('#colContent').getBoundingClientRect();
             width = bb.right - bb.left;
-            $(document).ready(function () {
-                $('#pv_content').summernote({
-                    height: screen.availHeight * 0.9,
-                    width: width * 0.9
-                });
-            });
+            $.get('/templatePV.html', null, function (data) {
+                $('#pv_content')
+                    .val(data)
+                    .summernote({
+                        height: screen.availHeight * 0.9,
+                        width: width * 0.9
+                    });
+            }, "html");
             $("#pv_OPJ").select2({theme: "bootstrap"});
             $("#pv_criminels").select2({theme: "bootstrap"});
         });
