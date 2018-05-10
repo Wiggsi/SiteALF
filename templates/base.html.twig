@@ -83,6 +83,11 @@
 {#<script src="{{ asset('local/js/bootstrap.min.js') }}"></script>#}
 {% block javascripts %}
 {% endblock %}
+<script>
+    $(document).ready(function () {
+        $('a[href^="http"]').attr('target', '_blank');
+    });
+</script>
 {# TODO: JS pour mettre .active sur le li du menu correspondant à l'URL actuelle #}
 </body>
 </html>
