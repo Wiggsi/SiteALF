@@ -6,7 +6,11 @@
 {% block body %}
     <div class="row">
         <div class="col">
-            <h3>Nouvelle fiche {{ type }}</h3>
+            <h3>Nouvelle fiche {{ type }}
+                <button onclick="window.history.back();" class="btn btn-outline-secondary btn-sm">
+                    <span class="oi oi-chevron-left"></span> Retour
+                </button>
+            </h3>
         </div>
     </div>
     {{ include('Prison/_form.html.twig') }}
