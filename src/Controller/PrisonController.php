@@ -153,8 +153,12 @@ class PrisonController extends Controller {
      */
     public function evasionIncarceration(Request $request, Prison $prison)
     {
+        $date = new \DateTime();
+        if ($this->getUser()->isGendarme()) $nom = $this->getUser()->getGendarme()->getName();
+        else if ($this->getUser()->isGardien()) $nom = $this->getUser()->getGardien()->getName();
         $prison->setEvaded(TRUE);
         $prison->getCriminel()->setWanted(TRUE);
+        $prison->setComment($prison->getComment()."<br/><em>Évadé le ".$date->format('d/m/y H:i')." et déclaré par ".$nom.".</em>");
         $this->getDoctrine()->getManager()->flush();
         $this->addFlash('info', $prison->getCriminel().' a été déclaré comme évadé et est désormais recherché.');
 
@@ -214,7 +218,7 @@ class PrisonController extends Controller {
         $prisonNew->setCriminel($prison->getCriminel())->setAuthor($this->getUser()->getGendarme())
             ->setType("En attente de jugement")->setPV($prison->getPV())->setEnAttente(TRUE)
             ->setStartDate(new \DateTime())->setEndDate(new \DateTime("+7days"))
-            ->setComment($prison->getComment()."<br/><em>Fiche créée à cause de la fin de l'évasion : <a href='"
+            ->setComment($prison->getComment()."<br/><em>Fiche créée par ".$this->getUser()->getGendarme()->getName()." à cause de la fin de l'évasion : <a href='"
                          .$this->generateUrl("prison_show", ['id' => $prison->getId()])."'>"
                          .$prison."</a>.</em>");
         $prison->setEnded(TRUE);

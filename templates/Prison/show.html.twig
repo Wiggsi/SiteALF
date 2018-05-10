@@ -10,7 +10,7 @@
 
 {% block body %}
     <h3>{{ prison }}
-        {% if prison.criminel.isEvade %}
+        {% if prison.evaded %}
             <span class="badge badge-danger">Évadé</span>
         {% endif %}
         {% if prison.ended %}
@@ -47,7 +47,7 @@
                         <a href="{{ path('prison_evasion_end', {'id': prison.id}) }}" class="btn btn-outline-success"
                            onclick="return confirm('Confirmer la fin d\'évasion : ');">
                             <span class="oi oi-check"></span> Fin d'évasion</a>
-                    {% elseif not prison.evaded %}
+                    {% else %}
                         <a href="{{ path('prison_evasion', {'id': prison.id}) }}" class="btn btn-outline-danger"
                            onclick="return confirm('Confirmer l\'évasion : ');">
                             <span class="oi oi-ban"></span> Évasion</a>
@@ -66,7 +66,7 @@
                     <a href="{{ path('prison_end', {'id': prison.id}) }}" class="btn btn-outline-warning"
                        onclick="return confirm('Confirmer la fin : ');">
                         <span class="oi oi-bullhorn"></span> Fin</a>
-                    {% if prison.status == "En attente de jugement" %}
+                    {% if prison.enAttente %}
                         <a href="{{ path('prison_new') }}" class="btn btn-outline-primary"
                            onclick="return confirm('Confirmer la condamnation : ');">
                             <span class="oi oi-pin"></span> Condamnation</a>
